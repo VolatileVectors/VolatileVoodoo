@@ -7,10 +7,9 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
 {
     public class VoodooValueTab : VoodooGeneratorTab
     {
+        private string[] nameSpaces;
         private TextField valuePayload;
         private Type valuePayloadType;
-        private string[] nameSpaces;
-
 
         public override void CreateGUI(VisualElement rootVisualElement)
         {
@@ -30,9 +29,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
                 valuePayload.SelectNone();
             }
 
-            if (AutoSuggest.value) {
+            if (AutoSuggest.value)
                 UpdateSuggestion();
-            }
 
             Validate();
         }
@@ -40,9 +38,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
         protected override void UpdateSuggestion()
         {
             var suggestion = "CustomValue";
-            if (valuePayloadType != null) {
+            if (valuePayloadType != null)
                 suggestion = CodeGeneratorUtils.PrettyIdentifier(valuePayload.value) + "Value";
-            }
 
             Name.value = suggestion;
         }
@@ -65,9 +62,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
 
         protected override void OnCreate()
         {
-            if (!IsValid) {
+            if (!IsValid)
                 return;
-            }
 
             var outputPath = Voodoo.VoodooAssetPath("Values");
 
@@ -86,7 +82,6 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
                 ValueReferenceName = referenceName,
                 ValueReferenceType = valuePayload.value
             };
-
 
             valueTemplate.Create();
             valueReferenceTemplate.Create();

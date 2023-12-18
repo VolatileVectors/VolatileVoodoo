@@ -29,8 +29,7 @@ namespace VolatileVoodoo.Editor.Utils
         private static void OnPlayModeStateChange(PlayModeStateChange state)
         {
             // Restore the default scene (if this playmode has not been triggered using shortcut)
-            if (isEnteringPlaymode)
-            {
+            if (isEnteringPlaymode) {
                 isEnteringPlaymode = false;
                 return;
             }

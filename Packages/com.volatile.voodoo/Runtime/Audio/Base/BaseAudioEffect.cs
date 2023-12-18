@@ -66,13 +66,11 @@ namespace VolatileVoodoo.Runtime.Audio.Base
         [HideInPlayMode]
         private void Preview()
         {
-            if (previewSource == null) {
+            if (previewSource == null)
                 previewSource = EditorUtility.CreateGameObjectWithHideFlags("AudioEffectPreview", HideFlags.HideAndDontSave, typeof(AudioSource)).GetComponent<AudioSource>();
-            }
 
-            if (!Init(previewSource)) {
+            if (!Init(previewSource))
                 return;
-            }
 
             lastPlayed = previewSource.clip.name;
             previewSource.Play();
@@ -85,13 +83,11 @@ namespace VolatileVoodoo.Runtime.Audio.Base
         [HideInPlayMode]
         private void StopPreview()
         {
-            if (previewSource == null) {
+            if (previewSource == null)
                 return;
-            }
 
-            if (previewSource.isPlaying) {
+            if (previewSource.isPlaying)
                 previewSource.Stop();
-            }
 
             DestroyImmediate(previewSource);
             previewSource = null;
@@ -100,9 +96,8 @@ namespace VolatileVoodoo.Runtime.Audio.Base
         private void AutoPreview()
         {
             if (!Application.isPlaying && AutoPlayEffects && Selection.Contains(this)) {
-                if (Selection.GetFiltered<BaseAudioEffect>(SelectionMode.Assets).Length == 1) {
+                if (Selection.GetFiltered<BaseAudioEffect>(SelectionMode.Assets).Length == 1)
                     Preview();
-                }
             } else if (previewSource != null) {
                 StopPreview();
             }
@@ -113,16 +108,15 @@ namespace VolatileVoodoo.Runtime.Audio.Base
         public static Action<bool> AutoPlayEffectsStateChanged;
 
         [Title("Settings")]
-        [ToggleButton(tooltip: "Auto Play preview on asset selection.")]
+        [ToggleButton("Auto Play preview on asset selection.")]
         [ShowInInspector]
         [PropertyOrder(3f)]
         private bool AutoPlayEffects {
             get => EditorPrefs.GetBool(Voodoo.GetAutoPlayEffectsKey, false);
             set {
                 EditorPrefs.SetBool(Voodoo.GetAutoPlayEffectsKey, value);
-                if (value == false && PreviewIsPlaying) {
+                if (value == false && PreviewIsPlaying)
                     StopPreview();
-                }
 
                 AutoPlayEffectsStateChanged?.Invoke(value);
             }

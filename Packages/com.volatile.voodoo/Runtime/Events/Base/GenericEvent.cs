@@ -22,13 +22,17 @@ namespace VolatileVoodoo.Runtime.Events.Base
 
         public void RegisterListener(TResponse listener)
         {
-            if (EventListeners.Contains(listener)) return;
+            if (EventListeners.Contains(listener))
+                return;
+
             EventListeners.Add(listener);
         }
 
         public void UnregisterListener(TResponse listener)
         {
-            if (!EventListeners.Contains(listener)) return;
+            if (!EventListeners.Contains(listener))
+                return;
+
             EventListeners.Remove(listener);
         }
     }
@@ -82,7 +86,10 @@ namespace VolatileVoodoo.Runtime.Events.Base
         }
 
 #if UNITY_EDITOR
-        protected override void RaiseButton() => Raise();
+        protected override void RaiseButton()
+        {
+            Raise();
+        }
 #endif
     }
 
@@ -95,7 +102,10 @@ namespace VolatileVoodoo.Runtime.Events.Base
         }
 
 #if UNITY_EDITOR
-        protected override void RaiseButton() => Raise(DebugPayloadA);
+        protected override void RaiseButton()
+        {
+            Raise(DebugPayloadA);
+        }
 #endif
     }
 
@@ -108,7 +118,10 @@ namespace VolatileVoodoo.Runtime.Events.Base
         }
 
 #if UNITY_EDITOR
-        protected override void RaiseButton() => Raise(DebugPayloadA, DebugPayloadB);
+        protected override void RaiseButton()
+        {
+            Raise(DebugPayloadA, DebugPayloadB);
+        }
 #endif
     }
 
@@ -121,7 +134,10 @@ namespace VolatileVoodoo.Runtime.Events.Base
         }
 
 #if UNITY_EDITOR
-        protected override void RaiseButton() => Raise(DebugPayloadA, DebugPayloadB, DebugPayloadC);
+        protected override void RaiseButton()
+        {
+            Raise(DebugPayloadA, DebugPayloadB, DebugPayloadC);
+        }
 #endif
     }
 
@@ -134,7 +150,10 @@ namespace VolatileVoodoo.Runtime.Events.Base
         }
 
 #if UNITY_EDITOR
-        protected override void RaiseButton() => Raise(DebugPayloadA, DebugPayloadB, DebugPayloadC, DebugPayloadD);
+        protected override void RaiseButton()
+        {
+            Raise(DebugPayloadA, DebugPayloadB, DebugPayloadC, DebugPayloadD);
+        }
 #endif
     }
 }

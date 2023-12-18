@@ -1,4 +1,4 @@
-# VolatileVoodoo
+# Volatile Voodoo
 
 ### Description
 

@@ -24,6 +24,16 @@ namespace VolatileVoodoo.Runtime.Events.Base
         [OnValueChanged(nameof(UpdateSenderViewer))]
         public TEvent source;
 
+        [Tooltip("Response to invoke when Event is raised.")]
+        public TReceiver listeners;
+
+        private void UpdateSenderViewer()
+        {
+#if UNITY_EDITOR
+            senderViewer = source;
+#endif
+        }
+
 #if UNITY_EDITOR
         [HideInEditorMode]
         [HorizontalGroup("Event", MaxWidth = 25)]
@@ -45,60 +55,80 @@ namespace VolatileVoodoo.Runtime.Events.Base
         [OnValueChanged(nameof(UpdateSenderViewer))]
         private BaseEvent senderViewer;
 #endif
-
-        [Tooltip("Response to invoke when Event is raised.")]
-        public TReceiver listeners;
-
-        private void UpdateSenderViewer()
-        {
-#if UNITY_EDITOR
-            senderViewer = source;
-#endif
-        }
     }
 
     public abstract class GenericEventListener<TEvent>
         : BaseEventListener<TEvent, UnityEvent>
         where TEvent : GenericEvent
     {
-        private void OnEnable() => source.RegisterListener(listeners.Invoke);
+        private void OnEnable()
+        {
+            source.RegisterListener(listeners.Invoke);
+        }
 
-        private void OnDisable() => source.UnregisterListener(listeners.Invoke);
+        private void OnDisable()
+        {
+            source.UnregisterListener(listeners.Invoke);
+        }
     }
 
     public abstract class GenericEventListener<TEvent, TPayloadA>
         : BaseEventListener<TEvent, UnityEvent<TPayloadA>>
         where TEvent : GenericEvent<TPayloadA>
     {
-        private void OnEnable() => source.RegisterListener(listeners.Invoke);
+        private void OnEnable()
+        {
+            source.RegisterListener(listeners.Invoke);
+        }
 
-        private void OnDisable() => source.UnregisterListener(listeners.Invoke);
+        private void OnDisable()
+        {
+            source.UnregisterListener(listeners.Invoke);
+        }
     }
 
     public abstract class GenericEventListener<TEvent, TPayloadA, TPayloadB>
         : BaseEventListener<TEvent, UnityEvent<TPayloadA, TPayloadB>>
         where TEvent : GenericEvent<TPayloadA, TPayloadB>
     {
-        private void OnEnable() => source.RegisterListener(listeners.Invoke);
+        private void OnEnable()
+        {
+            source.RegisterListener(listeners.Invoke);
+        }
 
-        private void OnDisable() => source.UnregisterListener(listeners.Invoke);
+        private void OnDisable()
+        {
+            source.UnregisterListener(listeners.Invoke);
+        }
     }
 
     public abstract class GenericEventListener<TEvent, TPayloadA, TPayloadB, TPayloadC>
         : BaseEventListener<TEvent, UnityEvent<TPayloadA, TPayloadB, TPayloadC>>
         where TEvent : GenericEvent<TPayloadA, TPayloadB, TPayloadC>
     {
-        private void OnEnable() => source.RegisterListener(listeners.Invoke);
+        private void OnEnable()
+        {
+            source.RegisterListener(listeners.Invoke);
+        }
 
-        private void OnDisable() => source.UnregisterListener(listeners.Invoke);
+        private void OnDisable()
+        {
+            source.UnregisterListener(listeners.Invoke);
+        }
     }
 
     public abstract class GenericEventListener<TEvent, TPayloadA, TPayloadB, TPayloadC, TPayloadD>
         : BaseEventListener<TEvent, UnityEvent<TPayloadA, TPayloadB, TPayloadC, TPayloadD>>
         where TEvent : GenericEvent<TPayloadA, TPayloadB, TPayloadC, TPayloadD>
     {
-        private void OnEnable() => source.RegisterListener(listeners.Invoke);
+        private void OnEnable()
+        {
+            source.RegisterListener(listeners.Invoke);
+        }
 
-        private void OnDisable() => source.UnregisterListener(listeners.Invoke);
+        private void OnDisable()
+        {
+            source.UnregisterListener(listeners.Invoke);
+        }
     }
 }

@@ -19,14 +19,22 @@ namespace VolatileVoodoo.Runtime.Utils
         [ToggleButton("Activate immediately")]
         public bool activateImmediately = true;
 
-        private AsyncOperation sceneLoadOperation;
         private bool isLoading;
+
+        private AsyncOperation sceneLoadOperation;
+
+        private void Update()
+        {
+            if (!isLoading)
+                return;
+
+            progressEventSource.Raise(Mathf.CeilToInt(sceneLoadOperation.progress * 100f));
+        }
 
         public void LoadNext()
         {
-            if (isLoading) {
+            if (isLoading)
                 return;
-            }
 
             isLoading = true;
 
@@ -37,20 +45,10 @@ namespace VolatileVoodoo.Runtime.Utils
 
         private void OnFinishedLoading(AsyncOperation sceneLoadedOperation)
         {
-            if (!sceneLoadedOperation.isDone) {
+            if (!sceneLoadedOperation.isDone)
                 return;
-            }
 
             progressEventSource.Raise(100);
-        }
-
-        private void Update()
-        {
-            if (!isLoading) {
-                return;
-            }
-
-            progressEventSource.Raise(Mathf.CeilToInt(sceneLoadOperation.progress * 100f));
         }
 
         public void Ready()

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using VolatileVoodoo.Runtime.Events.Base;
@@ -36,29 +35,41 @@ namespace VolatileVoodoo.Runtime.Utils
         };
 
         // Path helper
-        private static string ApplicationProjectPath => Directory.GetParent(Application.dataPath)?.FullName ?? Application.dataPath;
+        public static string ApplicationProjectPath => Directory.GetParent(Application.dataPath)?.FullName ?? Application.dataPath;
 
-        public static string PackagePath => "Packages/com.volatile.voodoo";
-        
         public static string DefaultSavePath => Path.Combine(Application.dataPath, "VolatileVoodoo").Replace("\\", "/");
 
-        public static string ProjectPathToFullPath(string relativePath) => Path.GetFullPath(Path.Combine(ApplicationProjectPath, relativePath.Trim('\\', '/', ' ')));
+        public static string ProjectPathToFullPath(string relativePath)
+        {
+            return Path.GetFullPath(Path.Combine(ApplicationProjectPath, relativePath.Trim('\\', '/', ' ')));
+        }
 
-        public static string PersistentDataPathToFullPath(string relativePath) => Path.GetFullPath(Path.Combine(Application.persistentDataPath, relativePath.Trim('\\', '/', ' ')));
+        public static string PersistentDataPathToFullPath(string relativePath)
+        {
+            return Path.GetFullPath(Path.Combine(Application.persistentDataPath, relativePath.Trim('\\', '/', ' ')));
+        }
 
-        public static string AssetPathToProjectPath(string relativePath) => Path.GetRelativePath(ApplicationProjectPath, Path.Combine("Assets", relativePath.Trim('\\', '/', ' ')));
-        
-        public static string AssetPathToNamespace(string relativePath) => Path.GetRelativePath(Application.dataPath, relativePath.Trim('\\', '/', ' ')).Replace("\\", "/").Replace("/", ".");
+        public static string AssetPathToProjectPath(string relativePath)
+        {
+            return Path.GetRelativePath(ApplicationProjectPath, Path.Combine("Assets", relativePath.Trim('\\', '/', ' ')));
+        }
 
-        public static string VoodooPackagePath(string relativePath) => Path.Combine(PackagePath, relativePath.Trim('\\', '/', ' ')).Replace("\\", "/");
+        public static string AssetPathToNamespace(string relativePath)
+        {
+            return Path.GetRelativePath(Application.dataPath, relativePath.Trim('\\', '/', ' ')).Replace("\\", "/").Replace("/", ".");
+        }
+
+        public static string VoodooPackagePath(string packageName, string relativePath)
+        {
+            return Path.Combine($"Packages/{packageName}", relativePath.Trim('\\', '/', ' ')).Replace("\\", "/");
+        }
 
         public static string VoodooAssetPath(string relativePath)
         {
             var path = Path.Combine(Path.GetFullPath(EditorPrefs.GetString(GetSettingsSavePath, DefaultSavePath)), relativePath.Trim('\\', '/', ' ')).Replace("\\", "/");
-            if (!Directory.Exists(path)) {
+            if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
-            }
-            
+
             return path;
         }
 

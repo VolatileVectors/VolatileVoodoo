@@ -1,5 +1,4 @@
 ﻿using Sirenix.OdinInspector;
-using System;
 using UnityEngine;
 using VolatileVoodoo.Runtime.Values;
 
@@ -17,6 +16,15 @@ namespace VolatileVoodoo.Runtime.Setters
 
         private Quaternion targetRotation;
 
+        private void Update()
+        {
+            if (angularSpeedLimit <= 0 || transform.rotation.Equals(targetRotation))
+                return;
+
+            var step = angularSpeedLimit * Time.deltaTime;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, step);
+        }
+
         private void OnEnable()
         {
             targetRotation = transform.rotation;
@@ -30,25 +38,17 @@ namespace VolatileVoodoo.Runtime.Setters
             bindRotation.OnValueChanged -= UpdateRotation;
         }
 
-        private void UpdatePosition(Vector3 position) => transform.position = position;
+        private void UpdatePosition(Vector3 position)
+        {
+            transform.position = position;
+        }
 
         private void UpdateRotation(Quaternion rotation)
         {
-            if (angularSpeedLimit > 0) {
+            if (angularSpeedLimit > 0)
                 targetRotation = rotation;
-            } else {
+            else
                 transform.rotation = rotation;
-            }
-        }
-
-        private void Update()
-        {
-            if (angularSpeedLimit <= 0 || transform.rotation.Equals(targetRotation)) {
-                return;
-            }
-
-            var step = angularSpeedLimit * Time.deltaTime;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, step);
         }
     }
 }

@@ -11,12 +11,64 @@ namespace VolatileVoodoo.Runtime.Audio
     public class AudioEffectPlayer : MonoBehaviour
     {
         private static Queue<AudioSource> audioSources;
+
+        public AudioMixerGroup audioGroup;
+
+#if UNITY_EDITOR
+        [OnValueChanged(nameof(OnRolloffModeChanged))]
+#endif
+        public AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic;
+
+#if UNITY_EDITOR
+        [OnValueChanged(nameof(OnMinDistanceChanged))]
+#endif
+        [PropertyRange(1f, nameof(maxDistance))]
+        public float minDistance = 1f;
+
+#if UNITY_EDITOR
+        [OnValueChanged(nameof(OnMaxDistanceChanged))]
+#endif
+        [PropertyRange(nameof(minDistance), 500f)]
+        public float maxDistance = 500f;
+
+        public List<BaseAudioEffect> effects;
         private List<PlayingSource> playingSources;
+
+        private void Awake()
+        {
+            playingSources = new List<PlayingSource>();
+        }
+
+        private void LateUpdate()
+        {
+            // clean up non looping not playing sources, looping sources must explicitly be set to !enabled to allow recovery of paused looping sources on focus loss  
+            var finished = playingSources.Where(item => !item.Source.enabled || (!item.Source.loop && !item.Source.isPlaying)).Select(PutIntoAudioSourcePool).ToArray();
+            foreach (var item in finished)
+                playingSources.Remove(item);
+        }
+
+        private void OnDestroy()
+        {
+            playingSources.ForEach(source => PutIntoAudioSourcePool(source));
+            playingSources.Clear();
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (!hasFocus)
+                return;
+
+            // unpause potentially paused looping sources
+            var paused = playingSources.Where(item => item.Source.enabled && item.Source.loop && !item.Source.isPlaying).ToArray();
+            foreach (var item in paused)
+                item.Source.UnPause();
+        }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void CreateAudioSourcePool()
         {
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying)
+                return;
 
             audioSources = new Queue<AudioSource>(Voodoo.AudioSourcePoolSize);
             for (var i = 0; i < Voodoo.AudioSourcePoolSize; ++i) {
@@ -36,9 +88,8 @@ namespace VolatileVoodoo.Runtime.Audio
 
         private bool GrabFromAudioSourcePool(out AudioSource source)
         {
-            if (!audioSources.TryDequeue(out source)) {
+            if (!audioSources.TryDequeue(out source))
                 return false;
-            }
 
             source.enabled = true;
             source.outputAudioMixerGroup = audioGroup;
@@ -81,40 +132,15 @@ namespace VolatileVoodoo.Runtime.Audio
             return playingSource;
         }
 
-        private struct PlayingSource
+        public void PlayFirst()
         {
-            public string EffectName;
-            public AudioSource Source;
+            Play();
         }
-
-        public AudioMixerGroup audioGroup;
-
-#if UNITY_EDITOR
-        [OnValueChanged(nameof(OnRolloffModeChanged))]
-#endif
-        public AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic;
-
-#if UNITY_EDITOR
-        [OnValueChanged(nameof(OnMinDistanceChanged))]
-#endif
-        [PropertyRange(1f, nameof(maxDistance))]
-        public float minDistance = 1f;
-
-#if UNITY_EDITOR
-        [OnValueChanged(nameof(OnMaxDistanceChanged))]
-#endif
-        [PropertyRange(nameof(minDistance), 500f)]
-        public float maxDistance = 500f;
-
-        public List<BaseAudioEffect> effects;
-
-        public void PlayFirst() => Play();
 
         public void Play(string effectName = "")
         {
-            if (!GrabFromAudioSourcePool(out var source)) {
+            if (!GrabFromAudioSourcePool(out var source))
                 return;
-            }
 
 #if UNITY_EDITOR
             var go = source.gameObject;
@@ -122,9 +148,8 @@ namespace VolatileVoodoo.Runtime.Audio
             go.name += "[" + effectName + "]";
 #endif
 
-            if (effects.FirstOrDefault(item => string.IsNullOrWhiteSpace(effectName) || item.name.Equals(effectName))?.Init(source) ?? false) {
+            if (effects.FirstOrDefault(item => string.IsNullOrWhiteSpace(effectName) || item.name.Equals(effectName))?.Init(source) ?? false)
                 source.Play();
-            }
 
             playingSources.Add(new PlayingSource { EffectName = effectName, Source = source });
         }
@@ -146,74 +171,41 @@ namespace VolatileVoodoo.Runtime.Audio
             }
         }
 
-        private void Awake()
+        private struct PlayingSource
         {
-            playingSources = new List<PlayingSource>();
-        }
-
-        private void OnApplicationFocus(bool hasFocus)
-        {
-            if (!hasFocus) {
-                return;
-            }
-
-            // unpause potentially paused looping sources
-            var paused = playingSources.Where(item => item.Source.enabled && item.Source.loop && !item.Source.isPlaying).ToArray();
-            foreach (var item in paused) {
-                item.Source.UnPause();
-            }
-        }
-
-        private void LateUpdate()
-        {
-            // clean up non looping not playing sources, looping sources must explicitly be set to !enabled to allow recovery of paused looping sources on focus loss  
-            var finished = playingSources.Where(item => !item.Source.enabled || (!item.Source.loop && !item.Source.isPlaying)).Select(PutIntoAudioSourcePool).ToArray();
-            foreach (var item in finished) {
-                playingSources.Remove(item);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            playingSources.ForEach(source => PutIntoAudioSourcePool(source));
-            playingSources.Clear();
+            public string EffectName;
+            public AudioSource Source;
         }
 
 #if UNITY_EDITOR
         private void OnRolloffModeChanged()
         {
-            if (playingSources is not { Count: > 0 }) {
+            if (playingSources is not { Count: > 0 })
                 return;
-            }
 
             var currentlyPlaying = playingSources.Where(item => item.Source != null && item.Source.enabled);
-            foreach (var item in currentlyPlaying) {
+            foreach (var item in currentlyPlaying)
                 item.Source.rolloffMode = rolloffMode;
-            }
         }
 
         public void OnMinDistanceChanged()
         {
-            if (playingSources is not { Count: > 0 }) {
+            if (playingSources is not { Count: > 0 })
                 return;
-            }
 
             var currentlyPlaying = playingSources.Where(item => item.Source != null && item.Source.enabled);
-            foreach (var item in currentlyPlaying) {
+            foreach (var item in currentlyPlaying)
                 item.Source.minDistance = minDistance;
-            }
         }
 
         public void OnMaxDistanceChanged()
         {
-            if (playingSources is not { Count: > 0 }) {
+            if (playingSources is not { Count: > 0 })
                 return;
-            }
 
             var currentlyPlaying = playingSources.Where(item => item.Source != null && item.Source.enabled);
-            foreach (var item in currentlyPlaying) {
+            foreach (var item in currentlyPlaying)
                 item.Source.maxDistance = maxDistance;
-            }
         }
 #endif
     }

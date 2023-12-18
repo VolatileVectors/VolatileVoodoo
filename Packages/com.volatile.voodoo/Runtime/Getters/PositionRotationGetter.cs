@@ -21,7 +21,8 @@ namespace VolatileVoodoo.Runtime.Getters
         private void Update()
         {
             var thisTransform = transform;
-            if (thisTransform.position == lastPosition && thisTransform.rotation == lastRotation) return;
+            if (thisTransform.position == lastPosition && thisTransform.rotation == lastRotation)
+                return;
 
             lastPosition = thisTransform.position;
             lastRotation = thisTransform.rotation;

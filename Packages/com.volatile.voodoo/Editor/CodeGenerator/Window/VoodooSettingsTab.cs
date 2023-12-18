@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
 using VolatileVoodoo.Runtime.Utils;
 
@@ -8,10 +7,10 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
 {
     public class VoodooSettingsTab
     {
+        private Toggle autoPlayEffectsState;
+        private Toggle eventListenerInlineEditorState;
         private TextField path;
         private Toggle referenceInlineEditorState;
-        private Toggle eventListenerInlineEditorState;
-        private Toggle autoPlayEffectsState;
 
         public void CreateGUI(VisualElement rootVisualElement)
         {
@@ -21,7 +20,7 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
             autoPlayEffectsState = rootVisualElement.Q<Toggle>("autoPlayEffects");
 
             path.value = EditorPrefs.GetString(Voodoo.GetSettingsSavePath, Voodoo.DefaultSavePath);
-            
+
             referenceInlineEditorState.value = EditorPrefs.GetBool(Voodoo.GetShowGenericReferenceValueKey, false);
             eventListenerInlineEditorState.value = EditorPrefs.GetBool(Voodoo.GetShowGenericEventDebuggerKey, false);
             autoPlayEffectsState.value = EditorPrefs.GetBool(Voodoo.GetAutoPlayEffectsKey, false);
@@ -40,10 +39,19 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
             path.value = string.IsNullOrWhiteSpace(newPath) ? path.value : Path.GetFullPath(newPath);
         }
 
-        public void OnReferenceInlineEditorStateChanged(bool value) => referenceInlineEditorState.SetValueWithoutNotify(value);
+        public void OnReferenceInlineEditorStateChanged(bool value)
+        {
+            referenceInlineEditorState.SetValueWithoutNotify(value);
+        }
 
-        public void OnEventListenerInlineEditorStateChanged(bool value) => eventListenerInlineEditorState.SetValueWithoutNotify(value);
+        public void OnEventListenerInlineEditorStateChanged(bool value)
+        {
+            eventListenerInlineEditorState.SetValueWithoutNotify(value);
+        }
 
-        public void OnAutoPlayEffectsStateChanged(bool value) => autoPlayEffectsState.SetValueWithoutNotify(value);
+        public void OnAutoPlayEffectsStateChanged(bool value)
+        {
+            autoPlayEffectsState.SetValueWithoutNotify(value);
+        }
     }
 }

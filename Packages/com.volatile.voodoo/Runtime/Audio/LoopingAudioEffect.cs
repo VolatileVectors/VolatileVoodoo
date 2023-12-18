@@ -10,11 +10,17 @@ namespace VolatileVoodoo.Runtime.Audio
         [Required]
         public AudioClip loop;
 
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            audioClipsValid = loop != null;
+        }
+#endif
+
         public override bool Init(AudioSource source)
         {
-            if (!audioClipsValid) {
+            if (!audioClipsValid)
                 return false;
-            }
 
             base.Init(source);
 
@@ -22,12 +28,5 @@ namespace VolatileVoodoo.Runtime.Audio
             source.loop = true;
             return true;
         }
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            audioClipsValid = loop != null;
-        }
-#endif
     }
 }

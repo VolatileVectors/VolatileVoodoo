@@ -13,16 +13,16 @@ namespace VolatileVoodoo.Runtime.Values.Base
         public static Action<bool> InlineEditorStateChanged;
 #endif
 
+        private static ValueDropdownList<bool> literalList = new() {
+            { "by Val", true },
+            { "by Ref", false }
+        };
+
         [HideLabel]
         [SerializeField]
         [HorizontalGroup("Reference", 75f)]
         [ValueDropdown(nameof(literalList))]
         protected bool useLiteral = true;
-
-        private static ValueDropdownList<bool> literalList = new() {
-            { "by Val", true },
-            { "by Ref", false }
-        };
     }
 
     [Serializable]
@@ -46,15 +46,25 @@ namespace VolatileVoodoo.Runtime.Values.Base
 
         public event Action<TData> OnValueChanged {
             add {
-                if (!useLiteral && this.value != null) {
+                if (!useLiteral && this.value != null)
                     this.value.OnValueChanged += value;
-                }
             }
             remove {
-                if (!useLiteral && this.value != null) {
+                if (!useLiteral && this.value != null)
                     this.value.OnValueChanged -= value;
-                }
             }
+        }
+
+        private void UpdateValueEditor()
+        {
+#if UNITY_EDITOR
+            valueEditor = value;
+#endif
+        }
+
+        public static implicit operator TData(GenericReference<TValue, TData> reference)
+        {
+            return reference.Value;
         }
 
 #if UNITY_EDITOR
@@ -76,18 +86,5 @@ namespace VolatileVoodoo.Runtime.Values.Base
         [OnInspectorInit(nameof(UpdateValueEditor))]
         private TValue valueEditor;
 #endif
-
-
-        private void UpdateValueEditor()
-        {
-#if UNITY_EDITOR
-            valueEditor = value;
-#endif
-        }
-
-        public static implicit operator TData(GenericReference<TValue, TData> reference)
-        {
-            return reference.Value;
-        }
     }
 }

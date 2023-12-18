@@ -2,6 +2,7 @@
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using VolatileVoodoo.Runtime.Utils;
 
@@ -39,16 +40,14 @@ namespace VolatileVoodoo.Editor.Utils
 
             if (EditorGUI.EndChangeCheck()) {
                 sceneAssetProperty.objectReferenceValue = selectedObject;
-                if (buildScene.Scene == null) {
+                if (buildScene.Scene == null)
                     property.FindPropertyRelative(ScenePathPropertyString).stringValue = string.Empty;
-                }
             }
 
             position.y += PaddedLine;
 
-            if (!buildScene.AssetGuid.Empty()) {
+            if (!buildScene.AssetGuid.Empty())
                 DrawSceneInfoGUI(position, buildScene, sceneControlID + 1);
-            }
 
             EditorGUI.EndProperty();
         }
@@ -57,9 +56,8 @@ namespace VolatileVoodoo.Editor.Utils
         {
             var lines = 2;
             var sceneAssetProperty = property.FindPropertyRelative(SceneAssetPropertyString);
-            if (sceneAssetProperty.objectReferenceValue == null) {
+            if (sceneAssetProperty.objectReferenceValue == null)
                 lines = 1;
-            }
 
             return BoxPadding.vertical + LineHeight * lines + PadSize * (lines - 1) + FooterHeight;
         }
@@ -111,7 +109,9 @@ namespace VolatileVoodoo.Editor.Utils
                     buttonRect.width *= 2;
                     var addIndex = EditorBuildSettings.scenes.Length;
                     tooltipMsg = "Add this scene to build settings. It will be appended to the end of the build scenes as buildIndex: " + addIndex + "." + readOnlyWarning;
-                    if (ButtonHelper(buttonRect, "Add...", "Add (buildIndex " + addIndex + ")", EditorStyles.miniButtonLeft, tooltipMsg)) BuildUtils.AddBuildScene(buildScene);
+                    if (ButtonHelper(buttonRect, "Add...", "Add (buildIndex " + addIndex + ")", EditorStyles.miniButtonLeft, tooltipMsg))
+                        BuildUtils.AddBuildScene(buildScene);
+
                     buttonRect.width /= 2;
                     buttonRect.x += buttonRect.width;
                 } else {
@@ -119,25 +119,22 @@ namespace VolatileVoodoo.Editor.Utils
                     var stateString = isEnabled ? "Disable" : "Enable";
                     tooltipMsg = stateString + " this scene in build settings.\n" + (isEnabled ? "It will no longer be included in builds" : "It will be included in builds") + "." + readOnlyWarning;
 
-                    if (ButtonHelper(buttonRect, stateString, stateString + " In Build", EditorStyles.miniButtonLeft, tooltipMsg)) {
+                    if (ButtonHelper(buttonRect, stateString, stateString + " In Build", EditorStyles.miniButtonLeft, tooltipMsg))
                         BuildUtils.SetBuildSceneState(buildScene, !isEnabled);
-                    }
 
                     buttonRect.x += buttonRect.width;
 
                     tooltipMsg = "Completely remove this scene from build settings.\nYou will need to add it again for it to be included in builds!" + readOnlyWarning;
-                    if (ButtonHelper(buttonRect, "Remove...", "Remove from Build", EditorStyles.miniButtonMid, tooltipMsg)) {
+                    if (ButtonHelper(buttonRect, "Remove...", "Remove from Build", EditorStyles.miniButtonMid, tooltipMsg))
                         BuildUtils.RemoveBuildScene(buildScene);
-                    }
                 }
             }
 
             buttonRect.x += buttonRect.width;
 
             tooltipMsg = "Open the 'Build Settings' Window for managing scenes." + readOnlyWarning;
-            if (ButtonHelper(buttonRect, "Settings", "Build Settings", EditorStyles.miniButtonRight, tooltipMsg)) {
+            if (ButtonHelper(buttonRect, "Settings", "Build Settings", EditorStyles.miniButtonRight, tooltipMsg))
                 BuildUtils.OpenBuildSettings();
-            }
         }
 
         private static Rect GetFieldRect(Rect position)
@@ -160,13 +157,11 @@ namespace VolatileVoodoo.Editor.Utils
             };
 
             var longWidth = style.CalcSize(content).x;
-            if (longWidth > position.width) {
+            if (longWidth > position.width)
                 content.text = msgShort;
-            }
 
             return GUI.Button(position, content, style);
         }
-
 
         private static class BuildUtils
         {
@@ -174,14 +169,6 @@ namespace VolatileVoodoo.Editor.Utils
 
             private static float lastTimeChecked;
             private static bool cachedReadonlyVal = true;
-
-            public struct BuildScene
-            {
-                public int BuildIndex;
-                public GUID AssetGuid;
-                public string AssetPath;
-                public EditorBuildSettingsScene Scene;
-            }
 
             public static bool IsReadOnly()
             {
@@ -198,38 +185,34 @@ namespace VolatileVoodoo.Editor.Utils
 
             private static bool QueryBuildSettingsStatus()
             {
-                if (!UnityEditor.VersionControl.Provider.enabled || !UnityEditor.VersionControl.Provider.hasCheckoutSupport) {
+                if (!Provider.enabled || !Provider.hasCheckoutSupport)
                     return false;
-                }
 
-                var status = UnityEditor.VersionControl.Provider.Status("ProjectSettings/EditorBuildSettings.asset", false);
+                var status = Provider.Status("ProjectSettings/EditorBuildSettings.asset", false);
                 status.Wait();
 
-                if (status.assetList is not { Count: 1 }) {
+                if (status.assetList is not { Count: 1 })
                     return true;
-                }
 
-                return !status.assetList[0].IsState(UnityEditor.VersionControl.Asset.States.CheckedOutLocal);
+                return !status.assetList[0].IsState(Asset.States.CheckedOutLocal);
             }
 
             public static BuildScene GetBuildScene(Object sceneObject)
             {
-                var entry = new BuildScene() {
+                var entry = new BuildScene {
                     BuildIndex = -1,
                     AssetGuid = new GUID(string.Empty)
                 };
 
-                if (sceneObject as SceneAsset == null) {
+                if (sceneObject as SceneAsset == null)
                     return entry;
-                }
 
                 entry.AssetPath = AssetDatabase.GetAssetPath(sceneObject);
                 entry.AssetGuid = new GUID(AssetDatabase.AssetPathToGUID(entry.AssetPath));
 
                 for (var index = 0; index < EditorBuildSettings.scenes.Length; ++index) {
-                    if (!entry.AssetGuid.Equals(EditorBuildSettings.scenes[index].guid)) {
+                    if (!entry.AssetGuid.Equals(EditorBuildSettings.scenes[index].guid))
                         continue;
-                    }
 
                     entry.Scene = EditorBuildSettings.scenes[index];
                     entry.BuildIndex = index;
@@ -244,9 +227,8 @@ namespace VolatileVoodoo.Editor.Utils
                 var modified = false;
                 var scenesToModify = EditorBuildSettings.scenes;
                 foreach (var curScene in scenesToModify) {
-                    if (!curScene.guid.Equals(buildScene.AssetGuid)) {
+                    if (!curScene.guid.Equals(buildScene.AssetGuid))
                         continue;
-                    }
 
                     curScene.enabled = enabled;
                     modified = true;
@@ -328,6 +310,14 @@ namespace VolatileVoodoo.Editor.Utils
             public static void OpenBuildSettings()
             {
                 EditorWindow.GetWindow(typeof(BuildPlayerWindow));
+            }
+
+            public struct BuildScene
+            {
+                public int BuildIndex;
+                public GUID AssetGuid;
+                public string AssetPath;
+                public EditorBuildSettingsScene Scene;
             }
         }
     }

@@ -1,16 +1,25 @@
 ﻿{
-  "author": "Helge Backhaus",
   "name": "com.volatile.voodoo",
-  "version": "0.2.0",
   "displayName": "Volatile Voodoo",
   "description": "Scriptable Object Events/Values & Utilities",
+  "version": "0.2.0",
   "unity": "2021.1",
-  "licenses": "MIT",
+  "author": {
+    "name": "Helge Backhaus"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:VolatileVectors/VolatileVoodoo.git"
+  },
   "keywords": [
     "ScriptableObject",
     "Architecture",
     "ScriptableEvents",
     "ScriptableValues",
     "Utilities"
-  ]
+  ],
+  "license": "MIT"
 }
+
+
+  

@@ -2,19 +2,20 @@
 {
     public sealed class EventListenerTemplate : CodeGeneratorBase
     {
-        public string Namespace;
-        public string[] Imports;
         public string EventName;
         public string[] EventPayloads;
+        public string[] Imports;
+        public string Namespace;
 
         public EventListenerTemplate(string path) : base(path) { }
-        
+
+        protected override string FileName => EventName + "Listener.cs";
+
         protected override string TransformText()
         {
-            foreach (var nameSpace in Imports) {
+            foreach (var nameSpace in Imports)
                 WriteLine($"using {nameSpace};");
-            }
-            
+
             WriteLine("using VolatileVoodoo.Runtime.Events.Base;");
             WriteLine();
             WriteLine($"namespace {Namespace}");
@@ -22,18 +23,16 @@
             PushIndent();
             Write("public class ");
             Write($"{EventName}Listener");
-            
+
             Write(" : GenericEventListener<");
             Write(EventName);
-            foreach (var payload in EventPayloads) {
+            foreach (var payload in EventPayloads)
                 Write($", {payload}");
-            }
+
             WriteLine("> { }");
             PopIndent();
             Write("}");
             return Generator.ToString();
         }
-
-        protected override string FileName => EventName + "Listener.cs";
     }
 }

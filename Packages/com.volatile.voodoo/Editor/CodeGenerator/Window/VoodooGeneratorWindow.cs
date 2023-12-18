@@ -18,43 +18,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
         private const string UnselectedContent = "unselectedContent";
 
         private readonly VoodooEventTab eventTab = new();
-        private readonly VoodooValueTab valueTab = new();
         private readonly VoodooSettingsTab settingsTab = new();
-
-        [MenuItem("Volatile Voodoo/Voodoo Event Generator", false, priority = 100)]
-        private static void OpenEventWindow() => CreateWindow("eventTypeTab");
-
-        [MenuItem("Volatile Voodoo/Voodoo Value Generator", false, priority = 101)]
-        private static void OpenValueWindow() => CreateWindow("valueTypeTab");
-
-        [MenuItem("Volatile Voodoo/Voodoo Settings", false, priority = 101)]
-        private static void OpenSettingsWindow() => CreateWindow("settingsTab");
-
-        private static void CreateWindow(string activeAtStart)
-        {
-            var window = GetWindow<VoodooGeneratorWindow>(false, "Voodoo Generators");
-            window.minSize = new Vector2(470f, 200f);
-            window.maxSize = new Vector2(800f, 200f);
-            window.SetStartTab(activeAtStart);
-            window.Show();
-
-            CodeGeneratorUtils.InitTypeCache();
-        }
-
-        private void CreateGUI()
-        {
-            var root = rootVisualElement;
-            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(Voodoo.VoodooPackagePath("Editor/CodeGenerator/Window/VoodooGenerator.uss")));
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(Voodoo.VoodooPackagePath("Editor/CodeGenerator/Window/VoodooGenerator.uxml"));
-            root.Add(visualTree.Instantiate());
-
-            eventTab.CreateGUI(root.Q<VisualElement>("eventTypeContent"));
-            valueTab.CreateGUI(root.Q<VisualElement>("valueTypeContent"));
-            settingsTab.CreateGUI(root.Q<VisualElement>("settingsContent"));
-
-            root.Query<Label>(className: TabClassname).ForEach(tab => tab.RegisterCallback<ClickEvent>(OnTabClicked));
-            root.Query<Button>(name: "create").ForEach(tab => tab.clicked += Close);
-        }
+        private readonly VoodooValueTab valueTab = new();
 
         private void OnEnable()
         {
@@ -70,13 +35,64 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
             BaseAudioEffect.AutoPlayEffectsStateChanged -= settingsTab.OnAutoPlayEffectsStateChanged;
         }
 
-        private void SetStartTab(string tabName) => UpdateTabBar(rootVisualElement.Q<Label>(tabName));
+        private void CreateGUI()
+        {
+            var root = rootVisualElement;
+            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(Voodoo.VoodooPackagePath("com.volatile.voodoo", Editor/CodeGenerator/Window/VoodooGenerator.uss")));
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(Voodoo.VoodooPackagePath("com.volatile.voodoo", Editor/CodeGenerator/Window/VoodooGenerator.uxml"));
+            root.Add(visualTree.Instantiate());
 
-        private void OnTabClicked(ClickEvent click) => UpdateTabBar(click.target as Label);
+            eventTab.CreateGUI(root.Q<VisualElement>("eventTypeContent"));
+            valueTab.CreateGUI(root.Q<VisualElement>("valueTypeContent"));
+            settingsTab.CreateGUI(root.Q<VisualElement>("settingsContent"));
+
+            root.Query<Label>(className: TabClassname).ForEach(tab => tab.RegisterCallback<ClickEvent>(OnTabClicked));
+            root.Query<Button>("create").ForEach(tab => tab.clicked += Close);
+        }
+
+        [MenuItem("Volatile Voodoo/Voodoo Event Generator", false, priority = 100)]
+        private static void OpenEventWindow()
+        {
+            CreateWindow("eventTypeTab");
+        }
+
+        [MenuItem("Volatile Voodoo/Voodoo Value Generator", false, priority = 101)]
+        private static void OpenValueWindow()
+        {
+            CreateWindow("valueTypeTab");
+        }
+
+        [MenuItem("Volatile Voodoo/Voodoo Settings", false, priority = 101)]
+        private static void OpenSettingsWindow()
+        {
+            CreateWindow("settingsTab");
+        }
+
+        private static void CreateWindow(string activeAtStart)
+        {
+            var window = GetWindow<VoodooGeneratorWindow>(false, "Voodoo Generators");
+            window.minSize = new Vector2(470f, 200f);
+            window.maxSize = new Vector2(800f, 200f);
+            window.SetStartTab(activeAtStart);
+            window.Show();
+
+            CodeGeneratorUtils.InitTypeCache();
+        }
+
+        private void SetStartTab(string tabName)
+        {
+            UpdateTabBar(rootVisualElement.Q<Label>(tabName));
+        }
+
+        private void OnTabClicked(ClickEvent click)
+        {
+            UpdateTabBar(click.target as Label);
+        }
 
         private void UpdateTabBar(Label tabLabel)
         {
-            if (tabLabel?.ClassListContains(SelectedTab) ?? true) return;
+            if (tabLabel?.ClassListContains(SelectedTab) ?? true)
+                return;
 
             rootVisualElement
                 .Query<Label>(className: TabClassname)

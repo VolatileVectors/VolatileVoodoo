@@ -19,9 +19,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator
         [InitializeOnLoadMethod]
         public static void InitTypeCache()
         {
-            if (typeCache != null && friendlyNamesTypeCache != null) {
+            if (typeCache != null && friendlyNamesTypeCache != null)
                 return;
-            }
 
             typeCache = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -46,28 +45,25 @@ namespace VolatileVoodoo.Editor.CodeGenerator
             var rank = 1;
             var inArray = false;
             int pos;
-            for (pos = typeName.Length - 1; pos >= 0; --pos) {
+            for (pos = typeName.Length - 1; pos >= 0; --pos)
                 if (typeName[pos] == ']') {
                     if (inArray) return null;
                     inArray = true;
                 } else if (typeName[pos] == '[') {
-                    if (!inArray) {
+                    if (!inArray)
                         return null;
-                    }
 
                     inArray = false;
                     arrays.Add(rank);
                     rank = 1;
                 } else if (typeName[pos] == ',') {
-                    if (!inArray) {
+                    if (!inArray)
                         return null;
-                    }
 
                     rank++;
                 } else if (typeName[pos] != ' ') {
                     break;
                 }
-            }
 
             return inArray ? null : typeName[..(pos + 1)];
         }
@@ -90,23 +86,20 @@ namespace VolatileVoodoo.Editor.CodeGenerator
                         depth--;
                         break;
                     case ',':
-                        if (depth != 0) {
+                        if (depth != 0)
                             continue;
-                        }
 
                         genericTypeParameters.Add(generics[subTypeStart..i].Trim());
                         subTypeStart = i + 1;
                         break;
                 }
 
-                if (depth < 0) {
+                if (depth < 0)
                     return false;
-                }
             }
 
-            if (subTypeStart >= generics.Length) {
+            if (subTypeStart >= generics.Length)
                 return false;
-            }
 
             genericTypeParameters.Add(generics[subTypeStart..].Trim());
             return depth == 0;
@@ -125,15 +118,13 @@ namespace VolatileVoodoo.Editor.CodeGenerator
             nameSpaces = new List<string>();
 
             // null for empty strings
-            if (typeName.IsNullOrWhitespace()) {
+            if (typeName.IsNullOrWhitespace())
                 return null;
-            }
 
             // handle arrays
             typeName = ArraysParser(typeName, out var arrays);
-            if (typeName == null) {
+            if (typeName == null)
                 return null;
-            }
 
             // handle nullable
             var isNullable = false;
@@ -150,15 +141,13 @@ namespace VolatileVoodoo.Editor.CodeGenerator
 
             if (openGeneric > 0 && closeGeneric == typeName.Length - 1) {
                 var subTypesString = typeName[(openGeneric + 1)..closeGeneric];
-                if (!GenericsParser(subTypesString, out var subTypes)) {
+                if (!GenericsParser(subTypesString, out var subTypes))
                     return null;
-                }
 
                 foreach (var subType in subTypes) {
                     var st = ResolveNestedTypeFromString(subType, out var subNameSpaces);
-                    if (st == null) {
+                    if (st == null)
                         return null;
-                    }
 
                     generics.Add(st);
                     nameSpaces = nameSpaces.Union(subNameSpaces).ToList();
@@ -172,27 +161,26 @@ namespace VolatileVoodoo.Editor.CodeGenerator
             // try to find find first matching type in assemblies type cache,try friendly type names cache in case of a miss
             var t = typeCache.FirstOrDefault(item => string.Equals(item.Name, typeName)) ?? friendlyNamesTypeCache.GetValueOrDefault(typeName);
 
-            if (t == null) {
+            if (t == null)
                 return null;
-            }
 
             nameSpaces.Add(t.Namespace);
 
             // handle generic type parameters
-            if (generics.Count > 0) {
+            if (generics.Count > 0)
                 t = t.MakeGenericType(generics.ToArray());
-            }
 
             // handle nullable
             if (isNullable) {
-                if (!t.IsValueType) return null;
+                if (!t.IsValueType)
+                    return null;
+
                 t = typeof(Nullable<>).MakeGenericType(t);
             }
 
             // handle arrays
-            if (arrays.Count > 0) {
+            if (arrays.Count > 0)
                 t = arrays.Aggregate(t, (current, rank) => rank > 1 ? current.MakeArrayType(rank) : current.MakeArrayType());
-            }
 
             return t;
         }
@@ -210,9 +198,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator
             } else if (t.IsGenericType) {
                 var generics = t.GetGenericArguments();
                 for (var i = 0; i < generics.Length; ++i) {
-                    if (i != 0) {
+                    if (i != 0)
                         prettyName += ", ";
-                    }
 
                     prettyName += generics[i].PrettyName();
                 }
@@ -222,11 +209,10 @@ namespace VolatileVoodoo.Editor.CodeGenerator
             }
 
             if (!t.HasElementType) {
-                if (isNullable) {
+                if (isNullable)
                     prettyName += '?';
-                } else {
+                else
                     prettyName = (friendlyNamesReverseTypeCache.GetValueOrDefault(name) ?? name) + prettyName;
-                }
             } else {
                 ArraysParser(name, out var arrays);
                 foreach (var arrayRank in arrays) {
@@ -245,18 +231,16 @@ namespace VolatileVoodoo.Editor.CodeGenerator
             var deletion = 0;
             for (var i = 0; i < Math.Min(cursorPos, updatedText.Length); ++i) {
                 var j = i + insertion - deletion;
-                if (origText[i] == updatedText[j]) {
+                if (origText[i] == updatedText[j])
                     continue;
-                }
 
-                if (origText[i] == ' ') {
+                if (origText[i] == ' ')
                     while (origText[i] != updatedText[j] && i < Math.Min(cursorPos, updatedText.Length)) {
                         deletion++;
                         i++;
                     }
-                } else if (updatedText[j] == ' ') {
+                else if (updatedText[j] == ' ')
                     insertion++;
-                }
             }
 
             return Math.Min(cursorPos + insertion - deletion, updatedText.Length);
@@ -269,19 +253,16 @@ namespace VolatileVoodoo.Editor.CodeGenerator
 
         private static string BuildPrettyIdentifier(string typeName)
         {
-            if (typeName.IsNullOrWhitespace()) {
+            if (typeName.IsNullOrWhitespace())
                 return "";
-            }
 
             var isArray = false;
             if (typeName.LastIndexOf(']') == typeName.Length - 1) {
                 isArray = true;
                 int pos;
-                for (pos = typeName.Length; pos > 0; --pos) {
-                    if (typeName[pos - 1] != '[' && typeName[pos - 1] != ']' && typeName[pos - 1] != ',') {
+                for (pos = typeName.Length; pos > 0; --pos)
+                    if (typeName[pos - 1] != '[' && typeName[pos - 1] != ']' && typeName[pos - 1] != ',')
                         break;
-                    }
-                }
 
                 typeName = typeName[..pos];
             }
@@ -299,9 +280,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator
 
             if (openGeneric > 0 && closeGeneric == typeName.Length - 1) {
                 var subTypesString = typeName[(openGeneric + 1)..closeGeneric];
-                if (!GenericsParser(subTypesString, out var subTypes)) {
+                if (!GenericsParser(subTypesString, out var subTypes))
                     return "";
-                }
 
                 generics = subTypes.Aggregate(generics, (current, subType) => current + BuildPrettyIdentifier(subType));
                 typeName = typeName[..openGeneric];

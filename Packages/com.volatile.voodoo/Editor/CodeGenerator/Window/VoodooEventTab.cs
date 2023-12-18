@@ -36,9 +36,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
                 eventPayloads[index].SelectNone();
             }
 
-            if (AutoSuggest.value) {
+            if (AutoSuggest.value)
                 UpdateSuggestion();
-            }
 
             Validate();
         }
@@ -47,13 +46,14 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
         {
             var suggestion = "";
             for (var i = 0; i < 4; ++i) {
-                if (eventPayloadTypes[i] == null) continue;
+                if (eventPayloadTypes[i] == null)
+                    continue;
+
                 suggestion += CodeGeneratorUtils.PrettyIdentifier(eventPayloads[i].value);
             }
 
-            if (suggestion.IsNullOrWhitespace()) {
+            if (suggestion.IsNullOrWhitespace())
                 suggestion = "Custom";
-            }
 
             Name.value = suggestion + "Event";
         }
@@ -78,13 +78,11 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
 
         protected override void OnCreate()
         {
-            if (!IsValid) {
+            if (!IsValid)
                 return;
-            }
 
             var payloads = eventPayloads.Select(textField => textField.value).Where(item => !item.IsNullOrWhitespace()).ToList().ConvertAll(item => item.Replace(" ", "")).ToArray();
             var includes = nameSpaces.Where(nameSpace => nameSpace != null).Aggregate(new List<string>(), (strings, list) => list.Union(strings).ToList()).Distinct().ToArray();
-
             var outputPath = Voodoo.VoodooAssetPath("Events");
 
             EventTemplate eventTemplate = new(outputPath) {

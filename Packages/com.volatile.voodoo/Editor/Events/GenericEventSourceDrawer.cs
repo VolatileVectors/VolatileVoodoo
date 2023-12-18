@@ -13,7 +13,8 @@ namespace VolatileVoodoo.Editor.Events
         {
             EditorGUI.BeginChangeCheck();
             var selected = EditorGUI.ObjectField(EditorGUILayout.GetControlRect(), label, ValueEntry.SmartValue.sender, typeof(TEvent), false) as TEvent;
-            if (!EditorGUI.EndChangeCheck()) return;
+            if (!EditorGUI.EndChangeCheck())
+                return;
 
             var child = Property.Children.Get(nameof(ValueEntry.SmartValue.sender));
             child.ValueEntry.WeakSmartValue = selected;
@@ -30,7 +31,8 @@ namespace VolatileVoodoo.Editor.Events
         {
             EditorGUI.BeginChangeCheck();
             var selected = EditorGUI.ObjectField(EditorGUILayout.GetControlRect(), label, ValueEntry.SmartValue.sender, typeof(TEvent), false) as TEvent;
-            if (!EditorGUI.EndChangeCheck()) return;
+            if (!EditorGUI.EndChangeCheck())
+                return;
 
             var child = Property.Children.Get(nameof(ValueEntry.SmartValue.sender));
             child.ValueEntry.WeakSmartValue = selected;
@@ -47,7 +49,8 @@ namespace VolatileVoodoo.Editor.Events
         {
             EditorGUI.BeginChangeCheck();
             var selected = EditorGUI.ObjectField(EditorGUILayout.GetControlRect(), label, ValueEntry.SmartValue.sender, typeof(TEvent), false) as TEvent;
-            if (!EditorGUI.EndChangeCheck()) return;
+            if (!EditorGUI.EndChangeCheck())
+                return;
 
             var child = Property.Children.Get(nameof(ValueEntry.SmartValue.sender));
             child.ValueEntry.WeakSmartValue = selected;
@@ -64,7 +67,8 @@ namespace VolatileVoodoo.Editor.Events
         {
             EditorGUI.BeginChangeCheck();
             var selected = EditorGUI.ObjectField(EditorGUILayout.GetControlRect(), label, ValueEntry.SmartValue.sender, typeof(TEvent), false) as TEvent;
-            if (!EditorGUI.EndChangeCheck()) return;
+            if (!EditorGUI.EndChangeCheck())
+                return;
 
             var child = Property.Children.Get(nameof(ValueEntry.SmartValue.sender));
             child.ValueEntry.WeakSmartValue = selected;
@@ -81,7 +85,8 @@ namespace VolatileVoodoo.Editor.Events
         {
             EditorGUI.BeginChangeCheck();
             var selected = EditorGUI.ObjectField(EditorGUILayout.GetControlRect(), label, ValueEntry.SmartValue.sender, typeof(TEvent), false) as TEvent;
-            if (!EditorGUI.EndChangeCheck()) return;
+            if (!EditorGUI.EndChangeCheck())
+                return;
 
             var child = Property.Children.Get(nameof(ValueEntry.SmartValue.sender));
             child.ValueEntry.WeakSmartValue = selected;

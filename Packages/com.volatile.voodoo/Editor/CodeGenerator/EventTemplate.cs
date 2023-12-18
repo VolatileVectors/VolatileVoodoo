@@ -1,16 +1,16 @@
-﻿using Sirenix.Utilities;
-
-namespace VolatileVoodoo.Editor.CodeGenerator
+﻿namespace VolatileVoodoo.Editor.CodeGenerator
 {
     public class EventTemplate : CodeGeneratorBase
     {
-        public string Namespace;
-        public string[] Imports;
         public string EventName;
         public string[] EventPayloads;
+        public string[] Imports;
+        public string Namespace;
 
         public EventTemplate(string path) : base(path) { }
-        
+
+        protected override string FileName => EventName + ".cs";
+
         protected override string TransformText()
         {
             var payloads = string.Join(", ", EventPayloads);
@@ -18,12 +18,10 @@ namespace VolatileVoodoo.Editor.CodeGenerator
             WriteLine("using System;");
             WriteLine("using UnityEngine;");
 
-            foreach (var nameSpace in Imports)
-            {
-                if (nameSpace is "System" or "UnityEngine") {
+            foreach (var nameSpace in Imports) {
+                if (nameSpace is "System" or "UnityEngine")
                     continue;
-                }
-                
+
                 WriteLine($"using {nameSpace};");
             }
 
@@ -38,22 +36,21 @@ namespace VolatileVoodoo.Editor.CodeGenerator
             } else {
                 Write($"public class {EventName} : GenericEvent<");
                 Write(payloads);
-                WriteLine("> { }");    
+                WriteLine("> { }");
             }
+
             PopIndent();
             WriteLine();
             PushIndent();
             WriteLine("[Serializable]");
             Write($"public class {EventName}Source : GenericEventSource<{EventName}");
-            if (!string.IsNullOrEmpty(payloads)) {
+            if (!string.IsNullOrEmpty(payloads))
                 Write($", {payloads}");
-            }
+
             WriteLine("> { }");
             PopIndent();
             Write("}");
             return Generator.ToString();
         }
-
-        protected override string FileName => EventName + ".cs";
     }
 }

@@ -24,10 +24,14 @@ namespace VolatileVoodoo.Runtime.Events.Base
 
         public void Raise()
         {
-            if (isValid) sender.Raise();
+            if (isValid)
+                sender.Raise();
         }
 
-        public override void OnBeforeSerialize() => isValid = sender != null;
+        public override void OnBeforeSerialize()
+        {
+            isValid = sender != null;
+        }
     }
 
     [Serializable]
@@ -38,10 +42,14 @@ namespace VolatileVoodoo.Runtime.Events.Base
 
         public void Raise(TPayloadA payloadA)
         {
-            if (isValid) sender.Raise(payloadA);
+            if (isValid)
+                sender.Raise(payloadA);
         }
 
-        public override void OnBeforeSerialize() => isValid = sender != null;
+        public override void OnBeforeSerialize()
+        {
+            isValid = sender != null;
+        }
     }
 
     [Serializable]
@@ -52,10 +60,14 @@ namespace VolatileVoodoo.Runtime.Events.Base
 
         public void Raise(TPayloadA payloadA, TPayloadB payloadB)
         {
-            if (isValid) sender.Raise(payloadA, payloadB);
+            if (isValid)
+                sender.Raise(payloadA, payloadB);
         }
 
-        public override void OnBeforeSerialize() => isValid = sender != null;
+        public override void OnBeforeSerialize()
+        {
+            isValid = sender != null;
+        }
     }
 
     [Serializable]
@@ -66,12 +78,15 @@ namespace VolatileVoodoo.Runtime.Events.Base
 
         public void Raise(TPayloadA payloadA, TPayloadB payloadB, TPayloadC payloadC)
         {
-            if (isValid) sender.Raise(payloadA, payloadB, payloadC);
+            if (isValid)
+                sender.Raise(payloadA, payloadB, payloadC);
         }
 
-        public override void OnBeforeSerialize() => isValid = sender != null;
+        public override void OnBeforeSerialize()
+        {
+            isValid = sender != null;
+        }
     }
-
 
     [Serializable]
     public abstract class GenericEventSource<TEvent, TPayloadA, TPayloadB, TPayloadC, TPayloadD> : GenericEventSource
@@ -81,9 +96,13 @@ namespace VolatileVoodoo.Runtime.Events.Base
 
         public void Raise(TPayloadA payloadA, TPayloadB payloadB, TPayloadC payloadC, TPayloadD payloadD)
         {
-            if (isValid) sender.Raise(payloadA, payloadB, payloadC, payloadD);
+            if (isValid)
+                sender.Raise(payloadA, payloadB, payloadC, payloadD);
         }
 
-        public override void OnBeforeSerialize() => isValid = sender != null;
+        public override void OnBeforeSerialize()
+        {
+            isValid = sender != null;
+        }
     }
 }

@@ -5,12 +5,12 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
 {
     public abstract class VoodooGeneratorTab
     {
-        protected TextField Name;
         protected Toggle AutoSuggest;
-        private string savedName = "";
-        protected bool IsValid;
-        private Toggle force;
         private Button create;
+        private Toggle force;
+        protected bool IsValid;
+        protected TextField Name;
+        private string savedName = "";
 
         public virtual void CreateGUI(VisualElement rootVisualElement)
         {

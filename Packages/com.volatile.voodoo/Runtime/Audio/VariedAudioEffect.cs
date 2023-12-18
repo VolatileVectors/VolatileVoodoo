@@ -22,11 +22,21 @@ namespace VolatileVoodoo.Runtime.Audio
 
         private int clipIndex = -1;
 
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            audioClipsValid = clips.Length > 0 && clips.Select(item => item != null).Aggregate(true, (a, b) => a && b);
+            if (clips.Length <= 2)
+                order = AudioClipOrder.Continuous;
+
+            maxClipIndex = clips.Length > 1 ? maxClipIndex = clips.Length - 1 : 1;
+        }
+#endif
+
         public override bool Init(AudioSource source)
         {
-            if (!audioClipsValid) {
+            if (!audioClipsValid)
                 return false;
-            }
 
             base.Init(source);
 
@@ -46,17 +56,5 @@ namespace VolatileVoodoo.Runtime.Audio
                     return true;
             }
         }
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            audioClipsValid = clips.Length > 0 && clips.Select(item => item != null).Aggregate(true, (a, b) => a && b);
-            if (clips.Length <= 2) {
-                order = AudioClipOrder.Continuous;
-            }
-
-            maxClipIndex = clips.Length > 1 ? maxClipIndex = clips.Length - 1 : 1;
-        }
-#endif
     }
 }

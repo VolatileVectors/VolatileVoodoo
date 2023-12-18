@@ -7,31 +7,32 @@ namespace VolatileVoodoo.Editor.CodeGenerator
 {
     public abstract class CodeGeneratorBase
     {
-        private readonly List<int> indentLengths = new();
         protected readonly StringBuilder Generator = new();
+        private readonly List<int> indentLengths = new();
+        private readonly string outputPath;
         private string currentIndentField = "";
         private bool endsWithNewline;
-        private readonly string outputPath;
 
         protected CodeGeneratorBase(string path)
         {
             outputPath = path;
         }
 
+        protected abstract string FileName { get; }
+        public string FullFileName => Path.Combine(outputPath, FileName);
+
         protected void Write(string textToAppend)
         {
-            if (string.IsNullOrEmpty(textToAppend)) {
+            if (string.IsNullOrEmpty(textToAppend))
                 return;
-            }
 
             if (Generator.Length == 0 || endsWithNewline) {
                 Generator.Append(currentIndentField);
                 endsWithNewline = false;
             }
 
-            if (textToAppend.EndsWith(Environment.NewLine, StringComparison.CurrentCulture)) {
+            if (textToAppend.EndsWith(Environment.NewLine, StringComparison.CurrentCulture))
                 endsWithNewline = true;
-            }
 
             if (currentIndentField.Length == 0) {
                 Generator.Append(textToAppend);
@@ -39,11 +40,10 @@ namespace VolatileVoodoo.Editor.CodeGenerator
             }
 
             textToAppend = textToAppend.Replace(Environment.NewLine, Environment.NewLine + currentIndentField);
-            if (endsWithNewline) {
+            if (endsWithNewline)
                 Generator.Append(textToAppend, 0, textToAppend.Length - currentIndentField.Length);
-            } else {
+            else
                 Generator.Append(textToAppend);
-            }
         }
 
         protected void WriteLine(string textToAppend = "")
@@ -55,9 +55,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator
 
         protected void PushIndent(string indent = "    ")
         {
-            if (string.IsNullOrEmpty(indent)) {
+            if (string.IsNullOrEmpty(indent))
                 return;
-            }
 
             currentIndentField += indent;
             indentLengths.Add(indent.Length);
@@ -65,15 +64,13 @@ namespace VolatileVoodoo.Editor.CodeGenerator
 
         protected void PopIndent()
         {
-            if (indentLengths.Count == 0) {
+            if (indentLengths.Count == 0)
                 return;
-            }
 
             var indentLength = indentLengths[^1];
             indentLengths.RemoveAt(indentLengths.Count - 1);
-            if (indentLength == 0) {
+            if (indentLength == 0)
                 return;
-            }
 
             currentIndentField = currentIndentField.Remove(currentIndentField.Length - indentLength);
         }
@@ -85,8 +82,10 @@ namespace VolatileVoodoo.Editor.CodeGenerator
         }
 
         protected abstract string TransformText();
-        protected abstract string FileName { get; }
-        public string FullFileName => Path.Combine(outputPath, FileName);
-        public void Create() => File.WriteAllText(FullFileName, TransformText());
+
+        public void Create()
+        {
+            File.WriteAllText(FullFileName, TransformText());
+        }
     }
 }

@@ -24,9 +24,8 @@ namespace VolatileVoodoo.Runtime.Utils
         private void LoadPrefabs()
         {
             foreach (var prefab in prefabs) {
-                if (prefab == null) {
+                if (prefab == null)
                     continue;
-                }
 
                 var go = Instantiate(prefab, Vector3.zero, Quaternion.identity);
                 go.name = $"[{prefab.name}]";

@@ -19,18 +19,6 @@ namespace VolatileVoodoo.Runtime.Audio
         [HideInInspector]
         public string trackName;
 
-        public override bool Init(AudioSource source)
-        {
-            if (!audioClipsValid) {
-                return false;
-            }
-
-            base.Init(source);
-
-            source.clip = track;
-            return true;
-        }
-
 #if UNITY_EDITOR
         private void OnValidate()
         {
@@ -38,5 +26,16 @@ namespace VolatileVoodoo.Runtime.Audio
             audioClipsValid = track != null;
         }
 #endif
+
+        public override bool Init(AudioSource source)
+        {
+            if (!audioClipsValid)
+                return false;
+
+            base.Init(source);
+
+            source.clip = track;
+            return true;
+        }
     }
 }

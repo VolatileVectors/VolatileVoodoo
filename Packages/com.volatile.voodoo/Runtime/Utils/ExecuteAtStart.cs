@@ -31,10 +31,9 @@ namespace VolatileVoodoo.Runtime.Utils
         {
             foreach (var actionItem in sortedActions) {
                 var currentTime = Time.timeSinceLevelLoad;
-                if (currentTime < actionItem.delay) {
+                if (currentTime < actionItem.delay)
                     yield return new WaitForSecondsRealtime(actionItem.delay - currentTime);
-                }
-                
+
                 actionItem.action?.Invoke();
             }
 

@@ -11,7 +11,8 @@ namespace VolatileVoodoo.Editor.Audio
         private void OnSceneGUI()
         {
             var audioEffectPlayer = target as AudioEffectPlayer;
-            if (audioEffectPlayer == null) return;
+            if (audioEffectPlayer == null)
+                return;
 
             var position = audioEffectPlayer.transform.position;
 

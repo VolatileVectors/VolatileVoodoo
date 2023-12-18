@@ -2,22 +2,22 @@
 {
     public class ValueTemplate : CodeGeneratorBase
     {
-        public string Namespace;
         public string[] Imports;
+        public string Namespace;
         public string ValueName;
         public string ValueType;
 
         public ValueTemplate(string path) : base(path) { }
 
+        protected override string FileName => ValueName + ".cs";
+
         protected override string TransformText()
         {
             WriteLine("using UnityEngine;");
-            foreach (var nameSpace in Imports)
-            {
-                if (nameSpace is "UnityEngine") {
+            foreach (var nameSpace in Imports) {
+                if (nameSpace is "UnityEngine")
                     continue;
-                }
-                
+
                 WriteLine($"using {nameSpace};");
             }
 
@@ -32,7 +32,5 @@
             Write("}");
             return Generator.ToString();
         }
-
-        protected override string FileName => ValueName + ".cs";
     }
 }

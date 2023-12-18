@@ -1,0 +1,29 @@
+﻿{
+  "name": "com.volatile.voodoo.build",
+  "displayName": "Volatile Voodoo Build",
+  "description": "Build and push builds to Steam",
+  "version": "0.2.0",
+  "unity": "2021.1",
+  "author": {
+    "name": "Helge Backhaus"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:VolatileVectors/VolatileVoodoo.git"
+  },
+  "dependencies": {
+    "com.volatile.voodoo": "0.2.0",
+    "com.rlabrecque.steamworks.net": "20.1.0",
+    "com.unity.addressables": "1.21.1"
+  },
+  "keywords": [
+    "Build",
+    "Upload",
+    "Steam",
+    "Steamworks"
+  ],
+  "license": "MIT"
+}
+
+
+  
