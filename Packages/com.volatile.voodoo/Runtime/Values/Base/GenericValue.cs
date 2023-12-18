@@ -29,7 +29,7 @@ namespace VolatileVoodoo.Runtime.Values.Base
         public TData Value {
             get => value;
             set {
-                if (this.value.Equals(value))
+                if (this.value?.Equals(value) ?? (value == null ? true : false))
                     return;
 
                 this.value = value;
