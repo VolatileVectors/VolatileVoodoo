@@ -38,8 +38,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
         private void CreateGUI()
         {
             var root = rootVisualElement;
-            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(Voodoo.VoodooPackagePath("com.volatile.voodoo", Editor/CodeGenerator/Window/VoodooGenerator.uss")));
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(Voodoo.VoodooPackagePath("com.volatile.voodoo", Editor/CodeGenerator/Window/VoodooGenerator.uxml"));
+            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(Voodoo.VoodooPackagePath("com.volatile.voodoo", "Editor/CodeGenerator/Window/VoodooGenerator.uss")));
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(Voodoo.VoodooPackagePath("com.volatile.voodoo", "Editor/CodeGenerator/Window/VoodooGenerator.uxml"));
             root.Add(visualTree.Instantiate());
 
             eventTab.CreateGUI(root.Q<VisualElement>("eventTypeContent"));

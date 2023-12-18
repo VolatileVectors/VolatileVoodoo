@@ -58,8 +58,8 @@ namespace VolatileVoodooBuild.Editor
         public void CreateGUI()
         {
             var root = rootVisualElement;
-            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(Voodoo.VoodooPackagePath("com.volatile.voodoo.build", "VolatileVoodooBuild/Editor/BuildTool.uss")));
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(Voodoo.VoodooPackagePath("com.volatile.voodoo.build", "VolatileVoodooBuild/Editor/BuildTool.uxml"));
+            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(Voodoo.VoodooPackagePath("com.volatile.voodoo.build", "Editor/BuildTool.uss")));
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(Voodoo.VoodooPackagePath("com.volatile.voodoo.build", "Editor/BuildTool.uxml"));
             root.Add(visualTree.Instantiate());
 
             // Build Configuration
