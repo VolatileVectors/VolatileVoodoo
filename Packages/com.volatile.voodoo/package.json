@@ -1,0 +1,16 @@
+﻿{
+  "author": "Helge Backhaus",
+  "name": "com.volatile.voodoo",
+  "version": "0.1.0",
+  "displayName": "Volatile Voodoo",
+  "description": "Scriptable Object Events/Values & Utilities",
+  "unity": "2021.1",
+  "licenses": "MIT",
+  "keywords": [
+    "ScriptableObject",
+    "Architecture",
+    "ScriptableEvents",
+    "ScriptableValues",
+    "Utilities"
+  ]
+}
