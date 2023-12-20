@@ -2,7 +2,7 @@
   "name": "com.volatile.voodoo.build",
   "displayName": "Volatile Voodoo Build",
   "description": "Build and push builds to Steam",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "unity": "2021.1",
   "author": {
     "name": "Helge Backhaus"

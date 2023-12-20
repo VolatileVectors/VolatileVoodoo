@@ -50,19 +50,19 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
             root.Query<Button>("create").ForEach(tab => tab.clicked += Close);
         }
 
-        [MenuItem("Volatile Voodoo/Voodoo Event Generator", false, priority = 100)]
+        [MenuItem("Volatile Voodoo/Create/Custom Voodoo Event", false, priority = 100)]
         private static void OpenEventWindow()
         {
             CreateWindow("eventTypeTab");
         }
 
-        [MenuItem("Volatile Voodoo/Voodoo Value Generator", false, priority = 101)]
+        [MenuItem("Volatile Voodoo/Create/Custom Voodoo Value", false, priority = 101)]
         private static void OpenValueWindow()
         {
             CreateWindow("valueTypeTab");
         }
 
-        [MenuItem("Volatile Voodoo/Voodoo Settings", false, priority = 101)]
+        [MenuItem("Volatile Voodoo/Settings", false, priority = 102)]
         private static void OpenSettingsWindow()
         {
             CreateWindow("settingsTab");

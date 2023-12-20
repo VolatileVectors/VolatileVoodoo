@@ -104,7 +104,7 @@ namespace VolatileVoodooBuild.Editor
             root.Q<Button>("startBuild").clicked += OnStartBuildClicked;
         }
 
-        [MenuItem("Volatile Voodoo/Build", false, priority = 50)]
+        [MenuItem("Volatile Voodoo/Steam Build", false, priority = 50)]
         private static void ShowWindow()
         {
             var window = GetWindow<BuildTool>(false, "Build Tool");

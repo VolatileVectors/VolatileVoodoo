@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
+using VolatileVoodoo.Runtime.Utils;
 
 namespace VolatileVoodoo.Runtime.Events.Base
 {
     public abstract class BaseEvent : ScriptableObject
     {
 #if UNITY_EDITOR
+        public bool debugLog;
+
         [Button("Raise")]
         [HideInEditorMode]
         protected abstract void RaiseButton();
@@ -25,6 +28,11 @@ namespace VolatileVoodoo.Runtime.Events.Base
             if (EventListeners.Contains(listener))
                 return;
 
+#if UNITY_EDITOR
+            if (debugLog)
+                this.LogInfo("[Voodoo Event] Added " + listener.ToString() + " to " + this.name);
+#endif
+
             EventListeners.Add(listener);
         }
 
@@ -32,6 +40,11 @@ namespace VolatileVoodoo.Runtime.Events.Base
         {
             if (!EventListeners.Contains(listener))
                 return;
+
+#if UNITY_EDITOR
+            if (debugLog)
+                this.LogInfo("[Voodoo Event] Removed " + listener.ToString() + " from " + this.name);
+#endif
 
             EventListeners.Remove(listener);
         }
@@ -82,7 +95,13 @@ namespace VolatileVoodoo.Runtime.Events.Base
     {
         public void Raise()
         {
-            for (var i = EventListeners.Count - 1; i >= 0; i--) EventListeners[i]?.Invoke();
+            for (var i = EventListeners.Count - 1; i >= 0; i--)
+                EventListeners[i]?.Invoke();
+
+#if UNITY_EDITOR
+            if (debugLog)
+                this.LogInfo($"[Voodoo Event] Raised {this.name}");
+#endif
         }
 
 #if UNITY_EDITOR
@@ -98,7 +117,13 @@ namespace VolatileVoodoo.Runtime.Events.Base
     {
         public void Raise(TPayloadA payloadA)
         {
-            for (var i = EventListeners.Count - 1; i >= 0; i--) EventListeners[i]?.Invoke(payloadA);
+            for (var i = EventListeners.Count - 1; i >= 0; i--)
+                EventListeners[i]?.Invoke(payloadA);
+
+#if UNITY_EDITOR
+            if (debugLog)
+                this.LogInfo($"[Voodoo Event] Raised {this.name} ({payloadA?.ToString() ?? "null"})");
+#endif
         }
 
 #if UNITY_EDITOR
@@ -114,7 +139,13 @@ namespace VolatileVoodoo.Runtime.Events.Base
     {
         public void Raise(TPayloadA payloadA, TPayloadB payloadB)
         {
-            for (var i = EventListeners.Count - 1; i >= 0; i--) EventListeners[i]?.Invoke(payloadA, payloadB);
+            for (var i = EventListeners.Count - 1; i >= 0; i--)
+                EventListeners[i]?.Invoke(payloadA, payloadB);
+
+#if UNITY_EDITOR
+            if (debugLog)
+                this.LogInfo($"[Voodoo Event] Raised {this.name} ({payloadA?.ToString() ?? "null"}, {payloadB?.ToString() ?? "null"})");
+#endif
         }
 
 #if UNITY_EDITOR
@@ -130,7 +161,13 @@ namespace VolatileVoodoo.Runtime.Events.Base
     {
         public void Raise(TPayloadA payloadA, TPayloadB payloadB, TPayloadC payloadC)
         {
-            for (var i = EventListeners.Count - 1; i >= 0; i--) EventListeners[i]?.Invoke(payloadA, payloadB, payloadC);
+            for (var i = EventListeners.Count - 1; i >= 0; i--)
+                EventListeners[i]?.Invoke(payloadA, payloadB, payloadC);
+
+#if UNITY_EDITOR
+            if (debugLog)
+                this.LogInfo($"[Voodoo Event] Raised {this.name} ({payloadA?.ToString() ?? "null"}, {payloadB?.ToString() ?? "null"}, {payloadC?.ToString() ?? "null"})");
+#endif
         }
 
 #if UNITY_EDITOR
@@ -146,7 +183,13 @@ namespace VolatileVoodoo.Runtime.Events.Base
     {
         public void Raise(TPayloadA payloadA, TPayloadB payloadB, TPayloadC payloadC, TPayloadD payloadD)
         {
-            for (var i = EventListeners.Count - 1; i >= 0; i--) EventListeners[i]?.Invoke(payloadA, payloadB, payloadC, payloadD);
+            for (var i = EventListeners.Count - 1; i >= 0; i--)
+                EventListeners[i]?.Invoke(payloadA, payloadB, payloadC, payloadD);
+
+#if UNITY_EDITOR
+            if (debugLog)
+                this.LogInfo($"[Voodoo Event] Raised {this.name} ({payloadA?.ToString() ?? "null"}, {payloadB?.ToString() ?? "null"}, {payloadC?.ToString() ?? "null"}, {payloadD?.ToString() ?? "null"})");
+#endif
         }
 
 #if UNITY_EDITOR
