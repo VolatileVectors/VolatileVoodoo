@@ -1,7 +1,7 @@
 ﻿using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Audio;
+using VolatileVoodoo.Audio;
 
 namespace VolatileVoodoo.Editor.Audio
 {

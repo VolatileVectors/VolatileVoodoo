@@ -1,0 +1,47 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements"
+         noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.volatile.voodoo/Editor/UI/Voodoo.uss?fileID=7433441132597879392&amp;guid=29502c2cf05ac5f439b811dc959fb6ef&amp;type=3#Voodoo" />
+    <ui:VisualElement name="tabHeader">
+        <ui:Label text="Voodoo Event" display-tooltip-when-elided="true" name="eventTypeTab" class="tab selectedTab" />
+        <ui:Label text="Voodoo Value" display-tooltip-when-elided="true" name="valueTypeTab" class="tab unselectedTab" />
+        <ui:Label text="Settings" display-tooltip-when-elided="true" name="settingsTab" class="tab unselectedTab" />
+    </ui:VisualElement>
+    <ui:GroupBox name="tabContent" style="position: relative;">
+        <ui:VisualElement name="eventTypeContent" class="tabContent">
+            <ui:VisualElement>
+                <ui:TextField picking-mode="Ignore" label="Event name" name="name" class="valid" />
+                <ui:Toggle name="autoSuggest" text=" Auto" />
+            </ui:VisualElement>
+            <ui:TextField picking-mode="Ignore" label="Payload A" name="payloadA" class="valid" />
+            <ui:TextField picking-mode="Ignore" label="Payload B" name="payloadB" class="valid" />
+            <ui:TextField picking-mode="Ignore" label="Payload C" name="payloadC" class="valid" />
+            <ui:TextField picking-mode="Ignore" label="Payload D" name="payloadD" class="valid" />
+            <ui:VisualElement class="buttonGroup">
+                <ui:Toggle text=" Ignore Warnings" name="force" />
+                <ui:Button text="Create" display-tooltip-when-elided="true" name="create" class="button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="valueTypeContent" class="tabContent unselectedContent">
+            <ui:VisualElement>
+                <ui:TextField picking-mode="Ignore" label="Value name" name="name" class="error valid" />
+                <ui:Toggle name="autoSuggest" text=" Auto" />
+            </ui:VisualElement>
+            <ui:TextField picking-mode="Ignore" label="Value type" name="valueType" class="textfield error valid" />
+            <ui:VisualElement class="buttonGroup">
+                <ui:Toggle text=" Ignore Warnings" name="force" />
+                <ui:Button text="Create" display-tooltip-when-elided="true" name="create" class="button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="settingsContent" class="tabContent unselectedContent">
+            <ui:TextField picking-mode="Ignore" label="Custom Types Path" name="path" is-delayed="true" class="error valid" />
+            <ui:VisualElement class="buttonGroup">
+                <ui:Button text="Select folder" display-tooltip-when-elided="true" name="selectPath" class="button" />
+            </ui:VisualElement>
+            <ui:Toggle label="Show Reference Inline Editor" tooltip="Show Reference Inline Editor." name="referenceInlineEditor"
+                       style="width: 250px; min-width: initial; flex-direction: row-reverse; align-items: center; justify-content: flex-start; align-self: auto;" />
+            <ui:Toggle label="Show Event Listener Inline Editor" tooltip="Show Event Listener Inline Editor." name="eventListenerInlineEditor" style="width: 250px; min-width: initial; align-items: center; flex-direction: row-reverse;" />
+            <ui:Toggle label="Auto Play Audio Effect Preview" tooltip="Auto Play preview on audio effect asset selection." name="autoPlayEffects" style="width: 250px; min-width: initial; align-items: center; flex-direction: row-reverse;" />
+        </ui:VisualElement>
+    </ui:GroupBox>
+    <ui:VisualElement style="flex-grow: 1;" />
+</ui:UXML>

@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace VolatileVoodoo.Runtime.Setters
+namespace VolatileVoodoo.Setters
 {
     public class StringToggleGroupSetter : MonoBehaviour
     {

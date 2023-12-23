@@ -1,7 +1,7 @@
 using UnityEngine;
-using VolatileVoodoo.Runtime.Values.Base;
+using VolatileVoodoo.Values.Base;
 
-namespace VolatileVoodoo.Runtime.Values
+namespace VolatileVoodoo.Values
 {
     [CreateAssetMenu(fileName = "ColorValue", menuName = "Voodoo/Values/ColorValue")]
     public class ColorValue : GenericValue<Color> { }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using VolatileVoodoo.Runtime.Values.Base;
+using VolatileVoodoo.Values.Base;
 
-namespace VolatileVoodoo.Runtime.Values
+namespace VolatileVoodoo.Values
 {
     [CreateAssetMenu(fileName = "IntValue", menuName = "Voodoo/Values/IntValue")]
     public class IntValue : GenericValue<int> { }

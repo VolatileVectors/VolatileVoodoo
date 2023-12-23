@@ -1,12 +1,13 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using VolatileVoodoo.Runtime.Audio.Base;
-using VolatileVoodoo.Runtime.Events.Base;
-using VolatileVoodoo.Runtime.Utils;
-using VolatileVoodoo.Runtime.Values.Base;
+using VolatileVoodoo.Audio.Base;
+using VolatileVoodoo.Editor.CodeGenerator;
+using VolatileVoodoo.Events.Base;
+using VolatileVoodoo.Utils;
+using VolatileVoodoo.Values.Base;
 
-namespace VolatileVoodoo.Editor.CodeGenerator.Window
+namespace VolatileVoodoo.Editor.UI
 {
     public class VoodooGeneratorWindow : EditorWindow
     {
@@ -18,8 +19,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
         private const string UnselectedContent = "unselectedContent";
 
         private readonly VoodooEventTab eventTab = new();
-        private readonly VoodooSettingsTab settingsTab = new();
         private readonly VoodooValueTab valueTab = new();
+        private readonly VoodooSettingsTab settingsTab = new();
 
         private void OnEnable()
         {
@@ -38,8 +39,8 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
         private void CreateGUI()
         {
             var root = rootVisualElement;
-            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(Voodoo.VoodooPackagePath("com.volatile.voodoo", "Editor/CodeGenerator/Window/VoodooGenerator.uss")));
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(Voodoo.VoodooPackagePath("com.volatile.voodoo", "Editor/CodeGenerator/Window/VoodooGenerator.uxml"));
+            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(Voodoo.VoodooPackagePath("com.volatile.voodoo", "Editor/UI/Voodoo.uss")));
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(Voodoo.VoodooPackagePath("com.volatile.voodoo", "Editor/UI/VoodooGenerator.uxml"));
             root.Add(visualTree.Instantiate());
 
             eventTab.CreateGUI(root.Q<VisualElement>("eventTypeContent"));
@@ -70,7 +71,7 @@ namespace VolatileVoodoo.Editor.CodeGenerator.Window
 
         private static void CreateWindow(string activeAtStart)
         {
-            var window = GetWindow<VoodooGeneratorWindow>(false, "Voodoo Generators");
+            var window = GetWindow<VoodooGeneratorWindow>(false, "Custom Voodoo Events & Values");
             window.minSize = new Vector2(470f, 200f);
             window.maxSize = new Vector2(800f, 200f);
             window.SetStartTab(activeAtStart);

@@ -1,0 +1,18 @@
+{
+    "name": "VolatileVoodooEditor",
+    "rootNamespace": "VolatileVoodoo",
+    "references": [
+        "GUID:1f92b7ea74651194e913015e64b2a834"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

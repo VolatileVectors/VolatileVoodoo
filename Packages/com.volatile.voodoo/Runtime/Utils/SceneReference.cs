@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace VolatileVoodoo.Runtime.Utils
+namespace VolatileVoodoo.Utils
 {
     [Serializable]
     public class SceneReference : ISerializationCallbackReceiver

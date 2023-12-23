@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Events.Base;
+using VolatileVoodoo.Events.Base;
 
-namespace VolatileVoodoo.Runtime.Events
+namespace VolatileVoodoo.Events
 {
     [CreateAssetMenu(fileName = "PositionRotationEvent", menuName = "Voodoo/Events/PositionRotationEvent")]
     public class PositionRotationEvent : GenericEvent<Vector3, Quaternion> { }

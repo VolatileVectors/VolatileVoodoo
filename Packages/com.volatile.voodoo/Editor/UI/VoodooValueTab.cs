@@ -1,9 +1,10 @@
 using System;
 using UnityEditor;
 using UnityEngine.UIElements;
-using VolatileVoodoo.Runtime.Utils;
+using VolatileVoodoo.Editor.CodeGenerator;
+using VolatileVoodoo.Utils;
 
-namespace VolatileVoodoo.Editor.CodeGenerator.Window
+namespace VolatileVoodoo.Editor.UI
 {
     public class VoodooValueTab : VoodooGeneratorTab
     {

@@ -3,9 +3,9 @@ using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-using VolatileVoodoo.Runtime.Utils;
+using VolatileVoodoo.Utils;
 
-namespace VolatileVoodoo.Runtime.Events.Base
+namespace VolatileVoodoo.Events.Base
 {
     public abstract class BaseEventListener : MonoBehaviour
     {

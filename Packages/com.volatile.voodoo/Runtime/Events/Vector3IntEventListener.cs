@@ -1,7 +1,7 @@
 using UnityEngine;
-using VolatileVoodoo.Runtime.Events.Base;
+using VolatileVoodoo.Events.Base;
 
-namespace VolatileVoodoo.Runtime.Events
+namespace VolatileVoodoo.Events
 {
     public class Vector3IntEventListener : GenericEventListener<Vector3IntEvent, Vector3Int> { }
 }

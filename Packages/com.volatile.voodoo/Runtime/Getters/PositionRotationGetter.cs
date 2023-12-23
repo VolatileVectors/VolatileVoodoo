@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using VolatileVoodoo.Runtime.Events;
+using VolatileVoodoo.Events;
 
-namespace VolatileVoodoo.Runtime.Getters
+namespace VolatileVoodoo.Getters
 {
     public class PositionRotationGetter : MonoBehaviour
     {

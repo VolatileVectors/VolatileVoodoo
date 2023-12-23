@@ -2,9 +2,9 @@ using System.IO;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Utils;
+using VolatileVoodoo.Utils;
 
-namespace VolatileVoodooBuild.Editor
+namespace VolatileVoodoo.Editor
 {
     public class PostprocessIncludeWithBuild : IPostprocessBuildWithReport
     {

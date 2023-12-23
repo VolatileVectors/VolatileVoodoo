@@ -1,8 +1,8 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Values;
+using VolatileVoodoo.Values;
 
-namespace VolatileVoodoo.Runtime.Setters
+namespace VolatileVoodoo.Setters
 {
     public class PositionRotationSetter : MonoBehaviour
     {

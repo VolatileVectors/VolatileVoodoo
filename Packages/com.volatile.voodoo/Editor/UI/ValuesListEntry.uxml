@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.volatile.voodoo/Editor/UI/Voodoo.uss?fileID=7433441132597879392&amp;guid=29502c2cf05ac5f439b811dc959fb6ef&amp;type=3#Voodoo" />
+    <ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-items: center; height: 25px;">
+            <ui:Button icon-image="project://database/Packages/com.volatile.voodoo/Editor/Resources/Icons/Link.png?fileID=2800000&amp;guid=c02a2a84ecd15ae43ab799eabc542dea&amp;type=3#Link" name="selectValue" style="height: 22px; width: 22px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 3px;" />
+            <ui:Label text="Value Name" name="valueName" style="margin-top: 1px; margin-right: 3px; margin-bottom: 1px; margin-left: 3px; padding-top: 2px; color: rgb(219, 173, 2); -unity-font-style: bold;" />
+        </ui:VisualElement>
+        <ui:VisualElement class="twoColumn" style="height: 25px; align-items: center;">
+            <ui:TextField label="Initial value" value="42" name="initialValue" readonly="true" class="halfWidth" style="width: 48%;" />
+            <ui:TextField label="Current value" value="42" name="currentValue" readonly="true" class="halfWidth" style="width: 48%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

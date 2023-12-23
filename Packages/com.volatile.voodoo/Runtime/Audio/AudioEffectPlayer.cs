@@ -3,10 +3,10 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Audio;
-using VolatileVoodoo.Runtime.Audio.Base;
-using VolatileVoodoo.Runtime.Utils;
+using VolatileVoodoo.Audio.Base;
+using VolatileVoodoo.Utils;
 
-namespace VolatileVoodoo.Runtime.Audio
+namespace VolatileVoodoo.Audio
 {
     public class AudioEffectPlayer : MonoBehaviour
     {

@@ -2,7 +2,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace VolatileVoodoo.Runtime.Values.Base
+namespace VolatileVoodoo.Values.Base
 {
     public abstract class GenericValue : ScriptableObject
     {
@@ -10,6 +10,10 @@ namespace VolatileVoodoo.Runtime.Values.Base
         [Multiline]
         [LabelWidth(100)]
         public string description = "";
+
+        public abstract string InitialValueDebug { get; }
+        public abstract string CurrentValueDebug { get; }
+        public Action<string> debugValueChanged;
 #endif
     }
 
@@ -20,20 +24,24 @@ namespace VolatileVoodoo.Runtime.Values.Base
         [OnValueChanged(nameof(OnInitialValueChanged))]
         private TData initialValue;
 
-        private TData value;
+        private TData currentValue;
         private Action<TData> valueChanged;
 
         [ShowInInspector]
         [LabelWidth(100)]
         [ReadOnly]
         public TData Value {
-            get => value;
+            get => currentValue;
             set {
-                if (this.value?.Equals(value) ?? (value == null ? true : false))
+                if (currentValue?.Equals(value) ?? value == null)
                     return;
 
-                this.value = value;
-                valueChanged?.Invoke(this.value);
+                currentValue = value;
+                valueChanged?.Invoke(currentValue);
+
+#if UNITY_EDITOR
+                debugValueChanged?.Invoke(value?.ToString() ?? "null");
+#endif
             }
         }
 
@@ -52,5 +60,10 @@ namespace VolatileVoodoo.Runtime.Values.Base
         {
             Value = initialValue;
         }
+
+#if UNITY_EDITOR
+        public override string InitialValueDebug => initialValue?.ToString() ?? "null";
+        public override string CurrentValueDebug => currentValue?.ToString() ?? "null";
+#endif
     }
 }

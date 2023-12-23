@@ -2,7 +2,7 @@
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace VolatileVoodoo.Runtime.Utils
+namespace VolatileVoodoo.Utils
 {
     public static class VoodooLog
     {

@@ -1,7 +1,7 @@
 ﻿using VolatileVoodoo.Editor.CodeGenerator;
-using VolatileVoodoo.Runtime.Utils;
+using VolatileVoodoo.Utils;
 
-namespace VolatileVoodooBuild.Editor.VdfTemplates
+namespace VolatileVoodoo.Editor.VdfTemplates
 {
     public sealed class AppbuildTemplate : CodeGeneratorBase
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Sirenix.OdinInspector;
 
-namespace VolatileVoodoo.Runtime.Utils
+namespace VolatileVoodoo.Utils
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class ToggleButtonAttribute : Attribute

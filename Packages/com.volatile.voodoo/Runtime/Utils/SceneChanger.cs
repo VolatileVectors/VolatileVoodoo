@@ -1,9 +1,9 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using VolatileVoodoo.Runtime.Events;
+using VolatileVoodoo.Events;
 
-namespace VolatileVoodoo.Runtime.Utils
+namespace VolatileVoodoo.Utils
 {
     public class SceneChanger : MonoBehaviour
     {

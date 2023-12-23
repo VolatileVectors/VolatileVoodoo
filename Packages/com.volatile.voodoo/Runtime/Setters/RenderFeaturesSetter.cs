@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-namespace VolatileVoodoo.Runtime.Setters
+namespace VolatileVoodoo.Setters
 {
     public class RenderFeaturesSetter : MonoBehaviour
     {

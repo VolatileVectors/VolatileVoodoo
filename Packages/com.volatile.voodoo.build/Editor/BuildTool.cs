@@ -7,10 +7,10 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.UIElements;
-using VolatileVoodoo.Runtime.Utils;
-using VolatileVoodooBuild.Editor.VdfTemplates;
+using VolatileVoodoo.Editor.VdfTemplates;
+using VolatileVoodoo.Utils;
 
-namespace VolatileVoodooBuild.Editor
+namespace VolatileVoodoo.Editor
 {
     public class BuildTool : EditorWindow
     {
@@ -207,7 +207,7 @@ namespace VolatileVoodooBuild.Editor
         private void PerformBuild(BuildType buildType)
         {
             var targetGroup = BuildPipeline.GetBuildTargetGroup(BuildTarget.StandaloneLinux64);
-            PlayerSettings.SetArchitecture(targetGroup, 1);
+            PlayerSettings.SetArchitecture(NamedBuildTarget.FromBuildTargetGroup(targetGroup), 1);
             PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(targetGroup), GetScriptingDefineSymbolsForBranch(buildType));
 
             EditorUserBuildSettings.SwitchActiveBuildTarget(targetGroup, BuildTarget.StandaloneLinux64);

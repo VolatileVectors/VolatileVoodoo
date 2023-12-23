@@ -1,9 +1,9 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Audio;
-using VolatileVoodoo.Runtime.Audio.Base;
+using VolatileVoodoo.Audio.Base;
 
-namespace VolatileVoodoo.Runtime.Audio
+namespace VolatileVoodoo.Audio
 {
     [CreateAssetMenu(fileName = "AudioTrack", menuName = "Voodoo/Audio/AudioTrack")]
     public class AudioTrack : BaseAudioEffect

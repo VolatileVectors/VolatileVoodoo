@@ -2,9 +2,9 @@
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Utils;
+using VolatileVoodoo.Utils;
 
-namespace VolatileVoodoo.Runtime.Values.Base
+namespace VolatileVoodoo.Values.Base
 {
     [Serializable]
     public abstract class GenericReference

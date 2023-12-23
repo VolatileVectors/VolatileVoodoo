@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace VolatileVoodoo.Runtime.Events.Base
+namespace VolatileVoodoo.Events.Base
 {
     [Serializable]
     public abstract class GenericEventSource : ISerializationCallbackReceiver

@@ -2,10 +2,10 @@ using System;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Audio.Base;
+using VolatileVoodoo.Audio.Base;
 using Random = UnityEngine.Random;
 
-namespace VolatileVoodoo.Runtime.Audio
+namespace VolatileVoodoo.Audio
 {
     [CreateAssetMenu(fileName = "VariedAudioEffect", menuName = "Voodoo/Audio/VariedAudioEffect")]
     public class VariedAudioEffect : BaseAudioEffect

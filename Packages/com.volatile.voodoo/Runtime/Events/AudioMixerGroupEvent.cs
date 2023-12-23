@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 using UnityEngine.Audio;
-using VolatileVoodoo.Runtime.Events.Base;
+using VolatileVoodoo.Events.Base;
 
-namespace VolatileVoodoo.Runtime.Events
+namespace VolatileVoodoo.Events
 {
     [CreateAssetMenu(fileName = "AudioMixerGroupEvent", menuName = "Voodoo/Events/AudioMixerGroupEvent")]
     public class AudioMixerGroupEvent : GenericEvent<AudioMixerGroup> { }

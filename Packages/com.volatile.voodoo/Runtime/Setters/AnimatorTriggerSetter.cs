@@ -1,7 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace VolatileVoodoo.Runtime.Setters
+namespace VolatileVoodoo.Setters
 {
     public class AnimatorTriggerSetter : MonoBehaviour
     {

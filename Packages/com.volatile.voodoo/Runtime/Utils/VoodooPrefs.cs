@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace VolatileVoodoo.Runtime.Utils
+namespace VolatileVoodoo.Utils
 {
     public static class VoodooPrefs
     {

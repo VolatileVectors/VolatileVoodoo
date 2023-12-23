@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Events.Base;
-using VolatileVoodoo.Runtime.Values.Base;
+using VolatileVoodoo.Events.Base;
+using VolatileVoodoo.Values.Base;
 
-namespace VolatileVoodoo.Runtime.Utils
+namespace VolatileVoodoo.Utils
 {
     public static class Voodoo
     {

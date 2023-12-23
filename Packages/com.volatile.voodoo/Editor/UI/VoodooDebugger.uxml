@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.volatile.voodoo/Editor/UI/Voodoo.uss?fileID=7433441132597879392&amp;guid=29502c2cf05ac5f439b811dc959fb6ef&amp;type=3#Voodoo" />
+    <ui:VisualElement name="tabHeader">
+        <ui:Label text="Voodoo Events" display-tooltip-when-elided="true" name="debugEventsTab" class="tab unselectedTab" />
+        <ui:Label text="Voodoo Values" display-tooltip-when-elided="true" name="debugValuesTab" class="tab selectedTab" />
+    </ui:VisualElement>
+    <ui:GroupBox name="tabContent" class="voodooList" style="position: relative;">
+        <ui:VisualElement name="debugEventsContent" class="tabContent unselectedContent">
+            <ui:TextField label="Filter" name="listFilter" />
+            <ui:ListView show-border="true" show-foldout-header="false" allow-add="false" allow-remove="false" show-bound-collection-size="true" name="eventsList" fixed-item-height="44" horizontal-scrolling="false" class="voodooList" />
+        </ui:VisualElement>
+        <ui:VisualElement name="debugValuesContent" class="tabContent">
+            <ui:TextField label="Filter" name="listFilter" />
+            <ui:ListView show-border="true" name="valuesList" item-template="project://database/Packages/com.volatile.voodoo/Editor/UI/ValuesListEntry.uxml?fileID=9197481963319205126&amp;guid=583843c4f02945d4bbd42af7421dd7ba&amp;type=3#ValuesListEntry" fixed-item-height="44" show-alternating-row-backgrounds="ContentOnly" show-add-remove-footer="false" horizontal-scrolling="true" class="voodooList" />
+        </ui:VisualElement>
+    </ui:GroupBox>
+</ui:UXML>

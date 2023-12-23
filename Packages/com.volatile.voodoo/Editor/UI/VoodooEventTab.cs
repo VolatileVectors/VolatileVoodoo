@@ -4,9 +4,10 @@ using System.Linq;
 using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine.UIElements;
-using VolatileVoodoo.Runtime.Utils;
+using VolatileVoodoo.Editor.CodeGenerator;
+using VolatileVoodoo.Utils;
 
-namespace VolatileVoodoo.Editor.CodeGenerator.Window
+namespace VolatileVoodoo.Editor.UI
 {
     public class VoodooEventTab : VoodooGeneratorTab
     {

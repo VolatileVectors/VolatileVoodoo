@@ -1,7 +1,7 @@
 ﻿using Sirenix.Utilities;
 using UnityEngine.UIElements;
 
-namespace VolatileVoodoo.Editor.CodeGenerator.Window
+namespace VolatileVoodoo.Editor.UI
 {
     public abstract class VoodooGeneratorTab
     {

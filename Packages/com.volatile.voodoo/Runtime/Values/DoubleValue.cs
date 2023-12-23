@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using VolatileVoodoo.Runtime.Values.Base;
+using VolatileVoodoo.Values.Base;
 
-namespace VolatileVoodoo.Runtime.Values
+namespace VolatileVoodoo.Values
 {
     [CreateAssetMenu(fileName = "DoubleValue", menuName = "Voodoo/Values/DoubleValue")]
     public class DoubleValue : GenericValue<double> { }

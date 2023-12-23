@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using UnityEditor;
 using UnityEngine.UIElements;
-using VolatileVoodoo.Runtime.Utils;
+using VolatileVoodoo.Utils;
 
-namespace VolatileVoodoo.Editor.CodeGenerator.Window
+namespace VolatileVoodoo.Editor.UI
 {
     public class VoodooSettingsTab
     {

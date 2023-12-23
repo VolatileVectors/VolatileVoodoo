@@ -2,10 +2,10 @@
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Utils;
+using VolatileVoodoo.Utils;
 using Random = UnityEngine.Random;
 
-namespace VolatileVoodoo.Runtime.Audio.Base
+namespace VolatileVoodoo.Audio.Base
 {
     public enum AudioClipOrder
     {

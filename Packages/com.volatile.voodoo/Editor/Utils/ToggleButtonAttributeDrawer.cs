@@ -4,7 +4,7 @@ using Sirenix.OdinInspector.Editor.ValueResolvers;
 using Sirenix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Utils;
+using VolatileVoodoo.Utils;
 
 namespace VolatileVoodoo.Editor.Utils
 {

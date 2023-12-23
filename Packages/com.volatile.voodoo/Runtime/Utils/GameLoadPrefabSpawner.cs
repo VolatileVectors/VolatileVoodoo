@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Events;
+using VolatileVoodoo.Events;
 
-namespace VolatileVoodoo.Runtime.Utils
+namespace VolatileVoodoo.Utils
 {
     [CreateAssetMenu(fileName = "GameLoadPrefabSpawner", menuName = "Voodoo/GameLoadPrefabSpawner")]
     public class GameLoadPrefabSpawner : ScriptableObject

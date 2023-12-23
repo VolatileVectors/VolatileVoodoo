@@ -1,6 +1,6 @@
-using VolatileVoodoo.Runtime.Events.Base;
+using VolatileVoodoo.Events.Base;
 
-namespace VolatileVoodoo.Runtime.Events
+namespace VolatileVoodoo.Events
 {
     public class ByteEventListener : GenericEventListener<ByteEvent, byte> { }
 }

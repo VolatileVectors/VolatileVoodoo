@@ -1,6 +1,6 @@
 ﻿using VolatileVoodoo.Editor.CodeGenerator;
 
-namespace VolatileVoodooBuild.Editor.VdfTemplates
+namespace VolatileVoodoo.Editor.VdfTemplates
 {
     public sealed class DepotbuildTemplate : CodeGeneratorBase
     {

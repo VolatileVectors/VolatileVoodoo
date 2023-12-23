@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Events.Base;
+using VolatileVoodoo.Events.Base;
 
-namespace VolatileVoodoo.Runtime.Events
+namespace VolatileVoodoo.Events
 {
     [CreateAssetMenu(fileName = "LongEvent", menuName = "Voodoo/Events/LongEvent")]
     public class LongEvent : GenericEvent<long> { }

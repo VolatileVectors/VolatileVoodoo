@@ -1,8 +1,8 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Audio.Base;
+using VolatileVoodoo.Audio.Base;
 
-namespace VolatileVoodoo.Runtime.Audio
+namespace VolatileVoodoo.Audio
 {
     [CreateAssetMenu(fileName = "LoopingAudioEffect", menuName = "Voodoo/Audio/LoopingAudioEffect")]
     public class LoopingAudioEffect : BaseAudioEffect

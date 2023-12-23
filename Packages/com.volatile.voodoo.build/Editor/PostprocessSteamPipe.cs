@@ -6,7 +6,7 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using Debug = UnityEngine.Debug;
 
-namespace VolatileVoodooBuild.Editor
+namespace VolatileVoodoo.Editor
 {
     public class PostprocessSteamPipe : IPostprocessBuildWithReport
     {

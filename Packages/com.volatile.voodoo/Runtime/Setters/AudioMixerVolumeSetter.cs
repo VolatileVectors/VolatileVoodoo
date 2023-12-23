@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace VolatileVoodoo.Runtime.Setters
+namespace VolatileVoodoo.Setters
 {
     public class AudioMixerVolumeSetter : MonoBehaviour
     {

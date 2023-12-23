@@ -70,3 +70,16 @@ Toggle {
     border-radius: 3px;
     -unity-font-style: italic;
 }
+
+.voodooList {
+    margin-top: 10px;
+}
+
+.twoColumn {
+    align-items: flex-start;
+    flex-direction: row;
+}
+
+.halfWidth {
+    width: 49%;
+}

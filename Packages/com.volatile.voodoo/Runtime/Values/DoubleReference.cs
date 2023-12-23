@@ -1,7 +1,7 @@
 ﻿using System;
-using VolatileVoodoo.Runtime.Values.Base;
+using VolatileVoodoo.Values.Base;
 
-namespace VolatileVoodoo.Runtime.Values
+namespace VolatileVoodoo.Values
 {
     [Serializable]
     public class DoubleReference : GenericReference<DoubleValue, double> { }

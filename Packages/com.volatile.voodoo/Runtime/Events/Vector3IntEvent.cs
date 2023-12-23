@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Events.Base;
+using VolatileVoodoo.Events.Base;
 
-namespace VolatileVoodoo.Runtime.Events
+namespace VolatileVoodoo.Events
 {
     [CreateAssetMenu(fileName = "Vector3IntEvent", menuName = "Voodoo/Events/Vector3IntEvent")]
     public class Vector3IntEvent : GenericEvent<Vector3Int> { }

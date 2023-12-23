@@ -1,7 +1,7 @@
 ﻿using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Events.Base;
+using VolatileVoodoo.Events.Base;
 
 namespace VolatileVoodoo.Editor.Events
 {

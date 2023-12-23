@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using VolatileVoodoo.Runtime.Utils;
+using VolatileVoodoo.Utils;
 
 namespace VolatileVoodoo.Editor.Utils
 {
@@ -11,8 +11,8 @@ namespace VolatileVoodoo.Editor.Utils
     public class MonoScriptIconSetter : AssetPostprocessor
     {
         private static readonly Dictionary<string, Texture2D> Icons = new();
-        private static readonly string IconAssetsPath = Voodoo.VoodooPackagePath("com.volatile.voodoo", "Editor/Icons");
-        private static readonly string MonoScriptIconsSessionFlag = "MonoScriptIconsInitialized";
+        private static readonly string IconAssetsPath = Voodoo.VoodooPackagePath("com.volatile.voodoo", "Editor/Resources/Icons");
+        private const string MonoScriptIconsSessionFlag = "MonoScriptIconsInitialized";
 
         static MonoScriptIconSetter()
         {
@@ -23,6 +23,12 @@ namespace VolatileVoodoo.Editor.Utils
                 var icon = AssetDatabase.LoadAssetAtPath<Texture2D>($"{IconAssetsPath}/{fileInfo.Name}");
                 Icons[Path.GetFileNameWithoutExtension(fileInfo.Name)] = icon;
             }
+
+            if (SessionState.GetBool(MonoScriptIconsSessionFlag, false))
+                return;
+
+            RegenerateAllIcons();
+            SessionState.SetBool(MonoScriptIconsSessionFlag, true);
         }
 
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
