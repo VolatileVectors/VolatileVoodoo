@@ -1,17 +1,24 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Packages/com.volatile.voodoo/Editor/UI/Voodoo.uss?fileID=7433441132597879392&amp;guid=29502c2cf05ac5f439b811dc959fb6ef&amp;type=3#Voodoo" />
     <ui:VisualElement name="tabHeader">
-        <ui:Label text="Voodoo Events" display-tooltip-when-elided="true" name="debugEventsTab" class="tab unselectedTab" />
-        <ui:Label text="Voodoo Values" display-tooltip-when-elided="true" name="debugValuesTab" class="tab selectedTab" />
+        <ui:Label text="Voodoo Events" display-tooltip-when-elided="true" name="debugEventsTab" class="tab selectedTab" />
+        <ui:Label text="Voodoo Values" display-tooltip-when-elided="true" name="debugValuesTab" class="tab unselectedTab" />
     </ui:VisualElement>
-    <ui:GroupBox name="tabContent" class="voodooList" style="position: relative;">
-        <ui:VisualElement name="debugEventsContent" class="tabContent unselectedContent">
-            <ui:TextField label="Filter" name="listFilter" />
-            <ui:ListView show-border="true" show-foldout-header="false" allow-add="false" allow-remove="false" show-bound-collection-size="true" name="eventsList" fixed-item-height="44" horizontal-scrolling="false" class="voodooList" />
+    <ui:GroupBox name="tabContent" style="position: relative; flex-direction: column; flex-shrink: 1; flex-grow: 1;">
+        <ui:VisualElement name="filter" style="flex-grow: 0; flex-direction: row; align-items: auto; align-self: auto; flex-shrink: 0;">
+            <ui:TextField label="Filter" name="listFilter" style="flex-grow: 1; flex-shrink: 1;" />
+            <ui:EnumField value="Everything" type="VolatileVoodoo.Editor.UI.FilterType, VolatileVoodooEditor" name="filterType" style="width: 90px; max-width: 90px; min-width: 90px; flex-direction: row-reverse; margin-left: 0;" />
         </ui:VisualElement>
-        <ui:VisualElement name="debugValuesContent" class="tabContent">
-            <ui:TextField label="Filter" name="listFilter" />
-            <ui:ListView show-border="true" name="valuesList" item-template="project://database/Packages/com.volatile.voodoo/Editor/UI/ValuesListEntry.uxml?fileID=9197481963319205126&amp;guid=583843c4f02945d4bbd42af7421dd7ba&amp;type=3#ValuesListEntry" fixed-item-height="44" show-alternating-row-backgrounds="ContentOnly" show-add-remove-footer="false" horizontal-scrolling="true" class="voodooList" />
+        <ui:VisualElement name="debugEventsContent" class="tabContent" style="margin-top: 5px; flex-direction: row;">
+            <ui:VisualElement name="leftColumn" style="flex-grow: 1; border-left-color: rgb(110, 87, 1); border-right-color: rgb(110, 87, 1); border-top-color: rgb(110, 87, 1); border-bottom-color: rgb(110, 87, 1); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; width: 50%; max-width: 50%; min-width: 50%; margin-right: 1px; flex-direction: row; align-self: stretch; height: 100%; max-height: 100%; min-height: 100%;">
+                <ui:ListView show-border="false" name="eventsList" fixed-item-height="75" horizontal-scrolling="true" item-template="project://database/Packages/com.volatile.voodoo/Editor/UI/EventsListEntry.uxml?fileID=9197481963319205126&amp;guid=1718ca59ca04aee4bab670e477706435&amp;type=3#EventsListEntry" show-alternating-row-backgrounds="All" show-bound-collection-size="false" style="flex-grow: 1; max-height: 100%; min-height: 100%; flex-direction: row; align-self: stretch; height: 100%;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="rightColumn" style="flex-grow: 1; width: 50%; max-width: 50%; min-width: 50%; margin-left: 1px; border-left-color: rgb(110, 87, 1); border-right-color: rgb(110, 87, 1); border-top-color: rgb(110, 87, 1); border-bottom-color: rgb(110, 87, 1); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; flex-direction: row; align-self: stretch; height: 100%; max-height: 100%; min-height: 100%;">
+                <ui:Label name="selection" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="debugValuesContent" class="tabContent unselectedContent" style="border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(110, 87, 1); border-right-color: rgb(110, 87, 1); border-top-color: rgb(110, 87, 1); border-bottom-color: rgb(110, 87, 1); margin-top: 5px; flex-direction: row; align-self: stretch;">
+            <ui:ListView show-border="false" name="valuesList" item-template="project://database/Packages/com.volatile.voodoo/Editor/UI/ValuesListEntry.uxml?fileID=9197481963319205126&amp;guid=583843c4f02945d4bbd42af7421dd7ba&amp;type=3#ValuesListEntry" fixed-item-height="100" show-alternating-row-backgrounds="All" horizontal-scrolling="true" show-bound-collection-size="false" style="flex-grow: 1; max-height: 100%; min-height: 100%; flex-direction: row; align-self: stretch; height: 100%; flex-basis: auto;" />
         </ui:VisualElement>
     </ui:GroupBox>
 </ui:UXML>

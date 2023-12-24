@@ -1,66 +1,45 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine.UIElements;
 using VolatileVoodoo.Values.Base;
 
 namespace VolatileVoodoo.Editor.UI
 {
-    public class VoodooDebugValuesTab : VoodooDebugTab
+    public class VoodooDebugValuesTab : VoodooDebugTab<GenericValue>
     {
-        private static readonly List<GenericValue> voodooValues = new();
-        private static readonly List<GenericValue> filteredVoodooValues = new();
-        private ListView voodooValuesList;
-
         public override void CreateGUI(VisualElement rootVisualElement)
         {
+            VoodooElementsList = rootVisualElement.Q<ListView>("valuesList");
+
             base.CreateGUI(rootVisualElement);
-
-            FindAll(voodooValues);
-
-            filteredVoodooValues.Clear();
-            filteredVoodooValues.AddRange(ListFilter.value.IsNullOrWhitespace()
-                ? voodooValues
-                : voodooValues.Where(item => item.name.Contains(ListFilter.value)));
-
-            voodooValuesList = rootVisualElement.Q<ListView>("valuesList");
-            voodooValuesList.itemsSource = filteredVoodooValues;
-            voodooValuesList.bindItem = OnBindValue;
-            voodooValuesList.unbindItem = OnUnbindValue;
         }
 
-        private static void OnBindValue(VisualElement element, int index)
+        protected override void OnBindValue(VisualElement element, int index)
         {
             void OnSelectClicked()
             {
-                Selection.activeObject = filteredVoodooValues[index];
-                EditorGUIUtility.PingObject(filteredVoodooValues[index]);
+                Selection.activeObject = FilteredVoodooElements[index];
+                EditorGUIUtility.PingObject(FilteredVoodooElements[index]);
             }
 
             element.Q<Button>("selectValue").clicked += OnSelectClicked;
-            element.Q<Label>("valueName").text = filteredVoodooValues[index].name;
-            element.Q<TextField>("initialValue").value = filteredVoodooValues[index].InitialValueDebug;
+            element.Q<Label>("valueName").text = FilteredVoodooElements[index].name;
+            element.Q<Label>("valueType").text = $"({FilteredVoodooElements[index].GetType().Name})";
+            element.Q<TextField>("valueDescription").value = FilteredVoodooElements[index].description;
+            element.Q<TextField>("initialValue").value = FilteredVoodooElements[index].InitialValueDebug;
 
             var currentValueField = element.Q<TextField>("currentValue");
-            currentValueField.value = filteredVoodooValues[index].CurrentValueDebug;
-            filteredVoodooValues[index].debugValueChanged = newValue => currentValueField.value = newValue;
+            currentValueField.value = FilteredVoodooElements[index].CurrentValueDebug;
+            FilteredVoodooElements[index].debugValueChanged = newValue => currentValueField.value = newValue;
         }
 
-        private static void OnUnbindValue(VisualElement element, int index)
+        protected override void OnUnbindValue(VisualElement element, int index)
         {
-            voodooValues.FindAll(item => item.name == element.Q<Label>("valueName").text).ForEach(item => item.debugValueChanged = null);
+            VoodooElements.FindAll(item => item.name == element.Q<Label>("valueName").text).ForEach(item => item.debugValueChanged = null);
         }
 
-        protected override void OnFilterChanged(ChangeEvent<string> textChange)
-        {
-            filteredVoodooValues.Clear();
-            filteredVoodooValues.AddRange(textChange.newValue.IsNullOrWhitespace()
-                ? voodooValues
-                : voodooValues.Where(item => item.name.Contains(textChange.newValue)));
-
-            voodooValuesList.Rebuild();
-        }
+        protected override bool FilterCheck(GenericValue item, string filterText, FilterType filterType) =>
+            ((filterType & FilterType.Name) == FilterType.Name && item.name.Contains(filterText)) |
+            ((filterType & FilterType.Type) == FilterType.Type && item.GetType().Name.Contains(filterText)) |
+            ((filterType & FilterType.Description) == FilterType.Description && item.description.Contains(filterText));
     }
 }

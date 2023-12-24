@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
-using VolatileVoodoo.Utils;
 
 namespace VolatileVoodoo.Events.Base
 {
     public abstract class BaseEvent : ScriptableObject
     {
 #if UNITY_EDITOR
-        public bool debugLog;
+        [Multiline]
+        [LabelWidth(100)]
+        public string description = "";
 
         [Button("Raise")]
         [HideInEditorMode]
         protected abstract void RaiseButton();
+
+        public abstract string DebugEventListeners();
 #endif
     }
 
@@ -28,11 +31,6 @@ namespace VolatileVoodoo.Events.Base
             if (EventListeners.Contains(listener))
                 return;
 
-#if UNITY_EDITOR
-            if (debugLog)
-                this.LogInfo("[Voodoo Event] Added " + listener.ToString() + " to " + this.name);
-#endif
-
             EventListeners.Add(listener);
         }
 
@@ -41,13 +39,25 @@ namespace VolatileVoodoo.Events.Base
             if (!EventListeners.Contains(listener))
                 return;
 
-#if UNITY_EDITOR
-            if (debugLog)
-                this.LogInfo("[Voodoo Event] Removed " + listener.ToString() + " from " + this.name);
-#endif
-
             EventListeners.Remove(listener);
         }
+
+#if UNITY_EDITOR
+        public override string DebugEventListeners()
+        {
+            var result = "TODO fill with GameObject > MonoBehaviour > Method";
+            for (var i = EventListeners.Count - 1; i >= 0; i--) {
+                if (EventListeners[i] == null)
+                    continue;
+
+                foreach (var method in EventListeners[i].GetInvocationList()) {
+                    // TODO
+                }
+            }
+
+            return result;
+        }
+#endif
     }
 
     public abstract class BaseEvent<TResponse, TPayloadA>
@@ -97,11 +107,6 @@ namespace VolatileVoodoo.Events.Base
         {
             for (var i = EventListeners.Count - 1; i >= 0; i--)
                 EventListeners[i]?.Invoke();
-
-#if UNITY_EDITOR
-            if (debugLog)
-                this.LogInfo($"[Voodoo Event] Raised {this.name}");
-#endif
         }
 
 #if UNITY_EDITOR
@@ -119,11 +124,6 @@ namespace VolatileVoodoo.Events.Base
         {
             for (var i = EventListeners.Count - 1; i >= 0; i--)
                 EventListeners[i]?.Invoke(payloadA);
-
-#if UNITY_EDITOR
-            if (debugLog)
-                this.LogInfo($"[Voodoo Event] Raised {this.name} ({payloadA?.ToString() ?? "null"})");
-#endif
         }
 
 #if UNITY_EDITOR
@@ -141,11 +141,6 @@ namespace VolatileVoodoo.Events.Base
         {
             for (var i = EventListeners.Count - 1; i >= 0; i--)
                 EventListeners[i]?.Invoke(payloadA, payloadB);
-
-#if UNITY_EDITOR
-            if (debugLog)
-                this.LogInfo($"[Voodoo Event] Raised {this.name} ({payloadA?.ToString() ?? "null"}, {payloadB?.ToString() ?? "null"})");
-#endif
         }
 
 #if UNITY_EDITOR
@@ -163,11 +158,6 @@ namespace VolatileVoodoo.Events.Base
         {
             for (var i = EventListeners.Count - 1; i >= 0; i--)
                 EventListeners[i]?.Invoke(payloadA, payloadB, payloadC);
-
-#if UNITY_EDITOR
-            if (debugLog)
-                this.LogInfo($"[Voodoo Event] Raised {this.name} ({payloadA?.ToString() ?? "null"}, {payloadB?.ToString() ?? "null"}, {payloadC?.ToString() ?? "null"})");
-#endif
         }
 
 #if UNITY_EDITOR
@@ -185,11 +175,6 @@ namespace VolatileVoodoo.Events.Base
         {
             for (var i = EventListeners.Count - 1; i >= 0; i--)
                 EventListeners[i]?.Invoke(payloadA, payloadB, payloadC, payloadD);
-
-#if UNITY_EDITOR
-            if (debugLog)
-                this.LogInfo($"[Voodoo Event] Raised {this.name} ({payloadA?.ToString() ?? "null"}, {payloadB?.ToString() ?? "null"}, {payloadC?.ToString() ?? "null"}, {payloadD?.ToString() ?? "null"})");
-#endif
         }
 
 #if UNITY_EDITOR
