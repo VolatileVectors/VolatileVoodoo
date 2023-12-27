@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using UnityEngine;
 using VolatileVoodoo.Values;
 
 public class ValueTester : MonoBehaviour
 {
-    public List<FloatValue> values;
+    public FloatValue floatValue;
+    public IntValue intValue;
 
     private float delay;
 
@@ -14,9 +14,9 @@ public class ValueTester : MonoBehaviour
 
         if (delay >= 2f) {
             delay -= 2f;
-            foreach (var value in values) {
-                value.Value = Random.value * 10f;
-            }
+
+            floatValue.Value = Random.value * 10f;
+            intValue.Value = Random.Range(0, 11);
         }
     }
 }

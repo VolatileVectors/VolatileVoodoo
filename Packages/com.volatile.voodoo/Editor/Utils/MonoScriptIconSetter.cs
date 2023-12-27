@@ -39,11 +39,14 @@ namespace VolatileVoodoo.Editor.Utils
                 return;
             }
 
-            var changedAssets = importedAssets.Concat(movedAssets);
-            foreach (var importedAssetPath in changedAssets) {
-                if (AssetImporter.GetAtPath(importedAssetPath) is not MonoImporter monoImporter ||
-                    !HasIcon(monoImporter.GetScript(), out var icon) ||
-                    monoImporter.GetIcon() == icon)
+            foreach (var importedAssetPath in importedAssets) {
+                if (AssetImporter.GetAtPath(importedAssetPath) is not MonoImporter monoImporter)
+                    continue;
+
+                if (!HasIcon(monoImporter.GetScript(), out var icon))
+                    continue;
+
+                if (monoImporter.GetIcon() == icon)
                     continue;
 
                 monoImporter.SetIcon(icon);
@@ -55,9 +58,13 @@ namespace VolatileVoodoo.Editor.Utils
         {
             var assetGuids = AssetDatabase.FindAssets("t:MonoScript");
             foreach (var assetGuid in assetGuids) {
-                if (AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(assetGuid)) is not MonoImporter monoImporter ||
-                    !HasIcon(monoImporter.GetScript(), out var icon) ||
-                    monoImporter.GetIcon() == icon)
+                if (AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(assetGuid)) is not MonoImporter monoImporter)
+                    continue;
+
+                if (!HasIcon(monoImporter.GetScript(), out var icon))
+                    continue;
+
+                if (monoImporter.GetIcon() == icon)
                     continue;
 
                 monoImporter.SetIcon(icon);

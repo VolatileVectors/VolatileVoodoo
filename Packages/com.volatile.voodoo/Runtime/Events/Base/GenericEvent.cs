@@ -17,7 +17,16 @@ namespace VolatileVoodoo.Events.Base
         [HideInEditorMode]
         protected abstract void RaiseButton();
 
-        public abstract string DebugEventListeners();
+        public struct SubscriberInfo
+        {
+            public GameObject GameObject;
+            public string Component;
+            public string Method;
+        }
+
+        public abstract IEnumerable<SubscriberInfo> DebugSubscribers();
+
+        public static Action<BaseEvent> DebugSubscribersChanged;
 #endif
     }
 
@@ -32,6 +41,10 @@ namespace VolatileVoodoo.Events.Base
                 return;
 
             EventListeners.Add(listener);
+
+#if UNITY_EDITOR
+            DebugSubscribersChanged?.Invoke(this);
+#endif
         }
 
         public void UnregisterListener(TResponse listener)
@@ -40,22 +53,38 @@ namespace VolatileVoodoo.Events.Base
                 return;
 
             EventListeners.Remove(listener);
+
+#if UNITY_EDITOR
+            DebugSubscribersChanged?.Invoke(this);
+#endif
         }
 
 #if UNITY_EDITOR
-        public override string DebugEventListeners()
+        public override IEnumerable<SubscriberInfo> DebugSubscribers()
         {
-            var result = "TODO fill with GameObject > MonoBehaviour > Method";
-            for (var i = EventListeners.Count - 1; i >= 0; i--) {
-                if (EventListeners[i] == null)
+            List<SubscriberInfo> subscribers = new();
+            for (var listenerIndex = EventListeners.Count - 1; listenerIndex >= 0; listenerIndex--) {
+                if (EventListeners[listenerIndex] == null)
                     continue;
 
-                foreach (var method in EventListeners[i].GetInvocationList()) {
-                    // TODO
+                foreach (var unityAction in EventListeners[listenerIndex].GetInvocationList()) {
+                    if (unityAction.Target is not UnityEventBase target)
+                        continue;
+
+                    for (var eventIndex = target.GetPersistentEventCount() - 1; eventIndex >= 0; eventIndex--) {
+                        if (target.GetPersistentTarget(eventIndex) is not Component component)
+                            continue;
+
+                        subscribers.Add(new SubscriberInfo() {
+                            GameObject = component.gameObject,
+                            Component = component.GetType().ToString(),
+                            Method = target.GetPersistentMethodName(eventIndex)
+                        });
+                    }
                 }
             }
 
-            return result;
+            return subscribers;
         }
 #endif
     }
