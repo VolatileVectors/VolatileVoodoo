@@ -64,7 +64,7 @@ namespace VolatileVoodoo.Editor.UI
             UpdateTabBar(click.target as Label);
         }
 
-        private void UpdateTabBar(Label tabLabel)
+        private void UpdateTabBar(VisualElement tabLabel)
         {
             if (tabLabel?.ClassListContains(SelectedTab) ?? true)
                 return;

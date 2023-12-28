@@ -24,9 +24,18 @@ namespace VolatileVoodoo.Events.Base
             public string Method;
         }
 
-        public abstract IEnumerable<SubscriberInfo> DebugSubscribers();
+        public struct LogEntry
+        {
+            public DateTime Timestamp;
+            public BaseEvent RaisedEvent;
+            public string Parameters;
+        }
 
         public static Action<BaseEvent> DebugSubscribersChanged;
+        public abstract IEnumerable<SubscriberInfo> DebugSubscribers();
+
+        public static Action EventLogUpdated;
+        public static readonly List<LogEntry> EventLog = new();
 #endif
     }
 
@@ -136,6 +145,16 @@ namespace VolatileVoodoo.Events.Base
         {
             for (var i = EventListeners.Count - 1; i >= 0; i--)
                 EventListeners[i]?.Invoke();
+
+#if UNITY_EDITOR
+            EventLog.Add(new LogEntry {
+                    Timestamp = DateTime.Now,
+                    RaisedEvent = this,
+                    Parameters = "[]"
+                }
+            );
+            EventLogUpdated?.Invoke();
+#endif
         }
 
 #if UNITY_EDITOR
@@ -153,6 +172,16 @@ namespace VolatileVoodoo.Events.Base
         {
             for (var i = EventListeners.Count - 1; i >= 0; i--)
                 EventListeners[i]?.Invoke(payloadA);
+
+#if UNITY_EDITOR
+            EventLog.Add(new LogEntry {
+                    Timestamp = DateTime.Now,
+                    RaisedEvent = this,
+                    Parameters = $"[{payloadA}]"
+                }
+            );
+            EventLogUpdated?.Invoke();
+#endif
         }
 
 #if UNITY_EDITOR
@@ -170,6 +199,16 @@ namespace VolatileVoodoo.Events.Base
         {
             for (var i = EventListeners.Count - 1; i >= 0; i--)
                 EventListeners[i]?.Invoke(payloadA, payloadB);
+
+#if UNITY_EDITOR
+            EventLog.Add(new LogEntry {
+                    Timestamp = DateTime.Now,
+                    RaisedEvent = this,
+                    Parameters = $"[{payloadA}, {payloadB}]"
+                }
+            );
+            EventLogUpdated?.Invoke();
+#endif
         }
 
 #if UNITY_EDITOR
@@ -187,6 +226,15 @@ namespace VolatileVoodoo.Events.Base
         {
             for (var i = EventListeners.Count - 1; i >= 0; i--)
                 EventListeners[i]?.Invoke(payloadA, payloadB, payloadC);
+#if UNITY_EDITOR
+            EventLog.Add(new LogEntry {
+                    Timestamp = DateTime.Now,
+                    RaisedEvent = this,
+                    Parameters = $"[{payloadA}, {payloadB}, {payloadC}]"
+                }
+            );
+            EventLogUpdated?.Invoke();
+#endif
         }
 
 #if UNITY_EDITOR
@@ -204,6 +252,16 @@ namespace VolatileVoodoo.Events.Base
         {
             for (var i = EventListeners.Count - 1; i >= 0; i--)
                 EventListeners[i]?.Invoke(payloadA, payloadB, payloadC, payloadD);
+
+#if UNITY_EDITOR
+            EventLog.Add(new LogEntry {
+                    Timestamp = DateTime.Now,
+                    RaisedEvent = this,
+                    Parameters = $"[{payloadA}, {payloadB}, {payloadC}, {payloadD}]"
+                }
+            );
+            EventLogUpdated?.Invoke();
+#endif
         }
 
 #if UNITY_EDITOR

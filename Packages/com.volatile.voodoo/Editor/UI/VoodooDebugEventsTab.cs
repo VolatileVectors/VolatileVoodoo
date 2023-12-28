@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
 using VolatileVoodoo.Events.Base;
 
@@ -12,34 +12,60 @@ namespace VolatileVoodoo.Editor.UI
         private static ListView voodooSubscribersList = new();
         private BaseEvent selected;
 
+        private static readonly List<BaseEvent.LogEntry> FilteredVoodooEventLogEntries = new();
+        private ListView voodooEventLogList;
+
         public override void CreateGUI(VisualElement rootVisualElement)
         {
             VoodooElementsList = rootVisualElement.Q<ListView>("eventsList");
-
-            base.CreateGUI(rootVisualElement);
-
-            VoodooElementsList.selectionChanged += OnItemSelected;
-
+            
             voodooSubscribersList = rootVisualElement.Q<ListView>("subscribersList");
             voodooSubscribersList.itemsSource = VoodooSubscribers;
             voodooSubscribersList.bindItem = OnBindSubscriber;
-
+            
+            voodooEventLogList = rootVisualElement.Q<ListView>("eventLogList");
+            voodooEventLogList.itemsSource = FilteredVoodooEventLogEntries;
+            voodooEventLogList.bindItem = OnBindLogEntry;
+            
+            base.CreateGUI(rootVisualElement);
+            
+            VoodooElementsList.selectionChanged += OnEventSelected;
+            voodooEventLogList.selectionChanged += OnLogEntrySelected;
+            
             BaseEvent.DebugSubscribersChanged = OnSubscribersChanged;
+            BaseEvent.EventLogUpdated = OnElementsChanged;
+
+            VoodooElementsList.Rebuild();
+
+            FilteredVoodooEventLogEntries.Clear();
+            FilteredVoodooEventLogEntries.AddRange(BaseEvent.EventLog.Where(entry => FilteredVoodooElements.Contains(entry.RaisedEvent)));
+
+            voodooEventLogList.Rebuild();
         }
 
-        private void OnItemSelected(IEnumerable<object> items)
+        private void OnEventSelected(IEnumerable<object> items)
         {
             // TODO does not fire in case all elements are deselected/ListView lost focus
             VoodooSubscribers.Clear();
-            foreach (var item in items) {
-                selected = (BaseEvent)item;
+            selected = (BaseEvent)items.FirstOrDefault();
+            if (selected != null) {
                 VoodooSubscribers.AddRange(selected.DebugSubscribers());
-                voodooSubscribersList.Rebuild();
-                return;
             }
 
-            selected = null;
             voodooSubscribersList.Rebuild();
+        }
+
+        private void OnLogEntrySelected(IEnumerable<object> items)
+        {
+            // TODO does not fire in case all elements are deselected/ListView lost focus
+            var firstEntry = items.FirstOrDefault();
+            if (firstEntry == null)
+                return;
+
+            var selectedEntry = (BaseEvent.LogEntry)firstEntry;
+            var eventIndex = FilteredVoodooElements.IndexOf(selectedEntry.RaisedEvent);
+            if (eventIndex >= 0)
+                VoodooElementsList.SetSelection(eventIndex);
         }
 
         private void OnSubscribersChanged(BaseEvent item)
@@ -50,6 +76,13 @@ namespace VolatileVoodoo.Editor.UI
             VoodooSubscribers.Clear();
             VoodooSubscribers.AddRange(selected.DebugSubscribers());
             voodooSubscribersList.Rebuild();
+        }
+
+        protected override void OnElementsChanged()
+        {
+            FilteredVoodooEventLogEntries.Clear();
+            FilteredVoodooEventLogEntries.AddRange(BaseEvent.EventLog.Where(entry => FilteredVoodooElements.Contains(entry.RaisedEvent)));
+            voodooEventLogList.Rebuild();
         }
 
         protected override void OnBindValue(VisualElement element, int index)
@@ -66,8 +99,6 @@ namespace VolatileVoodoo.Editor.UI
             element.Q<TextField>("eventDescription").value = FilteredVoodooElements[index].description;
         }
 
-        protected override void OnUnbindValue(VisualElement element, int index) { }
-
         private void OnBindSubscriber(VisualElement element, int index)
         {
             void OnSelectClicked()
@@ -80,6 +111,13 @@ namespace VolatileVoodoo.Editor.UI
             element.Q<Label>("subscriberName").text = VoodooSubscribers[index].GameObject.name;
             element.Q<Label>("subscriberComponent").text = VoodooSubscribers[index].Component;
             element.Q<Label>("subscriberMethod").text = VoodooSubscribers[index].Method;
+        }
+
+        private void OnBindLogEntry(VisualElement element, int index)
+        {
+            element.Q<Label>("timestamp").text = FilteredVoodooEventLogEntries[index].Timestamp.ToShortTimeString();
+            element.Q<Label>("eventName").text = FilteredVoodooEventLogEntries[index].RaisedEvent.name;
+            element.Q<Label>("eventParameters").text = FilteredVoodooEventLogEntries[index].Parameters;
         }
 
         protected override bool FilterCheck(BaseEvent item, string filterText, FilterType filterType) =>

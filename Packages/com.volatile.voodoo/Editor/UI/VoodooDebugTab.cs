@@ -4,6 +4,7 @@ using System.Linq;
 using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine.UIElements;
+using VolatileVoodoo.Utils;
 
 namespace VolatileVoodoo.Editor.UI
 {
@@ -33,6 +34,14 @@ namespace VolatileVoodoo.Editor.UI
             listFilterType = rootVisualElement.parent.Q<EnumField>("filterType");
             listFilterType.RegisterValueChangedCallback(_ => OnFilterChanged());
 
+            var lastFilter = EditorPrefs.GetString(Voodoo.GetDebuggerFilterKey, "");
+            var lastFilterType = Enum.TryParse(EditorPrefs.GetString(Voodoo.GetDebuggerFilterTypeKey, "Everything"), out FilterType filterValue)
+                ? filterValue
+                : FilterType.Everything;
+
+            listFilter.SetValueWithoutNotify(lastFilter);
+            listFilterType.SetValueWithoutNotify(lastFilterType);
+
             FindAll();
 
             VoodooElementsList.itemsSource = FilteredVoodooElements;
@@ -61,10 +70,19 @@ namespace VolatileVoodoo.Editor.UI
                 : VoodooElements.Where(item => FilterCheck(item, listFilter.value, (FilterType)listFilterType.value)));
 
             VoodooElementsList.Rebuild();
+
+            var saveFilter = listFilter.value;
+            var saveFilterType = (FilterType)listFilterType.value;
+
+            EditorPrefs.SetString(Voodoo.GetDebuggerFilterKey, saveFilter);
+            EditorPrefs.SetString(Voodoo.GetDebuggerFilterTypeKey, saveFilterType.ToString());
+
+            OnElementsChanged();
         }
 
         protected abstract bool FilterCheck(T item, string filterText, FilterType filterType);
         protected abstract void OnBindValue(VisualElement element, int index);
-        protected abstract void OnUnbindValue(VisualElement element, int index);
+        protected virtual void OnUnbindValue(VisualElement element, int index) { }
+        protected virtual void OnElementsChanged() { }
     }
 }

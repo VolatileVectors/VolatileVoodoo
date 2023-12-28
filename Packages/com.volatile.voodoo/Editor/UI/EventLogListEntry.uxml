@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.volatile.voodoo/Editor/UI/Voodoo.uss?fileID=7433441132597879392&amp;guid=29502c2cf05ac5f439b811dc959fb6ef&amp;type=3#Voodoo" />
+    <ui:VisualElement name="eventLogListItem" style="height: 25px; max-height: 25px; min-height: 25px; flex-direction: row; align-items: center;">
+        <ui:Label text="Time" name="timestamp" style="margin-top: 1px; margin-right: 0; margin-bottom: 1px; padding-top: 2px; color: rgb(219, 173, 2); -unity-font-style: bold; margin-left: 3px;" />
+        <ui:Label text=":" name="dot" style="margin-top: 1px; margin-right: 0; margin-bottom: 1px; margin-left: 0; padding-top: 2px; color: rgb(219, 173, 2); -unity-font-style: bold;" />
+        <ui:Label text="Event Name" name="eventName" style="margin-top: 1px; margin-right: 0; margin-bottom: 1px; margin-left: 0; padding-top: 2px; color: rgb(219, 173, 2); -unity-font-style: bold;" />
+        <ui:Label text="Event Parameters" name="eventParameters" style="margin-top: 1px; margin-right: 0; margin-bottom: 1px; margin-left: 0; padding-top: 2px; color: rgb(219, 173, 2); -unity-font-style: bold;" />
+    </ui:VisualElement>
+</ui:UXML>

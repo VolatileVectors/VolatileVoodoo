@@ -25,6 +25,8 @@ namespace VolatileVoodoo.Utils
         private const string AutoPlayEffectsKey = "AutoPlayEffects";
         private const string ShowGenericReferenceValueKey = "ShowGenericReferenceValue";
         private const string ShowGenericEventDebuggerKey = "ShowGenericEventDebugger";
+        private const string DebuggerFilterKey = "LastDebuggerFilter";
+        private const string DebuggerFilterTypeKey = "LastDebuggerFilterType";
         private const string SettingsSavePath = "SettingsSavePath";
 
         // Custom script icons
@@ -77,6 +79,8 @@ namespace VolatileVoodoo.Utils
         public static string GetShowGenericReferenceValueKey => string.Join('.', SettingsPrefix, Application.productName, ShowGenericReferenceValueKey);
         public static string GetShowGenericEventDebuggerKey => string.Join('.', SettingsPrefix, Application.productName, ShowGenericEventDebuggerKey);
         public static string GetSettingsSavePath => string.Join('.', SettingsPrefix, Application.productName, SettingsSavePath);
+        public static string GetDebuggerFilterKey => string.Join('.', SettingsPrefix, Application.productName, DebuggerFilterKey);
+        public static string GetDebuggerFilterTypeKey => string.Join('.', SettingsPrefix, Application.productName, DebuggerFilterTypeKey);
 #endif
     }
 }

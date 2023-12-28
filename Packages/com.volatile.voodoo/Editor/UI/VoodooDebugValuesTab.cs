@@ -9,7 +9,6 @@ namespace VolatileVoodoo.Editor.UI
         public override void CreateGUI(VisualElement rootVisualElement)
         {
             VoodooElementsList = rootVisualElement.Q<ListView>("valuesList");
-
             base.CreateGUI(rootVisualElement);
         }
 
