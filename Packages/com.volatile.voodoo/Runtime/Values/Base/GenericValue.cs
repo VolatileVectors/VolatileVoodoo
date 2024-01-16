@@ -30,9 +30,11 @@ namespace VolatileVoodoo.Values.Base
         [ShowInInspector]
         [LabelWidth(100)]
         [ReadOnly]
-        public TData Value {
+        public TData Value
+        {
             get => currentValue;
-            set {
+            set
+            {
                 if (currentValue?.Equals(value) ?? value == null)
                     return;
 
@@ -45,13 +47,16 @@ namespace VolatileVoodoo.Values.Base
             }
         }
 
+        public void SetWithoutNotify(TData value) => currentValue = value;
+
         private void OnEnable()
         {
             hideFlags = HideFlags.DontUnloadUnusedAsset;
             OnInitialValueChanged();
         }
 
-        public event Action<TData> OnValueChanged {
+        public event Action<TData> OnValueChanged
+        {
             add => valueChanged += value;
             remove => valueChanged -= value;
         }
