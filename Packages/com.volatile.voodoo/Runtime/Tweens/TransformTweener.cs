@@ -87,6 +87,10 @@ namespace VolatileVoodoo.Tweens
         [ShowIf("@" + nameof(tweenControl) + " == TweenControl.Event")]
         public GameEventSource easedOutEvent;
 
+        [TitleGroup("Events"), LabelText("State changed")]
+        [ShowIf("@" + nameof(tweenControl) + " == TweenControl.Event")]
+        public BoolEventSource stateChangedEvent;
+
         private Tween transitionTween;
         private Vector3 initialTarget;
 
@@ -104,38 +108,35 @@ namespace VolatileVoodoo.Tweens
             CreateTween();
         }
 
-        public void SetActive(bool active)
+        public void SetEase(bool active)
         {
-            if (active) EaseIn();
-            else EaseOut();
+            if (tweenControl == TweenControl.YoYo)
+                return;
+
+            if (transitionTween.isBackwards == active)
+                transitionTween.SetEase(active ? easeInFunction : easeOutFunction);
+
+            if (transitionTween.IsPlaying())
+                transitionTween.isBackwards = !active;
+            else
+            {
+                if (active) transitionTween.PlayForward();
+                else transitionTween.PlayBackwards();
+            }
         }
 
         [TitleGroup("Debug"), ButtonGroup("Debug/Triggers"), Button]
         [ShowIf(Voodoo.IsPlaying + " && " + nameof(tweenControl) + " == TweenControl.Event")]
         public void EaseIn()
         {
-            if (tweenControl == TweenControl.YoYo)
-                return;
-
-            if (transitionTween.isBackwards)
-                transitionTween.SetEase(easeInFunction);
-
-            if (transitionTween.IsPlaying()) transitionTween.isBackwards = false;
-            else transitionTween.PlayForward();
+            SetEase(true);
         }
 
         [ButtonGroup("Debug/Triggers"), Button]
         [ShowIf(Voodoo.IsPlaying + " && " + nameof(tweenControl) + " == TweenControl.Event")]
         public void EaseOut()
         {
-            if (tweenControl == TweenControl.YoYo)
-                return;
-
-            if (!transitionTween.isBackwards)
-                transitionTween.SetEase(easeOutFunction);
-
-            if (transitionTween.IsPlaying()) transitionTween.isBackwards = true;
-            else transitionTween.PlayBackwards();
+            SetEase(false);
         }
 
         private void OnDestroy()
@@ -202,7 +203,7 @@ namespace VolatileVoodoo.Tweens
             switch (tweenControl)
             {
                 case TweenControl.Event:
-                    transitionTween.SetEase(easeInFunction).OnRewind(easedOutEvent.Raise).OnComplete(easedInEvent.Raise);
+                    transitionTween.SetEase(easeInFunction).OnRewind(OnBeginningReached).OnComplete(OnEndReached);
                     break;
                 case TweenControl.YoYo:
                     transitionTween.SetEase(yoYoFunction).SetLoops(-1, LoopType.Yoyo).Play();
@@ -211,6 +212,19 @@ namespace VolatileVoodoo.Tweens
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+        private void OnBeginningReached()
+        {
+            easedOutEvent.Raise();
+            stateChangedEvent.Raise(false);
+        }
+
+        private void OnEndReached()
+        {
+            easedInEvent.Raise();
+            stateChangedEvent.Raise(true);
+        }
+
 
         private void UpdateTween()
         {

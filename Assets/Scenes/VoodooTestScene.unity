@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 62278615}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 0}
+  m_LocalPosition: {x: -2.5, y: -4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tweenTarget: 0
   tweenControl: 1
-  amount: {x: 0, y: 3, z: 0}
+  amount: {x: 0, y: 2.5, z: 0}
   duration: 2
   unscaledTime: 0
   editorPosition: 0
@@ -179,6 +179,9 @@ MonoBehaviour:
     isValid: 0
     sender: {fileID: 0}
   easedOutEvent:
+    isValid: 0
+    sender: {fileID: 0}
+  stateChangedEvent:
     isValid: 0
     sender: {fileID: 0}
 --- !u!23 &62278618
@@ -336,7 +339,7 @@ Transform:
   m_GameObject: {fileID: 316646725}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -368,6 +371,9 @@ MonoBehaviour:
     isValid: 0
     sender: {fileID: 0}
   easedOutEvent:
+    isValid: 0
+    sender: {fileID: 0}
+  stateChangedEvent:
     isValid: 0
     sender: {fileID: 0}
 --- !u!23 &316646728
@@ -450,7 +456,7 @@ Transform:
   m_GameObject: {fileID: 514156828}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7, y: 0, z: 0}
+  m_LocalPosition: {x: -2.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -470,7 +476,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tweenTarget: 0
   tweenControl: 0
-  amount: {x: 0, y: 3, z: 0}
+  amount: {x: 0, y: 2.5, z: 0}
   duration: 1.5
   unscaledTime: 0
   editorPosition: 0
@@ -484,6 +490,9 @@ MonoBehaviour:
   easedOutEvent:
     isValid: 0
     sender: {fileID: 0}
+  stateChangedEvent:
+    isValid: 1
+    sender: {fileID: 11400000, guid: 3558d30ae116c1943b6e38a77bca13ed, type: 2}
 --- !u!23 &514156831
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -828,13 +837,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 3, z: -10}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1137930723
 GameObject:
   m_ObjectHideFlags: 0
@@ -844,8 +853,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1137930725}
+  - component: {fileID: 1137930729}
+  - component: {fileID: 1137930728}
+  - component: {fileID: 1137930727}
+  - component: {fileID: 1137930726}
   m_Layer: 0
-  m_Name: TweenersTester
+  m_Name: TweenerTester
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -868,6 +881,105 @@ Transform:
   - {fileID: 702253854}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1137930726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137930723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973995ab69c3406e86634ce838017096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cube: {fileID: 514156830}
+  capsule: {fileID: 2137508655}
+  sphere: {fileID: 2077465287}
+--- !u!114 &1137930727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137930723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97437264b622fc84faba545c952f00f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 11400000, guid: bba72b4e333ce7548a6fe06063bda01a, type: 2}
+  listeners:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1137930726}
+        m_TargetAssemblyTypeName: TweenEndReachedLogger, Assembly-CSharp
+        m_MethodName: LogSphere
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1137930728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137930723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97437264b622fc84faba545c952f00f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 11400000, guid: b10764412e5debb45813a50f4b9057f3, type: 2}
+  listeners:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1137930726}
+        m_TargetAssemblyTypeName: TweenEndReachedLogger, Assembly-CSharp
+        m_MethodName: LogCapsule
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1137930729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137930723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97437264b622fc84faba545c952f00f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 11400000, guid: 3558d30ae116c1943b6e38a77bca13ed, type: 2}
+  listeners:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1137930726}
+        m_TargetAssemblyTypeName: TweenEndReachedLogger, Assembly-CSharp
+        m_MethodName: LogCube
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1214898726
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,7 +1008,7 @@ Transform:
   m_GameObject: {fileID: 1214898726}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7, y: 0, z: 0}
+  m_LocalPosition: {x: 2.5, y: -4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -928,6 +1040,9 @@ MonoBehaviour:
     isValid: 0
     sender: {fileID: 0}
   easedOutEvent:
+    isValid: 0
+    sender: {fileID: 0}
+  stateChangedEvent:
     isValid: 0
     sender: {fileID: 0}
 --- !u!23 &1214898729
@@ -1062,7 +1177,7 @@ Transform:
   m_GameObject: {fileID: 2077465282}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: 0}
+  m_LocalPosition: {x: 2.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1148,6 +1263,9 @@ MonoBehaviour:
   easedOutEvent:
     isValid: 0
     sender: {fileID: 0}
+  stateChangedEvent:
+    isValid: 1
+    sender: {fileID: 11400000, guid: bba72b4e333ce7548a6fe06063bda01a, type: 2}
 --- !u!1 &2082187258
 GameObject:
   m_ObjectHideFlags: 0
@@ -1280,7 +1398,7 @@ Transform:
   m_GameObject: {fileID: 2137508650}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1366,6 +1484,9 @@ MonoBehaviour:
   easedOutEvent:
     isValid: 0
     sender: {fileID: 0}
+  stateChangedEvent:
+    isValid: 1
+    sender: {fileID: 11400000, guid: b10764412e5debb45813a50f4b9057f3, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
