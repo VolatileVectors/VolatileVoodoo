@@ -15,7 +15,7 @@
         {
             WriteLine("using UnityEngine;");
             foreach (var nameSpace in Imports) {
-                if (nameSpace is "UnityEngine" or "")
+                if (nameSpace is "UnityEngine" or "" or null)
                     continue;
 
                 WriteLine($"using {nameSpace};");
@@ -23,7 +23,7 @@
 
             WriteLine("using VolatileVoodoo.Values.Base;");
             WriteLine();
-            if (Namespace != "") {
+            if (!string.IsNullOrEmpty(Namespace)) {
                 WriteLine($"namespace {Namespace}");
                 WriteLine("{");
                 PushIndent();
@@ -31,7 +31,7 @@
 
             WriteLine($"[CreateAssetMenu(fileName = \"{ValueName}\", menuName = \"Voodoo/Values/{ValueName}\")]");
             WriteLine($"public class {ValueName} : GenericValue<{ValueType}> {{ }}");
-            if (Namespace != "") {
+            if (!string.IsNullOrEmpty(Namespace)) {
                 PopIndent();
                 Write("}");
             }

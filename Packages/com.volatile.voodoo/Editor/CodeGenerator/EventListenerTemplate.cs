@@ -14,7 +14,7 @@
         protected override string TransformText()
         {
             foreach (var nameSpace in Imports) {
-                if (nameSpace is "")
+                if (nameSpace is "" or null)
                     continue;
 
                 WriteLine($"using {nameSpace};");
@@ -22,7 +22,7 @@
 
             WriteLine("using VolatileVoodoo.Events.Base;");
             WriteLine();
-            if (Namespace != "") {
+            if (!string.IsNullOrEmpty(Namespace)) {
                 WriteLine($"namespace {Namespace}");
                 WriteLine("{");
                 PushIndent();
@@ -37,7 +37,7 @@
                 Write($", {payload}");
 
             WriteLine("> { }");
-            if (Namespace != "") {
+            if (!string.IsNullOrEmpty(Namespace)) {
                 PopIndent();
                 Write("}");
             }
