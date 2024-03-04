@@ -16,21 +16,27 @@
         {
             WriteLine("using System;");
             foreach (var nameSpace in Imports) {
-                if (nameSpace is "System")
+                if (nameSpace is "System" or "")
                     continue;
 
                 WriteLine($"using {nameSpace};");
             }
 
-            WriteLine("using VolatileVoodoo.Runtime.Values.Base;");
+            WriteLine("using VolatileVoodoo.Values.Base;");
             WriteLine();
-            WriteLine($"namespace {Namespace}");
-            WriteLine("{");
-            PushIndent();
+            if (Namespace != "") {
+                WriteLine($"namespace {Namespace}");
+                WriteLine("{");
+                PushIndent();
+            }
+
             WriteLine("[Serializable]");
             WriteLine($"public class {ValueReferenceName} : GenericReference<{ValueName}, {ValueReferenceType}> {{ }}");
-            PopIndent();
-            Write("}");
+            if (Namespace != "") {
+                PopIndent();
+                Write("}");
+            }
+
             return Generator.ToString();
         }
     }

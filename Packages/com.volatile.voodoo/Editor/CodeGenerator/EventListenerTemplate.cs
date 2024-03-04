@@ -13,14 +13,21 @@
 
         protected override string TransformText()
         {
-            foreach (var nameSpace in Imports)
-                WriteLine($"using {nameSpace};");
+            foreach (var nameSpace in Imports) {
+                if (nameSpace is "")
+                    continue;
 
-            WriteLine("using VolatileVoodoo.Runtime.Events.Base;");
+                WriteLine($"using {nameSpace};");
+            }
+
+            WriteLine("using VolatileVoodoo.Events.Base;");
             WriteLine();
-            WriteLine($"namespace {Namespace}");
-            WriteLine("{");
-            PushIndent();
+            if (Namespace != "") {
+                WriteLine($"namespace {Namespace}");
+                WriteLine("{");
+                PushIndent();
+            }
+
             Write("public class ");
             Write($"{EventName}Listener");
 
@@ -30,8 +37,11 @@
                 Write($", {payload}");
 
             WriteLine("> { }");
-            PopIndent();
-            Write("}");
+            if (Namespace != "") {
+                PopIndent();
+                Write("}");
+            }
+
             return Generator.ToString();
         }
     }

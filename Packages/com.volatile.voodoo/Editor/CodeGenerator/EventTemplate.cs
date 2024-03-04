@@ -19,17 +19,20 @@
             WriteLine("using UnityEngine;");
 
             foreach (var nameSpace in Imports) {
-                if (nameSpace is "System" or "UnityEngine")
+                if (nameSpace is "System" or "UnityEngine" or "")
                     continue;
 
                 WriteLine($"using {nameSpace};");
             }
 
-            WriteLine("using VolatileVoodoo.Runtime.Events.Base;");
+            WriteLine("using VolatileVoodoo.Events.Base;");
             WriteLine();
-            WriteLine($"namespace {Namespace}");
-            WriteLine("{");
-            PushIndent();
+            if (Namespace != "") {
+                WriteLine($"namespace {Namespace}");
+                WriteLine("{");
+                PushIndent();
+            }
+
             WriteLine($"[CreateAssetMenu(fileName = \"{EventName}\", menuName = \"Voodoo/Events/{EventName}\")]");
             if (string.IsNullOrEmpty(payloads)) {
                 WriteLine($"public class {EventName} : GenericEvent {{ }}");
@@ -48,8 +51,11 @@
                 Write($", {payloads}");
 
             WriteLine("> { }");
-            PopIndent();
-            Write("}");
+            if (Namespace != "") {
+                PopIndent();
+                Write("}");
+            }
+
             return Generator.ToString();
         }
     }
