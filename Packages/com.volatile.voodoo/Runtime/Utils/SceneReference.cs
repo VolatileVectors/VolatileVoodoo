@@ -1,6 +1,8 @@
 ﻿using System;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
+#endif
 using UnityEngine;
 
 namespace VolatileVoodoo.Utils
@@ -11,15 +13,18 @@ namespace VolatileVoodoo.Utils
         [SerializeField]
         private string scenePath = string.Empty;
 
-        public string ScenePath {
-            get {
+        public string ScenePath
+        {
+            get
+            {
 #if UNITY_EDITOR
                 return GetPathFromSceneAsset;
 #else
                 return scenePath;
 #endif
             }
-            set {
+            set
+            {
                 scenePath = value;
 #if UNITY_EDITOR
                 sceneAsset = GetSceneAssetFromPath;
@@ -30,13 +35,16 @@ namespace VolatileVoodoo.Utils
         public void OnBeforeSerialize()
         {
 #if UNITY_EDITOR
-            if (sceneAsset == null && !string.IsNullOrEmpty(scenePath)) {
+            if (sceneAsset == null && !string.IsNullOrEmpty(scenePath))
+            {
                 sceneAsset = GetSceneAssetFromPath;
                 if (sceneAsset == null)
                     scenePath = string.Empty;
 
                 EditorSceneManager.MarkAllScenesDirty();
-            } else {
+            }
+            else
+            {
                 scenePath = GetPathFromSceneAsset;
             }
 #endif
