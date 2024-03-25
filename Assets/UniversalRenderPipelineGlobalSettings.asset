@@ -55,7 +55,7 @@ MonoBehaviour:
       - rid: 9027192126573903891
     m_RuntimeSettings:
       m_List: []
-  m_AssetVersion: 7
+  m_AssetVersion: 8
   m_ObsoleteDefaultVolumeProfile: {fileID: 0}
   m_RenderingLayerNames:
   - Default
