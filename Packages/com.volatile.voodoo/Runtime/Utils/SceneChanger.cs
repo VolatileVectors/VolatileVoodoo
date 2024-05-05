@@ -39,6 +39,9 @@ namespace VolatileVoodoo.Utils
             isLoading = true;
 
             sceneLoadOperation = SceneManager.LoadSceneAsync(nextScene, loadAdditive ? LoadSceneMode.Additive : LoadSceneMode.Single);
+            if (sceneLoadOperation == null)
+                return;
+
             sceneLoadOperation.completed += OnFinishedLoading;
             sceneLoadOperation.allowSceneActivation = activateImmediately;
         }

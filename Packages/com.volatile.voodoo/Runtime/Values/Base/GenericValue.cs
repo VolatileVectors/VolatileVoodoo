@@ -13,7 +13,7 @@ namespace VolatileVoodoo.Values.Base
 
         public abstract string InitialValueDebug { get; }
         public abstract string CurrentValueDebug { get; }
-        public Action<string> debugValueChanged;
+        public Action<string> DebugValueChanged;
 #endif
     }
 
@@ -42,7 +42,7 @@ namespace VolatileVoodoo.Values.Base
                 valueChanged?.Invoke(currentValue);
 
 #if UNITY_EDITOR
-                debugValueChanged?.Invoke(value?.ToString() ?? "null");
+                DebugValueChanged?.Invoke(value?.ToString() ?? "null");
 #endif
             }
         }

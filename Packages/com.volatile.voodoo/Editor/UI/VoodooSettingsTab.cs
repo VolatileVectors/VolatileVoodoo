@@ -7,7 +7,6 @@ namespace VolatileVoodoo.Editor.UI
 {
     public class VoodooSettingsTab
     {
-        private Toggle autoPlayEffectsState;
         private Toggle eventListenerInlineEditorState;
         private TextField path;
         private Toggle referenceInlineEditorState;
@@ -17,19 +16,16 @@ namespace VolatileVoodoo.Editor.UI
             path = rootVisualElement.Q<TextField>("path");
             referenceInlineEditorState = rootVisualElement.Q<Toggle>("referenceInlineEditor");
             eventListenerInlineEditorState = rootVisualElement.Q<Toggle>("eventListenerInlineEditor");
-            autoPlayEffectsState = rootVisualElement.Q<Toggle>("autoPlayEffects");
 
             path.value = EditorPrefs.GetString(Voodoo.GetSettingsSavePath, Voodoo.DefaultSavePath);
 
             referenceInlineEditorState.value = EditorPrefs.GetBool(Voodoo.GetShowGenericReferenceValueKey, false);
             eventListenerInlineEditorState.value = EditorPrefs.GetBool(Voodoo.GetShowGenericEventDebuggerKey, false);
-            autoPlayEffectsState.value = EditorPrefs.GetBool(Voodoo.GetAutoPlayEffectsKey, false);
 
             rootVisualElement.Q<Button>("selectPath").clicked += OnPathSelect;
             path.RegisterValueChangedCallback(status => EditorPrefs.SetString(Voodoo.GetSettingsSavePath, status.newValue));
             referenceInlineEditorState.RegisterValueChangedCallback(status => EditorPrefs.SetBool(Voodoo.GetShowGenericReferenceValueKey, status.newValue));
             eventListenerInlineEditorState.RegisterValueChangedCallback(status => EditorPrefs.SetBool(Voodoo.GetShowGenericEventDebuggerKey, status.newValue));
-            autoPlayEffectsState.RegisterValueChangedCallback(status => EditorPrefs.SetBool(Voodoo.GetAutoPlayEffectsKey, status.newValue));
         }
 
         private void OnPathSelect()
@@ -47,11 +43,6 @@ namespace VolatileVoodoo.Editor.UI
         public void OnEventListenerInlineEditorStateChanged(bool value)
         {
             eventListenerInlineEditorState.SetValueWithoutNotify(value);
-        }
-
-        public void OnAutoPlayEffectsStateChanged(bool value)
-        {
-            autoPlayEffectsState.SetValueWithoutNotify(value);
         }
     }
 }

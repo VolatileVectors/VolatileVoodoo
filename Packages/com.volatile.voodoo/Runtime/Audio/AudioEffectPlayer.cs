@@ -1,18 +1,40 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Audio;
-using VolatileVoodoo.Audio.Base;
 using VolatileVoodoo.Utils;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace VolatileVoodoo.Audio
 {
     public class AudioEffectPlayer : MonoBehaviour
     {
+        public enum SpatialType
+        {
+            [InspectorName("2D")]
+            TwoD,
+
+            [InspectorName("3D")]
+            ThreeD
+        }
+
         private static Queue<AudioSource> audioSources;
+#if UNITY_EDITOR
+        private static AudioSource previewSource;
+#endif
 
         public AudioMixerGroup audioGroup;
+        public AudioResource effect;
+
+#if UNITY_EDITOR
+        [OnValueChanged(nameof(OnSpatialTypeChanged))]
+#endif
+        [EnumToggleButtons]
+        [Header("Settings")]
+        public SpatialType spatialType = SpatialType.ThreeD;
 
 #if UNITY_EDITOR
         [OnValueChanged(nameof(OnRolloffModeChanged))]
@@ -31,37 +53,51 @@ namespace VolatileVoodoo.Audio
         [PropertyRange(nameof(minDistance), 500f)]
         public float maxDistance = 500f;
 
-        public List<BaseAudioEffect> effects;
-        private List<PlayingSource> playingSources;
+#if UNITY_EDITOR
+        [OnValueChanged(nameof(OnLoopChanged))]
+        [ShowIf(nameof(EffectIsAudioClip))]
+#endif
+        public bool loop;
 
-        private void Awake()
+        private AudioSource playingSource;
+
+        [SerializeField]
+        [HideInInspector]
+        private bool looping;
+
+#if UNITY_EDITOR
+        private void OnValidate()
         {
-            playingSources = new List<PlayingSource>();
+            looping = loop && EffectIsAudioClip;
         }
+#endif
 
         private void LateUpdate()
         {
             // clean up non looping not playing sources, looping sources must explicitly be set to !enabled to allow recovery of paused looping sources on focus loss  
-            var finished = playingSources.Where(item => !item.Source.enabled || (!item.Source.loop && !item.Source.isPlaying)).Select(PutIntoAudioSourcePool).ToArray();
-            foreach (var item in finished)
-                playingSources.Remove(item);
+            if (!playingSource || playingSource.isPlaying || (playingSource.loop && playingSource.enabled))
+                return;
+
+            ReturnToAudioSourcePool(playingSource);
+            playingSource = null;
         }
 
         private void OnDestroy()
         {
-            playingSources.ForEach(source => PutIntoAudioSourcePool(source));
-            playingSources.Clear();
+            if (!playingSource)
+                return;
+
+            ReturnToAudioSourcePool(playingSource);
+            playingSource = null;
         }
 
         private void OnApplicationFocus(bool hasFocus)
         {
-            if (!hasFocus)
+            if (!hasFocus || !playingSource || !playingSource.enabled || !playingSource.loop || playingSource.isPlaying)
                 return;
 
             // unpause potentially paused looping sources
-            var paused = playingSources.Where(item => item.Source.enabled && item.Source.loop && !item.Source.isPlaying).ToArray();
-            foreach (var item in paused)
-                item.Source.UnPause();
+            playingSource.UnPause();
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -71,16 +107,14 @@ namespace VolatileVoodoo.Audio
                 return;
 
             audioSources = new Queue<AudioSource>(Voodoo.AudioSourcePoolSize);
-            for (var i = 0; i < Voodoo.AudioSourcePoolSize; ++i) {
-                var go = new GameObject("AudioEffect") {
-                    hideFlags = HideFlags.HideAndDontSave
-                };
+            for (var i = 0; i < Voodoo.AudioSourcePoolSize; ++i)
+            {
+                var go = new GameObject("AudioSource") { hideFlags = HideFlags.HideAndDontSave };
                 DontDestroyOnLoad(go);
 
                 var source = go.AddComponent<AudioSource>();
                 source.playOnAwake = false;
                 source.loop = false;
-                source.spatialBlend = 1f;
                 source.enabled = false;
                 audioSources.Enqueue(source);
             }
@@ -92,31 +126,41 @@ namespace VolatileVoodoo.Audio
                 return false;
 
             source.enabled = true;
+            source.resource = effect;
             source.outputAudioMixerGroup = audioGroup;
             source.rolloffMode = rolloffMode;
             source.minDistance = minDistance;
             source.maxDistance = maxDistance;
+            source.loop = looping;
+            source.spatialBlend = spatialType switch
+            {
+                SpatialType.TwoD => 0f,
+                SpatialType.ThreeD => 1f,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
             var tf = source.transform;
             tf.parent = transform;
             tf.localPosition = Vector3.zero;
 
+#if UNITY_EDITOR
+            var go = source.gameObject;
+            go.hideFlags &= ~HideFlags.HideInHierarchy;
+            go.name += "[" + effect.name + "]";
+#endif
+
             return true;
         }
 
-        private static PlayingSource PutIntoAudioSourcePool(PlayingSource playingSource)
+        private static void ReturnToAudioSourcePool(AudioSource source)
         {
-            var source = playingSource.Source;
-            source.clip = null;
+            source.Stop();
+            source.enabled = false;
+            source.resource = null;
             source.outputAudioMixerGroup = null;
             source.loop = false;
             source.volume = 1f;
             source.pitch = 1f;
-            source.spatialBlend = 0f;
-            source.rolloffMode = AudioRolloffMode.Logarithmic;
-            source.minDistance = 1f;
-            source.maxDistance = 500f;
-            source.enabled = false;
 
             var tf = source.transform;
             tf.parent = null;
@@ -129,84 +173,128 @@ namespace VolatileVoodoo.Audio
 #endif
 
             audioSources.Enqueue(source);
-            return playingSource;
         }
 
-        public void PlayFirst()
+        public void Play()
         {
-            Play();
-        }
+            if (!effect)
+                return;
 
-        public void Play(string effectName = "")
-        {
+            if (playingSource)
+            {
+                ReturnToAudioSourcePool(playingSource);
+                playingSource = null;
+            }
+
             if (!GrabFromAudioSourcePool(out var source))
                 return;
 
-#if UNITY_EDITOR
-            var go = source.gameObject;
-            go.hideFlags &= ~HideFlags.HideInHierarchy;
-            go.name += "[" + effectName + "]";
-#endif
-
-            if (effects.FirstOrDefault(item => string.IsNullOrWhiteSpace(effectName) || item.name.Equals(effectName))?.Init(source) ?? false)
-                source.Play();
-
-            playingSources.Add(new PlayingSource { EffectName = effectName, Source = source });
+            playingSource = source;
+            source.Play();
         }
 
-        public void Stop(string effectName)
+        public void Stop()
         {
-            var playing = playingSources.Where(item => item.EffectName.Equals(effectName)).ToArray();
-            foreach (var item in playing) {
-                item.Source.Stop();
-                item.Source.enabled = false;
-            }
+            if (!playingSource)
+                return;
+
+            ReturnToAudioSourcePool(playingSource);
+            playingSource = null;
         }
 
-        public void StopAll()
-        {
-            foreach (var item in playingSources) {
-                item.Source.Stop();
-                item.Source.enabled = false;
-            }
-        }
-
-        private struct PlayingSource
-        {
-            public string EffectName;
-            public AudioSource Source;
-        }
 
 #if UNITY_EDITOR
         private void OnRolloffModeChanged()
         {
-            if (playingSources is not { Count: > 0 })
+            if (!playingSource || !playingSource.enabled)
                 return;
 
-            var currentlyPlaying = playingSources.Where(item => item.Source != null && item.Source.enabled);
-            foreach (var item in currentlyPlaying)
-                item.Source.rolloffMode = rolloffMode;
+            playingSource.rolloffMode = rolloffMode;
         }
 
         public void OnMinDistanceChanged()
         {
-            if (playingSources is not { Count: > 0 })
+            if (!playingSource || !playingSource.enabled)
                 return;
 
-            var currentlyPlaying = playingSources.Where(item => item.Source != null && item.Source.enabled);
-            foreach (var item in currentlyPlaying)
-                item.Source.minDistance = minDistance;
+            playingSource.minDistance = minDistance;
         }
 
         public void OnMaxDistanceChanged()
         {
-            if (playingSources is not { Count: > 0 })
+            if (!playingSource || !playingSource.enabled)
                 return;
 
-            var currentlyPlaying = playingSources.Where(item => item.Source != null && item.Source.enabled);
-            foreach (var item in currentlyPlaying)
-                item.Source.maxDistance = maxDistance;
+            playingSource.maxDistance = maxDistance;
         }
+
+        public void OnSpatialTypeChanged()
+        {
+            if (!playingSource || !playingSource.enabled)
+                return;
+
+            playingSource.spatialBlend = spatialType switch
+            {
+                SpatialType.TwoD => 0f,
+                SpatialType.ThreeD => 1f,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+
+        public void OnLoopChanged()
+        {
+            if (!playingSource || !playingSource.enabled || !EffectIsAudioClip)
+                return;
+
+            playingSource.loop = loop;
+        }
+
+        [ButtonGroup()]
+        [Button(SdfIconType.PlayFill, "")]
+        [HideInPlayMode]
+        private void Preview()
+        {
+            if (previewSource == null)
+            {
+                previewSource = EditorUtility.CreateGameObjectWithHideFlags("AudioEffectPreview", HideFlags.HideAndDontSave, typeof(AudioSource)).GetComponent<AudioSource>();
+                previewSource.enabled = true;
+                previewSource.loop = false;
+            }
+
+            if (previewSource.isPlaying)
+                previewSource.Stop();
+
+            previewSource.resource = effect;
+            previewSource.outputAudioMixerGroup = audioGroup;
+            previewSource.rolloffMode = rolloffMode;
+            previewSource.minDistance = minDistance;
+            previewSource.maxDistance = maxDistance;
+            previewSource.spatialBlend = spatialType switch
+            {
+                SpatialType.TwoD => 0f,
+                SpatialType.ThreeD => 1f,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            var tf = previewSource.transform;
+            tf.parent = transform;
+            tf.localPosition = Vector3.zero;
+
+            previewSource.Play();
+        }
+
+        [ButtonGroup()]
+        [Button(SdfIconType.StopFill, "")]
+        [EnableIf(nameof(PreviewIsPlaying))]
+        [HideInPlayMode]
+        private void StopPreview()
+        {
+            if (PreviewIsPlaying)
+                previewSource.Stop();
+        }
+
+        private bool PreviewIsPlaying => previewSource != null && previewSource.isPlaying;
+        private bool EffectIsAudioClip => effect is AudioClip;
 #endif
     }
 }

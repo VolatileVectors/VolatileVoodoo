@@ -11,7 +11,6 @@ namespace VolatileVoodoo.Utils
     public static class Voodoo
     {
         // Constants
-        public const float SemitonesToPitchConversionUnit = 1.05946f;
         public const double DspWarmStartDelay = 1d / 6d;
         public const byte AudioSourcePoolSize = 30;
 
@@ -22,7 +21,6 @@ namespace VolatileVoodoo.Utils
 #if UNITY_EDITOR
         // Editor Preferences keys
         private const string SettingsPrefix = "VolatileVoodoo";
-        private const string AutoPlayEffectsKey = "AutoPlayEffects";
         private const string ShowGenericReferenceValueKey = "ShowGenericReferenceValue";
         private const string ShowGenericEventDebuggerKey = "ShowGenericEventDebugger";
         private const string DebuggerFilterKey = "LastDebuggerFilter";
@@ -75,7 +73,6 @@ namespace VolatileVoodoo.Utils
             return path;
         }
 
-        public static string GetAutoPlayEffectsKey => string.Join('.', SettingsPrefix, Application.productName, AutoPlayEffectsKey);
         public static string GetShowGenericReferenceValueKey => string.Join('.', SettingsPrefix, Application.productName, ShowGenericReferenceValueKey);
         public static string GetShowGenericEventDebuggerKey => string.Join('.', SettingsPrefix, Application.productName, ShowGenericEventDebuggerKey);
         public static string GetSettingsSavePath => string.Join('.', SettingsPrefix, Application.productName, SettingsSavePath);

@@ -28,12 +28,12 @@ namespace VolatileVoodoo.Editor.UI
 
             var currentValueField = element.Q<TextField>("currentValue");
             currentValueField.value = FilteredVoodooElements[index].CurrentValueDebug;
-            FilteredVoodooElements[index].debugValueChanged = newValue => currentValueField.value = newValue;
+            FilteredVoodooElements[index].DebugValueChanged = newValue => currentValueField.value = newValue;
         }
 
         protected override void OnUnbindValue(VisualElement element, int index)
         {
-            VoodooElements.FindAll(item => item.name == element.Q<Label>("valueName").text).ForEach(item => item.debugValueChanged = null);
+            VoodooElements.FindAll(item => item.name == element.Q<Label>("valueName").text).ForEach(item => item.DebugValueChanged = null);
         }
 
         protected override bool FilterCheck(GenericValue item, string filterText, FilterType filterType) =>

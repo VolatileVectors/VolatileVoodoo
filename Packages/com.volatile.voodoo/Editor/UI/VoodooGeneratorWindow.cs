@@ -1,7 +1,6 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using VolatileVoodoo.Audio.Base;
 using VolatileVoodoo.Editor.CodeGenerator;
 using VolatileVoodoo.Events.Base;
 using VolatileVoodoo.Utils;
@@ -26,14 +25,12 @@ namespace VolatileVoodoo.Editor.UI
         {
             GenericReference.InlineEditorStateChanged += settingsTab.OnReferenceInlineEditorStateChanged;
             BaseEventListener.InlineEditorStateChanged += settingsTab.OnEventListenerInlineEditorStateChanged;
-            BaseAudioEffect.AutoPlayEffectsStateChanged += settingsTab.OnAutoPlayEffectsStateChanged;
         }
 
         private void OnDisable()
         {
             GenericReference.InlineEditorStateChanged -= settingsTab.OnReferenceInlineEditorStateChanged;
             BaseEventListener.InlineEditorStateChanged -= settingsTab.OnEventListenerInlineEditorStateChanged;
-            BaseAudioEffect.AutoPlayEffectsStateChanged -= settingsTab.OnAutoPlayEffectsStateChanged;
         }
 
         private void CreateGUI()
