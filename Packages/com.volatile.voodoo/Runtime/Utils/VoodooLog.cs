@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
+using Object = UnityEngine.Object;
 
 namespace VolatileVoodoo.Utils
 {
@@ -84,6 +86,35 @@ namespace VolatileVoodoo.Utils
         {
             Debug.unityLogger.logEnabled = false; // Turn off logging (for plugin/assets)
             // Debug.unityLogger.filterLogType = LogType.Error;
+
+        }
+#else
+        private const int LogMessageBufferSize = 50;
+        public static Queue<string> LogMessageBuffer { get; private set; }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void InitLogMessageBuffer()
+        {
+            LogMessageBuffer = new Queue<string>(LogMessageBufferSize);
+            Application.logMessageReceived += OnLogMessageReceived;
+        }
+
+        private static void OnLogMessageReceived(string logMessage, string stacktrace, LogType logType)
+        {
+            if (LogMessageBuffer.Count >= 50)
+            {
+                LogMessageBuffer.Dequeue();
+            }
+
+            LogMessageBuffer.Enqueue(logType switch
+            {
+                LogType.Error => "ERROR - ",
+                LogType.Assert => "ASSERT - ",
+                LogType.Warning => "WARNING - ",
+                LogType.Log => "LOG - ",
+                LogType.Exception => "EXCEPTION - ",
+                _ => ""
+            } + logMessage);
         }
 #endif
     }
