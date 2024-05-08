@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using Application = UnityEngine.Application;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
@@ -8,6 +10,8 @@ namespace VolatileVoodoo.Utils
 {
     public static class VoodooLog
     {
+        public static Action<string> LogMessageReceived;
+
         [Conditional("ENABLE_LOGGING")]
         public static void Info(object message)
         {
@@ -89,7 +93,7 @@ namespace VolatileVoodoo.Utils
 
         }
 #else
-        private const int LogMessageBufferSize = 50;
+        private const int LogMessageBufferSize = 250;
         public static Queue<string> LogMessageBuffer { get; private set; }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -106,7 +110,7 @@ namespace VolatileVoodoo.Utils
                 LogMessageBuffer.Dequeue();
             }
 
-            LogMessageBuffer.Enqueue(logType switch
+            var message = logType switch
             {
                 LogType.Error => "ERROR - ",
                 LogType.Assert => "ASSERT - ",
@@ -114,8 +118,12 @@ namespace VolatileVoodoo.Utils
                 LogType.Log => "LOG - ",
                 LogType.Exception => "EXCEPTION - ",
                 _ => ""
-            } + logMessage);
+            } + logMessage;
+            LogMessageBuffer.Enqueue(message);
+            LogMessageReceived?.Invoke(message);
         }
+
+        public static string GetLog => string.Join("\n", LogMessageBuffer);
 #endif
     }
 }
