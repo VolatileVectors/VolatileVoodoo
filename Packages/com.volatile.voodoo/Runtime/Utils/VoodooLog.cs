@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using Application = UnityEngine.Application;
@@ -93,37 +92,31 @@ namespace VolatileVoodoo.Utils
 
         }
 #else
-        private const int LogMessageBufferSize = 250;
-        public static Queue<string> LogMessageBuffer { get; private set; }
+        private const string ColorLog = "#DAF7A6";
+        private const string ColorWarning = "#FFC300";
+        private const string ColorError = "#FF5733";
+        private const string ColorAssert = "#C70039";
+        private const string ColorException = "#900C3F";
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void InitLogMessageBuffer()
+        private static void InitLogMessageFormater()
         {
-            LogMessageBuffer = new Queue<string>(LogMessageBufferSize);
             Application.logMessageReceived += OnLogMessageReceived;
         }
 
         private static void OnLogMessageReceived(string logMessage, string stacktrace, LogType logType)
         {
-            if (LogMessageBuffer.Count >= 50)
-            {
-                LogMessageBuffer.Dequeue();
-            }
-
-            var message = logType switch
-            {
-                LogType.Error => "ERROR - ",
-                LogType.Assert => "ASSERT - ",
-                LogType.Warning => "WARNING - ",
-                LogType.Log => "LOG - ",
-                LogType.Exception => "EXCEPTION - ",
-                _ => ""
-            } + logMessage;
-            LogMessageBuffer.Enqueue(message);
-            LogMessageReceived?.Invoke(message);
+            LogMessageReceived?.Invoke(logType switch
+                {
+                    LogType.Log => $"<color={ColorLog}>",
+                    LogType.Warning => $"<color={ColorWarning}>",
+                    LogType.Error => $"<color={ColorError}>",
+                    LogType.Assert => $"<color={ColorAssert}>",
+                    LogType.Exception => $"<color={ColorException}>",
+                    _ => ""
+                } + $"[{DateTime.Now.ToLongTimeString()}] {logMessage}</color>"
+            );
         }
-
-        public static string GetLog => string.Join("\n", LogMessageBuffer);
 #endif
     }
 }
