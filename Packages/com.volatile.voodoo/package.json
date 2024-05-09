@@ -2,8 +2,8 @@
   "name": "com.volatile.voodoo",
   "displayName": "Volatile Voodoo",
   "description": "Scriptable Object Events/Values & Utilities",
-  "version": "0.4.0",
-  "unity": "2021.1",
+  "version": "0.4.1",
+  "unity": "6000.0",
   "author": {
     "name": "Helge Backhaus"
   },

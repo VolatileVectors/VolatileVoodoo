@@ -42,7 +42,7 @@ namespace VolatileVoodoo.Values.Base
                 valueChanged?.Invoke(currentValue);
 
 #if UNITY_EDITOR
-                DebugValueChanged?.Invoke(value?.ToString() ?? "null");
+                DebugValueChanged?.Invoke(currentValue?.ToString() ?? "null");
 #endif
             }
         }
