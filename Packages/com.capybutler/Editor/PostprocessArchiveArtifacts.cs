@@ -3,15 +3,15 @@ using System.Linq;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
-using VolatileVoodoo.Utils;
 
-namespace VolatileVoodoo.Editor
+namespace Capybutler.Editor
 {
     public class PostprocessArchiveArtifacts : IPostprocessBuildWithReport
     {
         private const string ArchivePath = "Build/DoNotShip";
 
-        private static readonly string[] ArchiveButDoNotShipPathSuffixes = {
+        private static readonly string[] ArchiveButDoNotShipPathSuffixes =
+        {
             "BackUpThisFolder_ButDontShipItWithYourGame",
             "BurstDebugInformation_DoNotShip"
         };
@@ -20,12 +20,13 @@ namespace VolatileVoodoo.Editor
 
         public void OnPostprocessBuild(BuildReport report)
         {
-            var projectPath = Voodoo.ApplicationProjectPath;
-            var destinationPath = Voodoo.ProjectPathToFullPath(ArchivePath);
+            var projectPath = Capyutils.ApplicationProjectPath;
+            var destinationPath = Capyutils.ProjectPathToFullPath(ArchivePath);
             Debug.Log("[PostprocessArchiveArtifacts] Archiving 'DoNotShip' artifacts in " + Path.GetRelativePath(projectPath, destinationPath));
 
             var subDirectories = new DirectoryInfo(Path.GetDirectoryName(report.summary.outputPath) ?? "").GetDirectories();
-            foreach (var source in subDirectories) {
+            foreach (var source in subDirectories)
+            {
                 if (!ArchiveButDoNotShipPathSuffixes.Any(suffix => source.Name.Contains(suffix)))
                     continue;
 

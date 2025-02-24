@@ -1,8 +1,8 @@
 ﻿{
-  "name": "com.volatile.voodoo.build",
-  "displayName": "Volatile Voodoo Build",
+  "name": "com.capybutler",
+  "displayName": "Capybutler",
   "description": "Build and push builds to Steam",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "unity": "2021.1",
   "author": {
     "name": "Helge Backhaus"
@@ -12,7 +12,6 @@
     "url": "git@github.com:VolatileVectors/VolatileVoodoo.git"
   },
   "dependencies": {
-    "com.volatile.voodoo": "https://github.com/VolatileVectors/VolatileVoodoo.git?path=/Packages/com.volatile.voodoo#0.2.0",
     "com.unity.addressables": "1.21.1"
   },
   "keywords": [

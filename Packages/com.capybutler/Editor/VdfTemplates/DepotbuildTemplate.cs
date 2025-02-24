@@ -1,13 +1,13 @@
-﻿using VolatileVoodoo.Editor.CodeGenerator;
-
-namespace VolatileVoodoo.Editor.VdfTemplates
+﻿namespace Capybutler.Editor.VdfTemplates
 {
-    public sealed class DepotbuildTemplate : CodeGeneratorBase
+    public sealed class DepotbuildTemplate : FileGenerator
     {
         public string BuildPath;
         public int DepotId;
 
-        public DepotbuildTemplate(string path) : base(path) { }
+        public DepotbuildTemplate(string path) : base(path)
+        {
+        }
 
         protected override string FileName => $"depot_{DepotId}.vdf";
 

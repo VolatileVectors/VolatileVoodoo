@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.capybutler": {
+      "version": "file:com.capybutler",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.addressables": "1.21.1"
+      }
+    },
     "com.unity.addressables": {
       "version": "2.2.2",
       "depth": 0,
@@ -16,7 +24,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
-      "version": "1.8.18",
+      "version": "1.8.19",
       "depth": 2,
       "source": "registry",
       "dependencies": {
@@ -133,7 +141,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.searcher": {
-      "version": "4.9.2",
+      "version": "4.9.3",
       "depth": 2,
       "source": "registry",
       "dependencies": {},
@@ -145,7 +153,7 @@
       "source": "builtin",
       "dependencies": {
         "com.unity.render-pipelines.core": "17.0.3",
-        "com.unity.searcher": "4.9.2"
+        "com.unity.searcher": "4.9.3"
       }
     },
     "com.unity.sysroot": {
@@ -165,7 +173,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.4.5",
+      "version": "1.4.6",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -209,15 +217,6 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
-    },
-    "com.volatile.voodoo.build": {
-      "version": "file:com.volatile.voodoo.build",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.volatile.voodoo": "https://github.com/VolatileVectors/VolatileVoodoo.git?path=/Packages/com.volatile.voodoo#0.2.0",
-        "com.unity.addressables": "1.21.1"
-      }
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

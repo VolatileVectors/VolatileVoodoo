@@ -2,9 +2,8 @@ using System.IO;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
-using VolatileVoodoo.Utils;
 
-namespace VolatileVoodoo.Editor
+namespace Capybutler.Editor
 {
     public class PostprocessIncludeWithBuild : IPostprocessBuildWithReport
     {
@@ -13,8 +12,8 @@ namespace VolatileVoodoo.Editor
 
         public void OnPostprocessBuild(BuildReport report)
         {
-            var basePath = Voodoo.ApplicationProjectPath;
-            var includePath = Voodoo.ProjectPathToFullPath(IncludeWithBuildPath);
+            var basePath = Capyutils.ApplicationProjectPath;
+            var includePath = Capyutils.ProjectPathToFullPath(IncludeWithBuildPath);
             var outputPath = Path.GetDirectoryName(report.summary.outputPath);
 
             Debug.Log("[PostprocessIncludeWithBuild] Adding " + Path.GetRelativePath(basePath, includePath) + "content to " + Path.GetRelativePath(basePath, outputPath));

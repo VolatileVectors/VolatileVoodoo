@@ -1,9 +1,7 @@
 {
-  "name": "VolatileVoodooBuild",
-  "rootNamespace": "VolatileVoodoo",
+  "name": "CapybutlerEditor",
+  "rootNamespace": "Capybutler",
   "references": [
-    "GUID:1f92b7ea74651194e913015e64b2a834",
-    "GUID:4423383ec1149104ea95fab1a61633b5",
     "GUID:69448af7b92c7f342b298e06a37122aa"
   ],
   "includePlatforms": [

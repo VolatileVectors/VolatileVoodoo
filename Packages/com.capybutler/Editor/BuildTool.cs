@@ -7,10 +7,9 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.UIElements;
-using VolatileVoodoo.Editor.VdfTemplates;
-using VolatileVoodoo.Utils;
+using Capybutler.Editor.VdfTemplates;
 
-namespace VolatileVoodoo.Editor
+namespace Capybutler.Editor
 {
     public class BuildTool : EditorWindow
     {
@@ -21,9 +20,10 @@ namespace VolatileVoodoo.Editor
             ReleaseCandidate
         }
 
-        private const string EditorKeyPrefix = "VolatileVoodoo.Build.";
+        private const string EditorKeyPrefix = "Capybutler.";
 
-        private static readonly string[] DefaultScriptingDefines = {
+        private static readonly string[] DefaultScriptingDefines =
+        {
             "STEAMWORKS_NET",
             "ODIN_INSPECTOR",
             "ODIN_INSPECTOR_3",
@@ -34,7 +34,8 @@ namespace VolatileVoodoo.Editor
             "SHAPES_URP"
         };
 
-        private static readonly string[] DevelopmentScriptingDefines = {
+        private static readonly string[] DevelopmentScriptingDefines =
+        {
             "ENABLE_LOGGING",
             "EXTENDED_DEBUG"
         };
@@ -58,8 +59,8 @@ namespace VolatileVoodoo.Editor
         public void CreateGUI()
         {
             var root = rootVisualElement;
-            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(Voodoo.VoodooPackagePath("com.volatile.voodoo.build", "Editor/BuildTool.uss")));
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(Voodoo.VoodooPackagePath("com.volatile.voodoo.build", "Editor/BuildTool.uxml"));
+            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(Capyutils.VoodooPackagePath("com.volatile.voodoo.build", "Editor/BuildTool.uss")));
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(Capyutils.VoodooPackagePath("com.volatile.voodoo.build", "Editor/BuildTool.uxml"));
             root.Add(visualTree.Instantiate());
 
             // Build Configuration
@@ -146,16 +147,18 @@ namespace VolatileVoodoo.Editor
 
         private void CompileSteamDeploymentScriptsForBranch(BuildType buildType)
         {
-            var outputPath = Voodoo.ProjectPathToFullPath("Build/Scripts");
+            var outputPath = Capyutils.ProjectPathToFullPath("Build/Scripts");
 
-            var app = new AppbuildTemplate(outputPath) {
+            var app = new AppbuildTemplate(outputPath)
+            {
                 AppId = int.TryParse(appIdField.value, out var appIdValue) ? appIdValue : 0,
                 DepotId = int.TryParse(depotIdField.value, out var depotIdValue) ? depotIdValue : 0,
                 BuildType = buildType,
                 Description = descriptionField.value
             };
 
-            var depot = new DepotbuildTemplate(outputPath) {
+            var depot = new DepotbuildTemplate(outputPath)
+            {
                 DepotId = app.DepotId,
                 BuildPath = buildPathField.value
             };
@@ -168,7 +171,8 @@ namespace VolatileVoodoo.Editor
 
         private void SetStackTraceLogTypesForBranch(BuildType buildType)
         {
-            switch (buildType) {
+            switch (buildType)
+            {
                 case BuildType.Development:
                     PlayerSettings.SetStackTraceLogType(LogType.Log, StackTraceLogType.ScriptOnly);
                     PlayerSettings.SetStackTraceLogType(LogType.Warning, StackTraceLogType.ScriptOnly);
@@ -200,7 +204,9 @@ namespace VolatileVoodoo.Editor
         private string[] GetScriptingDefineSymbolsArrayForBranch(BuildType buildType)
         {
             var result = DefaultScriptingDefines;
-            if (buildType == BuildType.Development) result = result.Concat(DevelopmentScriptingDefines).ToArray();
+            if (buildType == BuildType.Development) 
+                result = result.Concat(DevelopmentScriptingDefines).ToArray();
+            
             return result;
         }
 
@@ -217,11 +223,13 @@ namespace VolatileVoodoo.Editor
 
             var buildOptions = BuildOptions.CompressWithLz4;
             if (buildType == BuildType.Development)
-                buildOptions |= BuildOptions.Development |
-                                BuildOptions.AllowDebugging |
-                                BuildOptions.ConnectWithProfiler;
+                buildOptions |=
+                    BuildOptions.Development |
+                    BuildOptions.AllowDebugging |
+                    BuildOptions.ConnectWithProfiler;
 
-            var buildPlayerOptions = new BuildPlayerOptions {
+            var buildPlayerOptions = new BuildPlayerOptions
+            {
                 locationPathName = Path.Combine(buildPathField.value, "CapybaraCrashCourses.x86_64"),
                 options = buildOptions,
                 target = BuildTarget.StandaloneLinux64,

@@ -1,22 +1,22 @@
-﻿using VolatileVoodoo.Editor.CodeGenerator;
-using VolatileVoodoo.Utils;
-
-namespace VolatileVoodoo.Editor.VdfTemplates
+﻿namespace Capybutler.Editor.VdfTemplates
 {
-    public sealed class AppbuildTemplate : CodeGeneratorBase
+    public sealed class AppbuildTemplate : FileGenerator
     {
         public int AppId;
         public BuildTool.BuildType BuildType;
         public int DepotId;
         public string Description;
 
-        public AppbuildTemplate(string path) : base(path) { }
+        public AppbuildTemplate(string path) : base(path)
+        {
+        }
 
         protected override string FileName => $"app_{AppId}.vdf";
 
         protected override string TransformText()
         {
-            var buildDescription = BuildType switch {
+            var buildDescription = BuildType switch
+            {
                 BuildTool.BuildType.Development => "[Development]",
                 BuildTool.BuildType.Beta => "[Beta]",
                 BuildTool.BuildType.ReleaseCandidate => "[Release Candidate]",
@@ -29,7 +29,7 @@ namespace VolatileVoodoo.Editor.VdfTemplates
             PushIndent();
             WriteLine($"\"appid\" \"{AppId}\"");
             WriteLine($"\"desc\" \"{buildDescription}\"");
-            WriteLine($"\"buildoutput\" \"{Voodoo.ProjectPathToFullPath("Build/Output")}\"");
+            WriteLine($"\"buildoutput\" \"{Capyutils.ProjectPathToFullPath("Build/Output")}\"");
             WriteLine("\"contentroot\" \"\"");
             WriteLine($"\"setlive\" \"{BuildType.ToString().ToLower()}\"");
             WriteLine("\"preview\" \"0\"");
@@ -37,7 +37,7 @@ namespace VolatileVoodoo.Editor.VdfTemplates
             WriteLine("\"depots\"");
             WriteLine("{");
             PushIndent();
-            WriteLine($"\"{DepotId}\" \"{Voodoo.ProjectPathToFullPath($"Build/Scripts/depot_{DepotId}.vdf")}\"");
+            WriteLine($"\"{DepotId}\" \"{Capyutils.ProjectPathToFullPath($"Build/Scripts/depot_{DepotId}.vdf")}\"");
             PopIndent();
             WriteLine("}");
             PopIndent();

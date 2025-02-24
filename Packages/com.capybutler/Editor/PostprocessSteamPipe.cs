@@ -6,7 +6,7 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using Debug = UnityEngine.Debug;
 
-namespace VolatileVoodoo.Editor
+namespace Capybutler.Editor
 {
     public class PostprocessSteamPipe : IPostprocessBuildWithReport
     {
@@ -14,19 +14,21 @@ namespace VolatileVoodoo.Editor
 
         public void OnPostprocessBuild(BuildReport report)
         {
-            if (!EditorPrefs.GetBool(BuildTool.GetEditorKeyPrefix + "upload", false)) {
+            if (!EditorPrefs.GetBool(BuildTool.GetEditorKeyPrefix + "upload", false))
+            {
                 Debug.Log("[PostprocessSteamPipe] Skipping SteamPipe upload");
                 return;
             }
 
             var processName = EditorPrefs.GetString(BuildTool.GetEditorKeyPrefix + "steamCmdPath", "");
-            if (!File.Exists(processName)) {
+            if (!File.Exists(processName))
+            {
                 Debug.LogError("[PostprocessSteamPipe] 'steamcmd.exe' not found");
                 return;
             }
 
-            if (!(EditorPrefs.HasKey(BuildTool.GetEditorKeyPrefix + "steamLogin") &&
-                  EditorPrefs.HasKey(BuildTool.GetEditorKeyPrefix + "steamPassword"))) {
+            if (!(EditorPrefs.HasKey(BuildTool.GetEditorKeyPrefix + "steamLogin") && EditorPrefs.HasKey(BuildTool.GetEditorKeyPrefix + "steamPassword")))
+            {
                 Debug.LogError("[PostprocessSteamPipe] Steam Login Information not found");
                 return;
             }
@@ -35,15 +37,18 @@ namespace VolatileVoodoo.Editor
             var steamPassword = EditorPrefs.GetString(BuildTool.GetEditorKeyPrefix + "steamPassword");
 
             var buildScriptName = EditorPrefs.GetString(BuildTool.GetEditorKeyPrefix + "appIdScriptPath", "");
-            if (!File.Exists(buildScriptName)) {
+            if (!File.Exists(buildScriptName))
+            {
                 Debug.LogError($"[PostprocessSteamPipe] App build script '{buildScriptName}' not found");
                 return;
             }
 
             var arguments = $"+login {steamLogin} \"{steamPassword}\" +run_app_build \"{buildScriptName}\" +quit";
 
-            var steamPipe = new Process {
-                StartInfo = new ProcessStartInfo {
+            var steamPipe = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
                     FileName = EditorPrefs.GetString(BuildTool.GetEditorKeyPrefix + "steamCmdPath", ""),
                     Arguments = arguments,
                     WorkingDirectory = Path.GetDirectoryName(processName) ?? "",
