@@ -1,18 +1,24 @@
 using System;
 using System.IO;
 using System.Linq;
+using Capybutler.Editor.Build.VdfTemplates;
 using UnityEditor;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Capybutler.Editor.VdfTemplates;
 
-namespace Capybutler.Editor
+namespace Capybutler.Editor.Build
 {
     public class BuildTool : EditorWindow
     {
+        public static string ApplicationProjectPath => Directory.GetParent(Application.dataPath)?.FullName ?? Application.dataPath;
+
+        public static string ProjectPathToFullPath(string relativePath) => Path.GetFullPath(Path.Combine(ApplicationProjectPath, relativePath.Trim('\\', '/', ' ')));
+
+        private static string PackagePath(string packageName, string relativePath) => Path.Combine($"Packages/{packageName}", relativePath.Trim('\\', '/', ' ')).Replace("\\", "/");
+
         public enum BuildType
         {
             Development,
@@ -59,8 +65,8 @@ namespace Capybutler.Editor
         public void CreateGUI()
         {
             var root = rootVisualElement;
-            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(Capyutils.VoodooPackagePath("com.volatile.voodoo.build", "Editor/BuildTool.uss")));
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(Capyutils.VoodooPackagePath("com.volatile.voodoo.build", "Editor/BuildTool.uxml"));
+            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(PackagePath("com.capybutler", "Editor/Build/BuildTool.uss")));
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(PackagePath("com.capybutler", "Editor/Build/BuildTool.uxml"));
             root.Add(visualTree.Instantiate());
 
             // Build Configuration
@@ -105,7 +111,7 @@ namespace Capybutler.Editor
             root.Q<Button>("startBuild").clicked += OnStartBuildClicked;
         }
 
-        [MenuItem("Volatile Voodoo/Steam Build", false, priority = 50)]
+        [MenuItem("Capybutler/Steam Build", false, priority = 50)]
         private static void ShowWindow()
         {
             var window = GetWindow<BuildTool>(false, "Build Tool");
@@ -147,7 +153,7 @@ namespace Capybutler.Editor
 
         private void CompileSteamDeploymentScriptsForBranch(BuildType buildType)
         {
-            var outputPath = Capyutils.ProjectPathToFullPath("Build/Scripts");
+            var outputPath = ProjectPathToFullPath("Build/Scripts");
 
             var app = new AppbuildTemplate(outputPath)
             {
@@ -171,8 +177,7 @@ namespace Capybutler.Editor
 
         private void SetStackTraceLogTypesForBranch(BuildType buildType)
         {
-            switch (buildType)
-            {
+            switch (buildType) {
                 case BuildType.Development:
                     PlayerSettings.SetStackTraceLogType(LogType.Log, StackTraceLogType.ScriptOnly);
                     PlayerSettings.SetStackTraceLogType(LogType.Warning, StackTraceLogType.ScriptOnly);
@@ -204,17 +209,30 @@ namespace Capybutler.Editor
         private string[] GetScriptingDefineSymbolsArrayForBranch(BuildType buildType)
         {
             var result = DefaultScriptingDefines;
-            if (buildType == BuildType.Development) 
+            if (buildType == BuildType.Development)
                 result = result.Concat(DevelopmentScriptingDefines).ToArray();
-            
+
             return result;
         }
 
         private void PerformBuild(BuildType buildType)
         {
             var targetGroup = BuildPipeline.GetBuildTargetGroup(BuildTarget.StandaloneLinux64);
-            PlayerSettings.SetArchitecture(NamedBuildTarget.FromBuildTargetGroup(targetGroup), 1);
-            PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(targetGroup), GetScriptingDefineSymbolsForBranch(buildType));
+            var namedBuildTarget = NamedBuildTarget.FromBuildTargetGroup(targetGroup);
+            PlayerSettings.SetArchitecture(namedBuildTarget, 1);
+            PlayerSettings.SetScriptingDefineSymbols(namedBuildTarget, GetScriptingDefineSymbolsForBranch(buildType));
+            PlayerSettings.SetIl2CppStacktraceInformation(namedBuildTarget, buildType switch
+            {
+                BuildType.Development => Il2CppStacktraceInformation.MethodFileLineNumber,
+                _ => Il2CppStacktraceInformation.MethodOnly
+            });
+            PlayerSettings.SetIl2CppCompilerConfiguration(namedBuildTarget, buildType switch
+            {
+                BuildType.Development => Il2CppCompilerConfiguration.Debug,
+                BuildType.Beta => Il2CppCompilerConfiguration.Release,
+                BuildType.ReleaseCandidate => Il2CppCompilerConfiguration.Master,
+                _ => Il2CppCompilerConfiguration.Release
+            });
 
             EditorUserBuildSettings.SwitchActiveBuildTarget(targetGroup, BuildTarget.StandaloneLinux64);
 
@@ -226,11 +244,12 @@ namespace Capybutler.Editor
                 buildOptions |=
                     BuildOptions.Development |
                     BuildOptions.AllowDebugging |
-                    BuildOptions.ConnectWithProfiler;
+                    BuildOptions.ConnectWithProfiler |
+                    BuildOptions.EnableDeepProfilingSupport;
 
             var buildPlayerOptions = new BuildPlayerOptions
             {
-                locationPathName = Path.Combine(buildPathField.value, "CapybaraCrashCourses.x86_64"),
+                locationPathName = Path.Combine(buildPathField.value, $"{Application.productName}.x86_64"),
                 options = buildOptions,
                 target = BuildTarget.StandaloneLinux64,
                 targetGroup = targetGroup,

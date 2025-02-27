@@ -4,7 +4,7 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Capybutler.Editor
+namespace Capybutler.Editor.Build
 {
     public class PostprocessArchiveArtifacts : IPostprocessBuildWithReport
     {
@@ -20,13 +20,12 @@ namespace Capybutler.Editor
 
         public void OnPostprocessBuild(BuildReport report)
         {
-            var projectPath = Capyutils.ApplicationProjectPath;
-            var destinationPath = Capyutils.ProjectPathToFullPath(ArchivePath);
+            var projectPath = BuildTool.ApplicationProjectPath;
+            var destinationPath = BuildTool.ProjectPathToFullPath(ArchivePath);
             Debug.Log("[PostprocessArchiveArtifacts] Archiving 'DoNotShip' artifacts in " + Path.GetRelativePath(projectPath, destinationPath));
 
             var subDirectories = new DirectoryInfo(Path.GetDirectoryName(report.summary.outputPath) ?? "").GetDirectories();
-            foreach (var source in subDirectories)
-            {
+            foreach (var source in subDirectories) {
                 if (!ArchiveButDoNotShipPathSuffixes.Any(suffix => source.Name.Contains(suffix)))
                     continue;
 

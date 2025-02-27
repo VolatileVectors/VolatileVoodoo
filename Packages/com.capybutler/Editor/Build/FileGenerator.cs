@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Capybutler.Editor
+namespace Capybutler.Editor.Build
 {
     public abstract class FileGenerator
     {
@@ -13,10 +13,7 @@ namespace Capybutler.Editor
         private string currentIndentField = "";
         private bool endsWithNewline;
 
-        protected FileGenerator(string path)
-        {
-            outputPath = path;
-        }
+        protected FileGenerator(string path) => outputPath = path;
 
         protected abstract string FileName { get; }
         public string FullFileName => Path.Combine(outputPath, FileName);

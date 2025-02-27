@@ -1,13 +1,11 @@
-﻿namespace Capybutler.Editor.VdfTemplates
+﻿namespace Capybutler.Editor.Build.VdfTemplates
 {
     public sealed class DepotbuildTemplate : FileGenerator
     {
         public string BuildPath;
         public int DepotId;
 
-        public DepotbuildTemplate(string path) : base(path)
-        {
-        }
+        public DepotbuildTemplate(string path) : base(path) { }
 
         protected override string FileName => $"depot_{DepotId}.vdf";
 

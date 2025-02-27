@@ -3,7 +3,7 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Capybutler.Editor
+namespace Capybutler.Editor.Build
 {
     public class PostprocessIncludeWithBuild : IPostprocessBuildWithReport
     {
@@ -12,11 +12,11 @@ namespace Capybutler.Editor
 
         public void OnPostprocessBuild(BuildReport report)
         {
-            var basePath = Capyutils.ApplicationProjectPath;
-            var includePath = Capyutils.ProjectPathToFullPath(IncludeWithBuildPath);
+            var basePath = BuildTool.ApplicationProjectPath;
+            var includePath = BuildTool.ProjectPathToFullPath(IncludeWithBuildPath);
             var outputPath = Path.GetDirectoryName(report.summary.outputPath);
 
-            Debug.Log("[PostprocessIncludeWithBuild] Adding " + Path.GetRelativePath(basePath, includePath) + "content to " + Path.GetRelativePath(basePath, outputPath));
+            Debug.Log("[PostprocessIncludeWithBuild] Adding " + Path.GetRelativePath(basePath, includePath) + " content to " + Path.GetRelativePath(basePath, outputPath));
             CopyDirectory(includePath, outputPath);
             Debug.Log("[PostprocessIncludeWithBuild] Successful");
         }

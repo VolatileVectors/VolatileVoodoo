@@ -1,13 +1,8 @@
 {
-    "name": "CapybutlerEditor",
+    "name": "Capybutler",
     "rootNamespace": "Capybutler",
-    "references": [
-        "GUID:69448af7b92c7f342b298e06a37122aa",
-        "GUID:d71fdbd4a60d40c0a5e98a92e421072e"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

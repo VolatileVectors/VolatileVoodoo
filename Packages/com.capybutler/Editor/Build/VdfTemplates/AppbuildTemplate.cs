@@ -1,4 +1,4 @@
-﻿namespace Capybutler.Editor.VdfTemplates
+﻿namespace Capybutler.Editor.Build.VdfTemplates
 {
     public sealed class AppbuildTemplate : FileGenerator
     {
@@ -7,9 +7,7 @@
         public int DepotId;
         public string Description;
 
-        public AppbuildTemplate(string path) : base(path)
-        {
-        }
+        public AppbuildTemplate(string path) : base(path) { }
 
         protected override string FileName => $"app_{AppId}.vdf";
 
@@ -21,15 +19,14 @@
                 BuildTool.BuildType.Beta => "[Beta]",
                 BuildTool.BuildType.ReleaseCandidate => "[Release Candidate]",
                 _ => "[Public]"
-            };
-            buildDescription += string.IsNullOrWhiteSpace(Description) ? "" : $" {Description}";
+            } + (string.IsNullOrWhiteSpace(Description) ? "" : $" {Description}");
 
             WriteLine("\"appbuild\"");
             WriteLine("{");
             PushIndent();
             WriteLine($"\"appid\" \"{AppId}\"");
             WriteLine($"\"desc\" \"{buildDescription}\"");
-            WriteLine($"\"buildoutput\" \"{Capyutils.ProjectPathToFullPath("Build/Output")}\"");
+            WriteLine($"\"buildoutput\" \"{BuildTool.ProjectPathToFullPath("Build/Output")}\"");
             WriteLine("\"contentroot\" \"\"");
             WriteLine($"\"setlive\" \"{BuildType.ToString().ToLower()}\"");
             WriteLine("\"preview\" \"0\"");
@@ -37,7 +34,7 @@
             WriteLine("\"depots\"");
             WriteLine("{");
             PushIndent();
-            WriteLine($"\"{DepotId}\" \"{Capyutils.ProjectPathToFullPath($"Build/Scripts/depot_{DepotId}.vdf")}\"");
+            WriteLine($"\"{DepotId}\" \"{BuildTool.ProjectPathToFullPath($"Build/Scripts/depot_{DepotId}.vdf")}\"");
             PopIndent();
             WriteLine("}");
             PopIndent();
