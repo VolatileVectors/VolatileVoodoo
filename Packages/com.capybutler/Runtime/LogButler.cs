@@ -5,7 +5,7 @@ using Application = UnityEngine.Application;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
-namespace Capybutler.Utils
+namespace Capybutler
 {
     public static class LogButler
     {

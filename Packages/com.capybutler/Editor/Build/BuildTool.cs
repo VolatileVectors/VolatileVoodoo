@@ -13,20 +13,12 @@ namespace Capybutler.Editor.Build
 {
     public class BuildTool : EditorWindow
     {
-        public static string ApplicationProjectPath => Directory.GetParent(Application.dataPath)?.FullName ?? Application.dataPath;
-
-        public static string ProjectPathToFullPath(string relativePath) => Path.GetFullPath(Path.Combine(ApplicationProjectPath, relativePath.Trim('\\', '/', ' ')));
-
-        private static string PackagePath(string packageName, string relativePath) => Path.Combine($"Packages/{packageName}", relativePath.Trim('\\', '/', ' ')).Replace("\\", "/");
-
         public enum BuildType
         {
             Development,
             Beta,
             ReleaseCandidate
         }
-
-        private const string EditorKeyPrefix = "Capybutler.";
 
         private static readonly string[] DefaultScriptingDefines =
         {
@@ -60,18 +52,16 @@ namespace Capybutler.Editor.Build
         private TextField steamPasswordField;
         private Toggle uploadToggle;
 
-        public static string GetEditorKeyPrefix => EditorKeyPrefix + Application.productName + ".";
-
         public void CreateGUI()
         {
             var root = rootVisualElement;
-            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(PackagePath("com.capybutler", "Editor/Build/BuildTool.uss")));
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(PackagePath("com.capybutler", "Editor/Build/BuildTool.uxml"));
+            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>(PathUtils.PackagePath("com.capybutler", "Editor/Build/BuildTool.uss")));
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(PathUtils.PackagePath("com.capybutler", "Editor/Build/BuildTool.uxml"));
             root.Add(visualTree.Instantiate());
 
             // Build Configuration
             branchField = root.Q<EnumField>("buildBranch");
-            branchField.RegisterValueChangedCallback(changeEvent => EditorPrefs.SetString(GetEditorKeyPrefix + "branch", changeEvent.newValue.ToString()));
+            branchField.RegisterValueChangedCallback(changeEvent => EditorPrefs.SetString(PathUtils.GetEditorKey("branch"), changeEvent.newValue.ToString()));
             descriptionField = root.Q<TextField>("buildDescription");
             descriptionField.RegisterValueChangedCallback(OnTextFieldChanged);
             appIdField = root.Q<TextField>("buildAppId");
@@ -81,18 +71,18 @@ namespace Capybutler.Editor.Build
             buildPathField = root.Q<TextField>("buildPath");
             buildPathField.RegisterValueChangedCallback(OnTextFieldChanged);
             uploadToggle = root.Q<Toggle>("buildUpload");
-            uploadToggle.RegisterValueChangedCallback(changeEvent => EditorPrefs.SetBool(GetEditorKeyPrefix + "upload", changeEvent.newValue));
+            uploadToggle.RegisterValueChangedCallback(changeEvent => EditorPrefs.SetBool(PathUtils.GetEditorKey("upload"), changeEvent.newValue));
             root.Q<Button>("buildPathBrowse").clicked += () => { OnPathSelect(buildPathField); };
 
             // Init Build Configuration
-            if (Enum.TryParse<BuildType>(EditorPrefs.GetString(GetEditorKeyPrefix + "branch", BuildType.Development.ToString()), out var parsedValue))
+            if (Enum.TryParse<BuildType>(EditorPrefs.GetString(PathUtils.GetEditorKey("branch"), BuildType.Development.ToString()), out var parsedValue))
                 branchField.SetValueWithoutNotify(parsedValue);
 
-            descriptionField.SetValueWithoutNotify(EditorPrefs.GetString(GetEditorKeyPrefix + descriptionField.name, ""));
-            appIdField.SetValueWithoutNotify(EditorPrefs.GetString(GetEditorKeyPrefix + appIdField.name, ""));
-            depotIdField.SetValueWithoutNotify(EditorPrefs.GetString(GetEditorKeyPrefix + depotIdField.name, ""));
-            buildPathField.SetValueWithoutNotify(EditorPrefs.GetString(GetEditorKeyPrefix + buildPathField.name, ""));
-            uploadToggle.SetValueWithoutNotify(EditorPrefs.GetBool(GetEditorKeyPrefix + "upload", false));
+            descriptionField.SetValueWithoutNotify(EditorPrefs.GetString(PathUtils.GetEditorKey(descriptionField.name), ""));
+            appIdField.SetValueWithoutNotify(EditorPrefs.GetString(PathUtils.GetEditorKey(appIdField.name), ""));
+            depotIdField.SetValueWithoutNotify(EditorPrefs.GetString(PathUtils.GetEditorKey(depotIdField.name), ""));
+            buildPathField.SetValueWithoutNotify(EditorPrefs.GetString(PathUtils.GetEditorKey(buildPathField.name), ""));
+            uploadToggle.SetValueWithoutNotify(EditorPrefs.GetBool(PathUtils.GetEditorKey("upload"), false));
 
             // Steam Configuration
             steamLoginField = root.Q<TextField>("steamLogin");
@@ -104,17 +94,17 @@ namespace Capybutler.Editor.Build
             root.Q<Button>("steamCmdPathBrowse").clicked += () => { OnFileSelect(steamCmdPathField, "exe"); };
 
             // Init Steam Configuration
-            steamLoginField.SetValueWithoutNotify(EditorPrefs.GetString(GetEditorKeyPrefix + steamLoginField.name, ""));
-            steamPasswordField.SetValueWithoutNotify(EditorPrefs.GetString(GetEditorKeyPrefix + steamPasswordField.name, ""));
-            steamCmdPathField.SetValueWithoutNotify(EditorPrefs.GetString(GetEditorKeyPrefix + steamCmdPathField.name, ""));
+            steamLoginField.SetValueWithoutNotify(EditorPrefs.GetString(PathUtils.GetEditorKey(steamLoginField.name), ""));
+            steamPasswordField.SetValueWithoutNotify(EditorPrefs.GetString(PathUtils.GetEditorKey(steamPasswordField.name), ""));
+            steamCmdPathField.SetValueWithoutNotify(EditorPrefs.GetString(PathUtils.GetEditorKey(steamCmdPathField.name), ""));
 
             root.Q<Button>("startBuild").clicked += OnStartBuildClicked;
         }
 
-        [MenuItem("Capybutler/Steam Build", false, priority = 50)]
+        [MenuItem("Capybutler/Build Butler", false, priority = 50)]
         private static void ShowWindow()
         {
-            var window = GetWindow<BuildTool>(false, "Build Tool");
+            var window = GetWindow<BuildTool>(false, "Build Butler");
             window.minSize = new Vector2(520f, 300f);
             window.maxSize = new Vector2(700f, 300f);
             window.Show();
@@ -125,7 +115,7 @@ namespace Capybutler.Editor.Build
             if (changeEvent.target is not TextField textField)
                 return;
 
-            EditorPrefs.SetString(GetEditorKeyPrefix + textField.name, textField.value);
+            EditorPrefs.SetString(PathUtils.GetEditorKey(textField.name), textField.value);
         }
 
         private static void OnPathSelect(TextField textField)
@@ -153,7 +143,7 @@ namespace Capybutler.Editor.Build
 
         private void CompileSteamDeploymentScriptsForBranch(BuildType buildType)
         {
-            var outputPath = ProjectPathToFullPath("Build/Scripts");
+            var outputPath = PathUtils.ProjectPathToFullPath("Build/Scripts");
 
             var app = new AppbuildTemplate(outputPath)
             {
@@ -172,7 +162,7 @@ namespace Capybutler.Editor.Build
             app.Create();
             depot.Create();
 
-            EditorPrefs.SetString(GetEditorKeyPrefix + "appIdScriptPath", app.FullFileName);
+            EditorPrefs.SetString(PathUtils.GetEditorKey("appIdScriptPath"), app.FullFileName);
         }
 
         private void SetStackTraceLogTypesForBranch(BuildType buildType)

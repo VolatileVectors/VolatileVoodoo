@@ -12,8 +12,8 @@ namespace Capybutler.Editor.Build
 
         public void OnPostprocessBuild(BuildReport report)
         {
-            var basePath = BuildTool.ApplicationProjectPath;
-            var includePath = BuildTool.ProjectPathToFullPath(IncludeWithBuildPath);
+            var basePath = PathUtils.ApplicationProjectPath;
+            var includePath = PathUtils.ProjectPathToFullPath(IncludeWithBuildPath);
             var outputPath = Path.GetDirectoryName(report.summary.outputPath);
 
             Debug.Log("[PostprocessIncludeWithBuild] Adding " + Path.GetRelativePath(basePath, includePath) + " content to " + Path.GetRelativePath(basePath, outputPath));

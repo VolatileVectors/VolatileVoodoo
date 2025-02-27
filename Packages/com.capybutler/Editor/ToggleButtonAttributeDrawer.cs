@@ -1,12 +1,11 @@
-﻿using Capybutler.Utils;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using Sirenix.OdinInspector.Editor.ValueResolvers;
 using Sirenix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Capybutler.Editor.Utils
+namespace Capybutler.Editor
 {
     public class ToggleButtonAttributeDrawer : OdinAttributeDrawer<ToggleButtonAttribute, bool>
     {

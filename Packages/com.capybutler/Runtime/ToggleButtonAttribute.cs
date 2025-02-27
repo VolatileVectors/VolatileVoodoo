@@ -1,7 +1,7 @@
 ﻿using System;
 using Sirenix.OdinInspector;
 
-namespace Capybutler.Utils
+namespace Capybutler
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class ToggleButtonAttribute : Attribute

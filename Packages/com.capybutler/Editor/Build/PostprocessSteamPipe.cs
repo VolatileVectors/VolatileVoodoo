@@ -14,26 +14,26 @@ namespace Capybutler.Editor.Build
 
         public void OnPostprocessBuild(BuildReport report)
         {
-            if (!EditorPrefs.GetBool(BuildTool.GetEditorKeyPrefix + "upload", false)) {
+            if (!EditorPrefs.GetBool(PathUtils.GetEditorKey("upload"), false)) {
                 Debug.Log("[PostprocessSteamPipe] Skipping SteamPipe upload");
                 return;
             }
 
-            var processName = EditorPrefs.GetString(BuildTool.GetEditorKeyPrefix + "steamCmdPath", "");
+            var processName = EditorPrefs.GetString(PathUtils.GetEditorKey("steamCmdPath"), "");
             if (!File.Exists(processName)) {
                 Debug.LogError("[PostprocessSteamPipe] 'steamcmd.exe' not found");
                 return;
             }
 
-            if (!(EditorPrefs.HasKey(BuildTool.GetEditorKeyPrefix + "steamLogin") && EditorPrefs.HasKey(BuildTool.GetEditorKeyPrefix + "steamPassword"))) {
+            if (!(EditorPrefs.HasKey(PathUtils.GetEditorKey("steamLogin")) && EditorPrefs.HasKey(PathUtils.GetEditorKey("steamPassword")))) {
                 Debug.LogError("[PostprocessSteamPipe] Steam Login Information not found");
                 return;
             }
 
-            var steamLogin = EditorPrefs.GetString(BuildTool.GetEditorKeyPrefix + "steamLogin");
-            var steamPassword = EditorPrefs.GetString(BuildTool.GetEditorKeyPrefix + "steamPassword");
+            var steamLogin = EditorPrefs.GetString(PathUtils.GetEditorKey("steamLogin"));
+            var steamPassword = EditorPrefs.GetString(PathUtils.GetEditorKey("steamPassword"));
 
-            var buildScriptName = EditorPrefs.GetString(BuildTool.GetEditorKeyPrefix + "appIdScriptPath", "");
+            var buildScriptName = EditorPrefs.GetString(PathUtils.GetEditorKey("appIdScriptPath"), "");
             if (!File.Exists(buildScriptName)) {
                 Debug.LogError($"[PostprocessSteamPipe] App build script '{buildScriptName}' not found");
                 return;
@@ -45,7 +45,7 @@ namespace Capybutler.Editor.Build
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = EditorPrefs.GetString(BuildTool.GetEditorKeyPrefix + "steamCmdPath", ""),
+                    FileName = EditorPrefs.GetString(PathUtils.GetEditorKey("steamCmdPath"), ""),
                     Arguments = arguments,
                     WorkingDirectory = Path.GetDirectoryName(processName) ?? "",
                     RedirectStandardOutput = true,

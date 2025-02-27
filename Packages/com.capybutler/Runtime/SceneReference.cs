@@ -1,12 +1,9 @@
 ﻿using System;
 using UnityEngine;
-
-#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
-#endif
 
-namespace Capybutler.Utils
+namespace Capybutler
 {
     [Serializable]
     public class SceneReference : ISerializationCallbackReceiver
@@ -42,8 +39,7 @@ namespace Capybutler.Utils
                     scenePath = string.Empty;
 
                 EditorSceneManager.MarkAllScenesDirty();
-            }
-            else
+            } else
                 scenePath = SceneAssetPath;
 #endif
         }

@@ -1,12 +1,11 @@
 ﻿using System.Linq;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
-using Sirenix.OdinInspector.Editor.Validation;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
 
-namespace Capybutler.Editor.Utils
+namespace Capybutler.Editor
 {
     [CustomPropertyDrawer(typeof(SceneReference))]
     public class SceneReferencePropertyDrawer : PropertyDrawer
@@ -76,14 +75,12 @@ namespace Capybutler.Editor.Utils
                 iconColor = Color.red;
                 labelContent.text = "NOT In Build";
                 labelContent.tooltip = "This scene is NOT in build settings.\nIt will be NOT included in builds.";
-            }
-            else if (buildScene.Scene.enabled) {
+            } else if (buildScene.Scene.enabled) {
                 iconType = SdfIconType.CircleFill;
                 iconColor = Color.green;
                 labelContent.text = "BuildIndex: " + buildScene.BuildIndex;
                 labelContent.tooltip = "This scene is in build settings and ENABLED.\nIt will be included in builds." + readOnlyWarning;
-            }
-            else {
+            } else {
                 iconType = SdfIconType.CircleHalf;
                 iconColor = Color.yellow;
                 labelContent.text = "BuildIndex: " + buildScene.BuildIndex;
@@ -116,8 +113,7 @@ namespace Capybutler.Editor.Utils
 
                     buttonRect.width /= 2;
                     buttonRect.x += buttonRect.width;
-                }
-                else {
+                } else {
                     var isEnabled = buildScene.Scene.enabled;
                     var stateString = isEnabled ? "Disable" : "Enable";
                     tooltipMsg = stateString + " this scene in build settings.\n" + (isEnabled ? "It will no longer be included in builds" : "It will be included in builds") + "." + readOnlyWarning;
@@ -285,8 +281,7 @@ namespace Capybutler.Editor.Utils
                     if (buildScene.Scene.enabled) {
                         message += "\n\nIf you want, you can also just disable it instead.";
                         selection = EditorUtility.DisplayDialogComplex(title, message, ok, cancel, alt);
-                    }
-                    else
+                    } else
                         selection = EditorUtility.DisplayDialog(title, message, ok, cancel) ? 0 : 1;
 
                     switch (selection) {

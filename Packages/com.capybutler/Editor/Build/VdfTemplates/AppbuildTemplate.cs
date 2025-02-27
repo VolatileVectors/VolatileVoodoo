@@ -26,7 +26,7 @@
             PushIndent();
             WriteLine($"\"appid\" \"{AppId}\"");
             WriteLine($"\"desc\" \"{buildDescription}\"");
-            WriteLine($"\"buildoutput\" \"{BuildTool.ProjectPathToFullPath("Build/Output")}\"");
+            WriteLine($"\"buildoutput\" \"{PathUtils.ProjectPathToFullPath("Build/Output")}\"");
             WriteLine("\"contentroot\" \"\"");
             WriteLine($"\"setlive\" \"{BuildType.ToString().ToLower()}\"");
             WriteLine("\"preview\" \"0\"");
@@ -34,7 +34,7 @@
             WriteLine("\"depots\"");
             WriteLine("{");
             PushIndent();
-            WriteLine($"\"{DepotId}\" \"{BuildTool.ProjectPathToFullPath($"Build/Scripts/depot_{DepotId}.vdf")}\"");
+            WriteLine($"\"{DepotId}\" \"{PathUtils.ProjectPathToFullPath($"Build/Scripts/depot_{DepotId}.vdf")}\"");
             PopIndent();
             WriteLine("}");
             PopIndent();

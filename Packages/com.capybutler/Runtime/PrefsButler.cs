@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Capybutler.Utils
+namespace Capybutler
 {
     public static class PrefsButler
     {
@@ -11,10 +11,10 @@ namespace Capybutler.Utils
 
         public static void SetFloat(string key, float value) => PlayerPrefs.SetFloat(key, value);
         public static float GetFloat(string key, float defaultValue = 0f) => PlayerPrefs.GetFloat(key, defaultValue);
-        
+
         public static void SetInt(string key, int value) => PlayerPrefs.SetInt(key, value);
         public static int GetInt(string key, int defaultValue = 0) => PlayerPrefs.GetInt(key, defaultValue);
-        
+
         public static void SetBool(string key, bool value) => PlayerPrefs.SetInt(key, value ? 1 : 0);
         public static bool GetBool(string key, bool defaultValue = false) => PlayerPrefs.GetInt(key, defaultValue ? 1 : 0) != 0;
 

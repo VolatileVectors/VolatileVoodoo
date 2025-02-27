@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-namespace Capybutler.Utils
+namespace Capybutler
 {
     public class SceneChanger : MonoBehaviour
     {

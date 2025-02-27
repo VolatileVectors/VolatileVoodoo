@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Capybutler.Utils
+namespace Capybutler
 {
     [Serializable]
     public struct StartUpAction

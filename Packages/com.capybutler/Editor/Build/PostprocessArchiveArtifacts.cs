@@ -20,8 +20,8 @@ namespace Capybutler.Editor.Build
 
         public void OnPostprocessBuild(BuildReport report)
         {
-            var projectPath = BuildTool.ApplicationProjectPath;
-            var destinationPath = BuildTool.ProjectPathToFullPath(ArchivePath);
+            var projectPath = PathUtils.ApplicationProjectPath;
+            var destinationPath = PathUtils.ProjectPathToFullPath(ArchivePath);
             Debug.Log("[PostprocessArchiveArtifacts] Archiving 'DoNotShip' artifacts in " + Path.GetRelativePath(projectPath, destinationPath));
 
             var subDirectories = new DirectoryInfo(Path.GetDirectoryName(report.summary.outputPath) ?? "").GetDirectories();
