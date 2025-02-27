@@ -9,6 +9,8 @@ namespace Capybutler.Utils
 {
     public static class LogButler
     {
+        private static Action<string> logMessageReceived;
+
         [Conditional("ENABLE_LOGGING"), Conditional("ENABLE_REPORTING")]
         public static void SubscribeLogMessagesChannel(Action<string> subscriber) => logMessageReceived += subscriber;
 
@@ -29,8 +31,6 @@ namespace Capybutler.Utils
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void COnfigure() => Debug.unityLogger.filterLogType = LogType.Error;
 #endif
-
-        private static Action<string> logMessageReceived;
 
         private static void OnLogMessageReceived(string logMessage, string stacktrace, LogType logType) =>
             logMessageReceived?.Invoke(logType switch
