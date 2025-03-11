@@ -1,37 +1,30 @@
-<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+<UXML xmlns="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Packages/com.capybutler/Editor/Build/BuildTool.uss?fileID=7433441132597879392&amp;guid=76501b37d0ca3744c8146e19afc68d11&amp;type=3#BuildTool" />
-    <engine:Foldout text="Build Configuration">
-        <engine:GroupBox class="foldoutGroup">
-            <engine:EnumField label="Build Branch" name="buildBranch" include-obsolete-values="false" type="Capybutler.Editor.Build.BuildTool+BuildType, CapybutlerEditor" />
-            <engine:TextField label="Description" name="buildDescription" />
-            <engine:TextField label="Steam App ID" name="buildAppId" />
-            <engine:TextField label="Depot ID" name="buildDepotId" />
-            <engine:TextField label="Build Path" name="buildPath">
-                <engine:Button text="Browse" name="buildPathBrowse" />
-            </engine:TextField>
-            <engine:Toggle label="Upload" name="buildUpload" value="true" />
-        </engine:GroupBox>
-    </engine:Foldout>
-    <engine:Foldout text="Scripting Define Symbols">
-        <engine:GroupBox class="foldoutGroup">
-            <engine:EnumField label="Build Branch" name="buildBranch" include-obsolete-values="false" type="Capybutler.Editor.Build.BuildTool+BuildType, CapybutlerEditor" />
-            <engine:TextField label="Description" name="buildDescription" />
-            <engine:TextField label="Steam App ID" name="buildAppId" />
-            <engine:TextField label="Depot ID" name="buildDepotId" />
-            <engine:TextField label="Build Path" name="buildPath">
-                <engine:Button text="Browse" name="buildPathBrowse" />
-            </engine:TextField>
-            <engine:Toggle label="Upload" name="buildUpload" value="true" />
-        </engine:GroupBox>
-    </engine:Foldout>
-    <engine:Foldout text="Steam Configuration">
-        <engine:GroupBox class="foldoutGroup">
-            <engine:TextField label="Steam Login" name="steamLogin" />
-            <engine:TextField label="Steam Password" name="steamPassword" />
-            <engine:TextField label="Path &apos;steamcmd.exe&apos;" name="steamCmdPath">
-                <engine:Button text="Browse" name="steamCmdPathBrowse" />
-            </engine:TextField>
-        </engine:GroupBox>
-    </engine:Foldout>
-    <engine:Button text="Build" name="startBuild" class="buildButton" />
-</engine:UXML>
+    <Foldout text="Build Configuration">
+        <GroupBox class="foldoutGroup">
+            <EnumField label="Build Branch" name="buildBranch" include-obsolete-values="false" type="Capybutler.Editor.Build.BuildTool+BuildType, Capybutler" />
+            <TextField label="Description" name="buildDescription" />
+            <TextField label="Steam App ID" name="buildAppId" />
+            <TextField label="Depot ID" name="buildDepotId" />
+            <TextField label="Build Path" name="buildPath">
+                <Button text="Browse" name="buildPathBrowse" />
+            </TextField>
+            <Toggle label="Upload" name="buildUpload" value="true" />
+        </GroupBox>
+    </Foldout>
+    <Foldout text="Scripting Define Symbols">
+        <GroupBox class="foldoutGroup" style="min-height: 50px; max-height: 300px;">
+            <ListView name="scriptingDefines" reorderable="true" show-add-remove-footer="true" show-bound-collection-size="false" reorder-mode="Animated" show-border="true" fixed-item-height="20" item-template="project://database/Packages/com.capybutler/Editor/Build/DefineSymbol.uxml?fileID=9197481963319205126&amp;guid=454970f044e463347861975da8ceaa6d&amp;type=3#DefineSymbol" binding-source-selection-mode="AutoAssign" data-source-type="Capybutler.Editor.Build.BuildTool+BuildDefine, Capybutler" style="flex-grow: 1;" />
+        </GroupBox>
+    </Foldout>
+    <Foldout text="Steam Configuration">
+        <GroupBox class="foldoutGroup">
+            <TextField label="Steam Login" name="steamLogin" />
+            <TextField label="Steam Password" name="steamPassword" />
+            <TextField label="Path &apos;steamcmd.exe&apos;" name="steamCmdPath">
+                <Button text="Browse" name="steamCmdPathBrowse" />
+            </TextField>
+        </GroupBox>
+    </Foldout>
+    <Button text="Build" name="startBuild" class="buildButton" />
+</UXML>

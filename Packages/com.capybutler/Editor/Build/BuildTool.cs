@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Capybutler.Editor.Build.VdfTemplates;
 using UnityEditor;
 using UnityEditor.AddressableAssets.Settings;
@@ -20,23 +22,11 @@ namespace Capybutler.Editor.Build
             ReleaseCandidate
         }
 
-        private static readonly string[] DefaultScriptingDefines =
+        public struct BuildDefine
         {
-            "STEAMWORKS_NET",
-            "ODIN_INSPECTOR",
-            "ODIN_INSPECTOR_3",
-            "ODIN_INSPECTOR_3_1",
-            "ODIN_VALIDATOR",
-            "ODIN_VALIDATOR_3_1",
-            "ODIN_INSPECTOR_EDITOR_ONLY",
-            "SHAPES_URP"
-        };
-
-        private static readonly string[] DevelopmentScriptingDefines =
-        {
-            "ENABLE_LOGGING",
-            "EXTENDED_DEBUG"
-        };
+            public string Name;
+            public bool Debug;
+        }
 
         private TextField appIdField;
 
@@ -51,6 +41,11 @@ namespace Capybutler.Editor.Build
         private TextField steamLoginField;
         private TextField steamPasswordField;
         private Toggle uploadToggle;
+
+        // Create string list of defines
+        public List<BuildDefine> ScriptingDefines;
+
+        private ListView scriptingDefinesListView;
 
         public void CreateGUI()
         {
@@ -84,6 +79,17 @@ namespace Capybutler.Editor.Build
             buildPathField.SetValueWithoutNotify(EditorPrefs.GetString(PathUtils.GetEditorKey(buildPathField.name), ""));
             uploadToggle.SetValueWithoutNotify(EditorPrefs.GetBool(PathUtils.GetEditorKey("upload"), false));
 
+            // Scripting Defines
+            ScriptingDefines = LoadDefineSymbols();
+            scriptingDefinesListView = root.Q<ListView>("scriptingDefines");
+            scriptingDefinesListView.itemsSource = ScriptingDefines;
+            scriptingDefinesListView.itemsAdded += _ => SaveDefineSymbols();
+            scriptingDefinesListView.itemsRemoved += _ => SaveDefineSymbols();
+            scriptingDefinesListView.itemIndexChanged += (_, _) => SaveDefineSymbols();
+            scriptingDefinesListView.RegisterCallback<ChangeEvent<string>>(_ => SaveDefineSymbols());
+            scriptingDefinesListView.RegisterCallback<ChangeEvent<bool>>(_ => SaveDefineSymbols());
+            scriptingDefinesListView.RefreshItems();
+
             // Steam Configuration
             steamLoginField = root.Q<TextField>("steamLogin");
             steamLoginField.RegisterValueChangedCallback(OnTextFieldChanged);
@@ -97,16 +103,62 @@ namespace Capybutler.Editor.Build
             steamLoginField.SetValueWithoutNotify(EditorPrefs.GetString(PathUtils.GetEditorKey(steamLoginField.name), ""));
             steamPasswordField.SetValueWithoutNotify(EditorPrefs.GetString(PathUtils.GetEditorKey(steamPasswordField.name), ""));
             steamCmdPathField.SetValueWithoutNotify(EditorPrefs.GetString(PathUtils.GetEditorKey(steamCmdPathField.name), ""));
-
             root.Q<Button>("startBuild").clicked += OnStartBuildClicked;
+        }
+
+        private async void SaveDefineSymbols()
+        {
+            try {
+                await Task.Delay(250);
+                var names = "";
+                var debugs = "";
+
+                for (int index = 0; index < ScriptingDefines.Count; index++) {
+                    names += (index > 0 ? "|" : "") + (ScriptingDefines[index].Name ?? "");
+                    debugs += (index > 0 ? "|" : "") + ScriptingDefines[index].Debug;
+                }
+
+                EditorPrefs.SetString(PathUtils.GetEditorKey($"{nameof(ScriptingDefines)}__names"), names);
+                EditorPrefs.SetString(PathUtils.GetEditorKey($"{nameof(ScriptingDefines)}__debugs"), debugs);
+            }
+            catch (Exception) {
+                LogButler.Warning("Saving define symbols failed");
+            }
+        }
+
+        private List<BuildDefine> LoadDefineSymbols()
+        {
+            var result = new List<BuildDefine>();
+
+            var names = EditorPrefs.GetString(PathUtils.GetEditorKey($"{nameof(ScriptingDefines)}__names"), "");
+            var debugs = EditorPrefs.GetString(PathUtils.GetEditorKey($"{nameof(ScriptingDefines)}__debugs"), "");
+
+            var defineName = names.Split('|');
+            var defineDebug = debugs.Split('|');
+
+            var length = Math.Min(defineName.Length, defineDebug.Length);
+
+            for (var index = 0; index < length; index++)
+                result.Add(new BuildDefine
+                {
+                    Name = defineName[index],
+                    Debug = defineDebug[index] switch
+                    {
+                        "True" => true,
+                        "False" => false,
+                        _ => false
+                    }
+                });
+
+            return result;
         }
 
         [MenuItem("Capybutler/Build Butler", false, priority = 50)]
         private static void ShowWindow()
         {
             var window = GetWindow<BuildTool>(false, "Build Butler");
-            window.minSize = new Vector2(520f, 300f);
-            window.maxSize = new Vector2(700f, 300f);
+            window.minSize = new Vector2(520f, 400f);
+            window.maxSize = new Vector2(700f, 610f);
             window.Show();
         }
 
@@ -189,21 +241,12 @@ namespace Capybutler.Editor.Build
 
         private string GetScriptingDefineSymbolsForBranch(BuildType buildType)
         {
-            var result = string.Join(';', DefaultScriptingDefines);
-            if (buildType == BuildType.Development)
-                result += ';' + string.Join(';', DevelopmentScriptingDefines);
-
-            return result;
+            var filteredDefines = ScriptingDefines.Where(entry => buildType == BuildType.Development || !entry.Debug).Select(entry => entry.Name).Where(define => !string.IsNullOrEmpty(define));
+            return string.Join(';', filteredDefines) + ';';
         }
 
         private string[] GetScriptingDefineSymbolsArrayForBranch(BuildType buildType)
-        {
-            var result = DefaultScriptingDefines;
-            if (buildType == BuildType.Development)
-                result = result.Concat(DevelopmentScriptingDefines).ToArray();
-
-            return result;
-        }
+            => ScriptingDefines.Where(entry => buildType == BuildType.Development || !entry.Debug).Select(entry => entry.Name).ToArray();
 
         private void PerformBuild(BuildType buildType)
         {
