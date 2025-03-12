@@ -2,7 +2,6 @@ using System.IO;
 using System.Linq;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
-using UnityEngine;
 
 namespace Capybutler.Editor.Build
 {
@@ -23,7 +22,7 @@ namespace Capybutler.Editor.Build
             if (!Directory.Exists(destinationPath))
                 Directory.CreateDirectory(destinationPath);
 
-            Debug.Log("[PostprocessArchiveArtifacts] Archiving 'DoNotShip' artifacts in " + Path.GetRelativePath(projectPath, destinationPath));
+            LogButler.Info("[PostprocessArchiveArtifacts] Archiving 'DoNotShip' artifacts in " + Path.GetRelativePath(projectPath, destinationPath));
 
             var subDirectories = new DirectoryInfo(Path.GetDirectoryName(report.summary.outputPath) ?? "").GetDirectories();
             foreach (var source in subDirectories) {
@@ -34,11 +33,11 @@ namespace Capybutler.Editor.Build
                 if (Directory.Exists(target))
                     Directory.Delete(target, true);
 
-                Debug.Log("[PostprocessArchiveArtifacts] Moving: " + Path.GetRelativePath(projectPath, source.FullName) + " => " + Path.GetRelativePath(projectPath, target));
+                LogButler.Info("[PostprocessArchiveArtifacts] Moving: " + Path.GetRelativePath(projectPath, source.FullName) + " => " + Path.GetRelativePath(projectPath, target));
                 source.MoveTo(target);
             }
 
-            Debug.Log("[PostprocessArchiveArtifacts] Successful");
+            LogButler.Info("[PostprocessArchiveArtifacts] Successful");
         }
     }
 }

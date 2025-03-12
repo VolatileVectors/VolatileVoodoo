@@ -1,7 +1,6 @@
 using System.IO;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
-using UnityEngine;
 
 namespace Capybutler.Editor.Build
 {
@@ -15,9 +14,9 @@ namespace Capybutler.Editor.Build
             var includePath = PathUtils.ProjectPathToFullPath("IncludeWithBuild");
             var outputPath = Path.GetDirectoryName(report.summary.outputPath);
 
-            Debug.Log("[PostprocessIncludeWithBuild] Adding " + Path.GetRelativePath(basePath, includePath) + " content to " + Path.GetRelativePath(basePath, outputPath));
+            LogButler.Info("[PostprocessIncludeWithBuild] Adding " + Path.GetRelativePath(basePath, includePath) + " content to " + Path.GetRelativePath(basePath, outputPath));
             CopyDirectory(includePath, outputPath);
-            Debug.Log("[PostprocessIncludeWithBuild] Successful");
+            LogButler.Info("[PostprocessIncludeWithBuild] Successful");
         }
 
         private static void CopyDirectory(string sourcePath, string destinationPath)

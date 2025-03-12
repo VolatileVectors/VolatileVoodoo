@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Capybutler.Editor.Build.VdfTemplates
+﻿namespace Capybutler.Editor.Build.VdfTemplates
 {
     public sealed class AppbuildTemplate : FileGenerator
     {

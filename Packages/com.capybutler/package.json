@@ -2,7 +2,7 @@
   "name": "com.capybutler",
   "displayName": "Capybutler",
   "description": "Steam build automation, project bootstrapping, and scene management",
-  "version": "0.3.35",
+  "version": "0.3.36",
   "unity": "2021.1",
   "author": {
     "name": "Helge Backhaus"

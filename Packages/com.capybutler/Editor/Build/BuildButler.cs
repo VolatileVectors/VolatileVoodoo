@@ -281,7 +281,9 @@ namespace Capybutler.Editor.Build
 
             var report = BuildPipeline.BuildPlayer(buildPlayerOptions);
             if (report.summary.result != BuildResult.Succeeded)
-                Debug.LogError("Error building player: " + report.summary.totalErrors);
+                LogButler.Error($"Error building player '{Application.productName}': {report.summary.totalErrors} {(report.summary.totalErrors == 1 ? "issue" : "issues")}");
+            else
+                LogButler.Info($"Building player '{Application.productName}' successful!");
         }
     }
 }

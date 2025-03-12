@@ -4,7 +4,6 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
-using Debug = UnityEngine.Debug;
 
 namespace Capybutler.Editor.Build
 {
@@ -15,18 +14,18 @@ namespace Capybutler.Editor.Build
         public void OnPostprocessBuild(BuildReport report)
         {
             if (!EditorPrefs.GetBool(PathUtils.GetEditorKey("upload"), false)) {
-                Debug.Log("[PostprocessSteamPipe] Skipping SteamPipe upload");
+                LogButler.Info("[PostprocessSteamPipe] Skipping SteamPipe upload");
                 return;
             }
 
             var processName = EditorPrefs.GetString(PathUtils.GetEditorKey("steamCmdPath"), "");
             if (!File.Exists(processName)) {
-                Debug.LogError("[PostprocessSteamPipe] 'steamcmd.exe' not found");
+                LogButler.Error("[PostprocessSteamPipe] 'steamcmd.exe' not found");
                 return;
             }
 
             if (!(EditorPrefs.HasKey(PathUtils.GetEditorKey("steamLogin")) && EditorPrefs.HasKey(PathUtils.GetEditorKey("steamPassword")))) {
-                Debug.LogError("[PostprocessSteamPipe] Steam Login Information not found");
+                LogButler.Error("[PostprocessSteamPipe] Steam Login Information not found");
                 return;
             }
 
@@ -35,7 +34,7 @@ namespace Capybutler.Editor.Build
 
             var buildScriptName = EditorPrefs.GetString(PathUtils.GetEditorKey("appIdScriptPath"), "");
             if (!File.Exists(buildScriptName)) {
-                Debug.LogError($"[PostprocessSteamPipe] App build script '{buildScriptName}' not found");
+                LogButler.Error($"[PostprocessSteamPipe] App build script '{buildScriptName}' not found");
                 return;
             }
 
@@ -70,12 +69,12 @@ namespace Capybutler.Editor.Build
             var errorLog = errors.Count > 0 ? string.Join('\n', errors) : "";
 
             if (!string.IsNullOrWhiteSpace(outputLog))
-                Debug.Log(outputLog);
+                LogButler.Info(outputLog);
 
             if (!string.IsNullOrWhiteSpace(errorLog))
-                Debug.LogWarning(errorLog);
+                LogButler.Warning(errorLog);
 
-            Debug.Log("[PostprocessSteamPipe] Done");
+            LogButler.Info("[PostprocessSteamPipe] Done");
         }
     }
 }

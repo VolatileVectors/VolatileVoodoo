@@ -1,4 +1,6 @@
-﻿namespace Capybutler.Editor.Build.VdfTemplates
+﻿using UnityEngine;
+
+namespace Capybutler.Editor.Build.VdfTemplates
 {
     public sealed class DepotbuildTemplate : FileGenerator
     {
@@ -14,7 +16,7 @@
             WriteLine("{");
             PushIndent();
             WriteLine($"\"DepotID\" \"{DepotId}\"");
-            WriteLine($"\"contentroot\" \"{PathUtils.ProjectPathToFullPath("Build")}\"");
+            WriteLine($"\"contentroot\" \"{PathUtils.ProjectPathToFullPath($"Build/{Application.productName}")}\"");
             WriteLine("\"FileMapping\"");
             WriteLine("{");
             PushIndent();
