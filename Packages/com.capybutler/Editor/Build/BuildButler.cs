@@ -172,6 +172,10 @@ namespace Capybutler.Editor.Build
         {
             var buildType = Enum.TryParse<BuildType>(branchField.text, out var parsedBranch) ? parsedBranch : BuildType.Development;
 
+            var buildPath = PathUtils.ProjectPathToFullPath("Build");
+            if (!Directory.Exists(buildPath))
+                Directory.CreateDirectory(buildPath);
+
             CompileSteamDeploymentScriptsForBranch(buildType);
             SetStackTraceLogTypesForBranch(buildType);
             PerformBuild(buildType);

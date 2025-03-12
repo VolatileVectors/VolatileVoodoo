@@ -20,6 +20,9 @@ namespace Capybutler.Editor.Build
         {
             var projectPath = PathUtils.ApplicationProjectPath;
             var destinationPath = PathUtils.ProjectPathToFullPath("Build/DoNotShip");
+            if (!Directory.Exists(destinationPath))
+                Directory.CreateDirectory(destinationPath);
+
             Debug.Log("[PostprocessArchiveArtifacts] Archiving 'DoNotShip' artifacts in " + Path.GetRelativePath(projectPath, destinationPath));
 
             var subDirectories = new DirectoryInfo(Path.GetDirectoryName(report.summary.outputPath) ?? "").GetDirectories();
