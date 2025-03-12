@@ -1,9 +1,11 @@
-﻿namespace Capybutler.Editor.Build.VdfTemplates
+﻿using System.IO;
+
+namespace Capybutler.Editor.Build.VdfTemplates
 {
     public sealed class AppbuildTemplate : FileGenerator
     {
         public int AppId;
-        public BuildTool.BuildType BuildType;
+        public BuildButler.BuildType BuildType;
         public int DepotId;
         public string Description;
 
@@ -15,9 +17,9 @@
         {
             var buildDescription = BuildType switch
             {
-                BuildTool.BuildType.Development => "[Development]",
-                BuildTool.BuildType.Beta => "[Beta]",
-                BuildTool.BuildType.ReleaseCandidate => "[Release Candidate]",
+                BuildButler.BuildType.Development => "[Development]",
+                BuildButler.BuildType.Beta => "[Beta]",
+                BuildButler.BuildType.ReleaseCandidate => "[Release Candidate]",
                 _ => "[Public]"
             } + (string.IsNullOrWhiteSpace(Description) ? "" : $" {Description}");
 

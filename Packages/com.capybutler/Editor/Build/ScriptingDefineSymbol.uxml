@@ -1,0 +1,14 @@
+<engine:UXML xmlns:engine="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <engine:VisualElement name="frame" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: space-between; align-self: stretch;">
+        <engine:TextField name="define" style="align-self: center; align-content: auto; flex-grow: 1; flex-shrink: 1;">
+            <Bindings>
+                <engine:DataBinding property="value" data-source-path="Define" />
+            </Bindings>
+        </engine:TextField>
+        <engine:Toggle label=" Debug only" name="debug" style="flex-direction: row-reverse;">
+            <Bindings>
+                <engine:DataBinding property="value" data-source-path="Debug" />
+            </Bindings>
+        </engine:Toggle>
+    </engine:VisualElement>
+</engine:UXML>

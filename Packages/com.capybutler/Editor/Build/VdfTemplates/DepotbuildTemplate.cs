@@ -2,7 +2,6 @@
 {
     public sealed class DepotbuildTemplate : FileGenerator
     {
-        public string BuildPath;
         public int DepotId;
 
         public DepotbuildTemplate(string path) : base(path) { }
@@ -15,7 +14,7 @@
             WriteLine("{");
             PushIndent();
             WriteLine($"\"DepotID\" \"{DepotId}\"");
-            WriteLine($"\"contentroot\" \"{BuildPath}\"");
+            WriteLine($"\"contentroot\" \"{PathUtils.ProjectPathToFullPath("Build")}\"");
             WriteLine("\"FileMapping\"");
             WriteLine("{");
             PushIndent();

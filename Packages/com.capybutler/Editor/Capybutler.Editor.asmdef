@@ -1,0 +1,19 @@
+{
+    "name": "Capybutler.Editor",
+    "rootNamespace": "Capybutler",
+    "references": [
+        "GUID:b2ce3f18830c9fc40b22a183125b3839",
+        "GUID:69448af7b92c7f342b298e06a37122aa"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

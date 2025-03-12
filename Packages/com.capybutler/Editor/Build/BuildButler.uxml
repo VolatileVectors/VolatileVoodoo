@@ -1,0 +1,24 @@
+<UXML xmlns="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.capybutler/Editor/Build/BuildButler.uss?fileID=7433441132597879392&amp;guid=76501b37d0ca3744c8146e19afc68d11&amp;type=3#BuildButler" />
+    <Foldout text="Build Configuration">
+        <GroupBox class="foldoutGroup">
+            <EnumField label="Build Branch" name="buildBranch" include-obsolete-values="false" type="Capybutler.Editor.Build.BuildButler+BuildType, Capybutler.Editor">
+                <Toggle label=" Upload" name="buildUpload" value="true" style="flex-direction: row-reverse;" />
+            </EnumField>
+            <TextField label="Description" name="buildDescription" />
+            <TextField label="Steam App ID" name="buildAppId" />
+            <TextField label="Depot ID" name="buildDepotId" />
+            <ListView name="scriptingDefines" reorderable="true" show-add-remove-footer="true" show-bound-collection-size="false" reorder-mode="Animated" show-border="true" fixed-item-height="20" item-template="project://database/Packages/com.capybutler/Editor/Build/ScriptingDefineSymbol.uxml?fileID=9197481963319205126&amp;guid=454970f044e463347861975da8ceaa6d&amp;type=3#ScriptingDefineSymbol" binding-source-selection-mode="AutoAssign" show-foldout-header="true" header-title="Scripting Define Symbols" style="flex-grow: 1;" />
+        </GroupBox>
+    </Foldout>
+    <Foldout text="Steam Configuration">
+        <GroupBox class="foldoutGroup">
+            <TextField label="Steam Login" name="steamLogin" />
+            <TextField label="Steam Password" name="steamPassword" />
+            <TextField label="Path &apos;steamcmd.exe&apos;" name="steamCmdPath">
+                <Button text="Browse" name="steamCmdPathBrowse" />
+            </TextField>
+        </GroupBox>
+    </Foldout>
+    <Button text="Build" name="startBuild" class="buildButton" />
+</UXML>

@@ -8,8 +8,6 @@ namespace Capybutler.Editor.Build
 {
     public class PostprocessArchiveArtifacts : IPostprocessBuildWithReport
     {
-        private const string ArchivePath = "Build/DoNotShip";
-
         private static readonly string[] ArchiveButDoNotShipPathSuffixes =
         {
             "BackUpThisFolder_ButDontShipItWithYourGame",
@@ -21,7 +19,7 @@ namespace Capybutler.Editor.Build
         public void OnPostprocessBuild(BuildReport report)
         {
             var projectPath = PathUtils.ApplicationProjectPath;
-            var destinationPath = PathUtils.ProjectPathToFullPath(ArchivePath);
+            var destinationPath = PathUtils.ProjectPathToFullPath("Build/DoNotShip");
             Debug.Log("[PostprocessArchiveArtifacts] Archiving 'DoNotShip' artifacts in " + Path.GetRelativePath(projectPath, destinationPath));
 
             var subDirectories = new DirectoryInfo(Path.GetDirectoryName(report.summary.outputPath) ?? "").GetDirectories();
