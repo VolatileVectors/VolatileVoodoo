@@ -1,4 +1,6 @@
-﻿namespace Capybutler.Editor.Build.VdfTemplates
+﻿using UnityEngine;
+
+namespace Capybutler.Editor.Build.VdfTemplates
 {
     public sealed class AppbuildTemplate : FileGenerator
     {
@@ -27,7 +29,7 @@
             WriteLine($"\"appid\" \"{AppId}\"");
             WriteLine($"\"desc\" \"{buildDescription}\"");
             WriteLine($"\"buildoutput\" \"{PathUtils.ProjectPathToFullPath("Build/Output")}\"");
-            WriteLine("\"contentroot\" \"\"");
+            WriteLine($"\"contentroot\" \"{PathUtils.ProjectPathToFullPath($"Build{Application.productName}")}\"");
             WriteLine($"\"setlive\" \"{BuildType.ToString().ToLower()}\"");
             WriteLine("\"preview\" \"0\"");
             WriteLine("\"local\" \"\"");
