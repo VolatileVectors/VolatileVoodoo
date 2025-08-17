@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Sirenix.OdinInspector;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,7 +11,7 @@ namespace Capybutler
     [Serializable]
     public struct StartUpAction
     {
-        [LabelText("Delayed by seconds")]
+        [Label("Delayed by seconds")]
         public float delay;
 
         public UnityEvent action;

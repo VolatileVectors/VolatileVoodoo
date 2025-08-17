@@ -1,4 +1,3 @@
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -12,11 +11,9 @@ namespace Capybutler
         [Tooltip("Loading progress from 0 to 100")]
         public UnityEvent<int> progress;
 
-        [Title("Settings")]
-        [ToggleButton("Load additive")]
+        [Header("Settings")]
         public bool loadAdditive;
 
-        [ToggleButton("Activate immediately")]
         public bool activateImmediately = true;
 
         private bool isLoading;

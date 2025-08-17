@@ -1,6 +1,4 @@
 ﻿using System.Linq;
-using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
@@ -66,23 +64,18 @@ namespace Capybutler.Editor
             var readOnly = BuildUtils.IsReadOnly();
             var readOnlyWarning = readOnly ? "\n\nWARNING: Build Settings is not checked out and so cannot be modified." : "";
 
-            var labelContent = new GUIContent();
-            SdfIconType iconType;
             Color iconColor;
-
+            var labelContent = new GUIContent();
             if (buildScene.BuildIndex == -1) {
-                iconType = SdfIconType.Circle;
-                iconColor = Color.red;
+                iconColor = Color.crimson;
                 labelContent.text = "NOT In Build";
                 labelContent.tooltip = "This scene is NOT in build settings.\nIt will be NOT included in builds.";
             } else if (buildScene.Scene.enabled) {
-                iconType = SdfIconType.CircleFill;
-                iconColor = Color.green;
+                iconColor = Color.greenYellow;
                 labelContent.text = "BuildIndex: " + buildScene.BuildIndex;
                 labelContent.tooltip = "This scene is in build settings and ENABLED.\nIt will be included in builds." + readOnlyWarning;
             } else {
-                iconType = SdfIconType.CircleHalf;
-                iconColor = Color.yellow;
+                iconColor = Color.goldenRod;
                 labelContent.text = "BuildIndex: " + buildScene.BuildIndex;
                 labelContent.tooltip = "This scene is in build settings and DISABLED.\nIt will be NOT included in builds.";
             }
@@ -95,7 +88,7 @@ namespace Capybutler.Editor
                 iconRect.y = labelRect.center.y - IconSize / 2f;
                 labelRect.width -= iconRect.width + 2f * PadSize;
                 labelRect.x += iconRect.width + 2f * PadSize;
-                SdfIcons.DrawIcon(iconRect, iconType, iconColor);
+                EditorGUI.DrawRect(iconRect, iconColor);
                 EditorGUI.PrefixLabel(labelRect, sceneControlID, labelContent);
             }
 

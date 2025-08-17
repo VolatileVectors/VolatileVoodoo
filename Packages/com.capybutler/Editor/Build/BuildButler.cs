@@ -142,12 +142,7 @@ namespace Capybutler.Editor.Build
                 result.Add(new ScriptingDefineSymbol
                 {
                     Define = defineName[index],
-                    Debug = defineDebug[index] switch
-                    {
-                        "True" => true,
-                        "False" => false,
-                        _ => false
-                    }
+                    Debug = defineDebug[index] == "True"
                 });
 
             return result;
