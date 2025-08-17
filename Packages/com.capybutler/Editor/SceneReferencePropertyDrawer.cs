@@ -12,7 +12,7 @@ namespace Capybutler.Editor
         private const string ScenePathPropertyString = "scenePath";
 
         private const float PadSize = 2f;
-        private const float IconSize = 14f;
+        private const float IconSize = 7.5f;
         private const float FooterHeight = 10f;
         private static readonly RectOffset BoxPadding = EditorStyles.helpBox.padding;
         private static readonly float LineHeight = EditorGUIUtility.singleLineHeight;
@@ -85,9 +85,10 @@ namespace Capybutler.Editor
                 var iconRect = labelRect;
                 iconRect.width = IconSize;
                 iconRect.height = IconSize;
+                iconRect.x += 2f * PadSize;
                 iconRect.y = labelRect.center.y - IconSize / 2f;
-                labelRect.width -= iconRect.width + 2f * PadSize;
-                labelRect.x += iconRect.width + 2f * PadSize;
+                labelRect.width -= iconRect.width + 4f * PadSize;
+                labelRect.x += iconRect.width + 4f * PadSize;
                 EditorGUI.DrawRect(iconRect, iconColor);
                 EditorGUI.PrefixLabel(labelRect, sceneControlID, labelContent);
             }
